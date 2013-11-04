@@ -1,0 +1,1 @@
+$('body').backstretch("static/img/la_tour_1_1_.jpg");
