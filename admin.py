@@ -73,6 +73,13 @@ class AdminNewPage(AdminBaseHandler):
 		page.put()
 		return self.redirect('/admin/%s' % locale_id)
 
+class AdminUpdatePage(AdminBaseHandler):
+	def post(self, locale_id, page_id):
+
+		page = Page.get_by_id(page_id)
+
+		return self.redirect('/admin/{0}/{1}'.format(unicode(locale_id), unicode(page_id)))
+
 class AdminViewLocale(AdminBaseHandler):
 	def get(self, locale_id):
 
@@ -101,3 +108,5 @@ class AdminViewPage(AdminBaseHandler):
 			'locale': locale_id,
 		}	
 		return self.render_response('admin_view_page.html', **template_values)
+
+
