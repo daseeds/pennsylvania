@@ -2,13 +2,11 @@
 from google.appengine.ext import ndb
 
 class Page(ndb.Model):
-	url = ndb.StringProperty(required=True)
+	locale_id = ndb.StringProperty(required=True)
 	name = ndb.StringProperty(required=True)
-	lead = ndb.StringProperty(required=True)
+	lead = ndb.StringProperty()
 
 class Locale(ndb.Model):
-	url = ndb.StringProperty(required=True)
-	name = ndb.StringProperty(required=True)
 	pages = ndb.StructuredProperty(Page, repeated=True)
 
 
