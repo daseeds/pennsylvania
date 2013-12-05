@@ -1,32 +1,47 @@
-{% extends "base_admin.html" %}
-	{% block breadcrumbs %}
+{% extends "admin_base.html" %}
+{% block breadcrumbs %}
 <ol class="breadcrumb">
-  <li><a href="/admin">admin</a></li>
-  <li class="active"><a href="#">{{locale}}</a></li>
+	<li><a href="/admin">admin</a></li>
+	<li class="active"><a href="/admin/{{locale}}">{{locale}}</a></li>
 </ol>	
-	{% endblock breadcrumbs %}
+{% endblock breadcrumbs %}
 
 {% block content %}
 
-	{% for page in pages %}
-	<a href="/admin/{{locale}}/{{ page.key.id() }}">{{ page.key.id() }}</a>
-	{% endfor %}
+<div class="panel panel-default">
+	<div class="panel-heading">Pages in locale {{locale}}</div>
+	<div class="panel-body">
+		<div class="list-group">
+			{% for page in pages %}
+			<a href="/admin/{{locale}}/{{ page.key.id() }}"   class="list-group-item">{{ page.key.id() }}</a>
+			{% endfor %}
+		</div>
+	</div>
+</div>
 
-	<form class="form-horizontal" role="form" action="/admin/{{locale}}/new" method="post">
-	  <div class="form-group">
-	    <label class="col-sm-2 control-label" for="exampleInputPassword2">Page unique id</label>
-	    <div class="col-sm-10">
-	    	<input type="text" class="form-control" value="" name="page_id" >
-	    </div>
-	  </div>
-	  <div class="form-group">
-	    <label class="col-sm-2 control-label" for="exampleInputPassword2">Page menu name</label>
-	    <div class="col-sm-10">
-	    	<input type="text" class="form-control" value="" name="name" >
-	    </div>
-	  </div>
 
-	  <button type="submit" class="btn btn-default">New Page</button>
-	</form>
 
+
+<div class="panel panel-default">
+	<div class="panel-heading">Create a new page</div>
+	<div class="panel-body">
+
+		<form class="form-horizontal" role="form" action="/admin/{{locale}}/new" method="post">
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="exampleInputPassword2">Page unique id</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" value="" name="page_id" >
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="exampleInputPassword2">Page menu name</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" value="" name="name" >
+				</div>
+			</div>
+
+			<button type="submit" class="btn btn-default">New Page</button>
+		</form>
+	</div>
+</div>
 {% endblock content %}

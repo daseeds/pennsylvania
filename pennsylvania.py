@@ -61,6 +61,7 @@ class ModelViewer(BaseHandler):
 application = webapp2.WSGIApplication([
     webapp2.Route(r'/admin', AdminMain),
     webapp2.Route(r'/admin/locale/new', AdminNewLocale),
+	webapp2.Route(r'/admin/menu/new', AdminNewMenu),
     webapp2.Route(r'/admin/<locale_id:([^/]+)?>', AdminViewLocale),
     webapp2.Route(r'/admin/<locale_id:([^/]+)?>/new', AdminNewPage),
     webapp2.Route(r'/admin/<locale_id:([^/]+)?>/<page_id:([^/]+)?>', AdminViewPage),

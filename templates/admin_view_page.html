@@ -1,9 +1,9 @@
-{% extends "base_admin.html" %}
+{% extends "admin_base.html" %}
 	{% block breadcrumbs %}
 <ol class="breadcrumb">
   <li><a href="/admin">admin</a></li>
   <li><a href="/admin/{{locale}}">{{locale}}</a></li>
-  <li class="active"><a href="#">{{page.key.id()}}</a></li>
+  <li class="active"><a href="/admin/{{locale}}/{{page.key.id()}}">{{page.key.id()}}</a></li>
 </ol>	
 	{% endblock breadcrumbs %}
 

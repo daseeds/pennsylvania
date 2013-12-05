@@ -1,13 +1,24 @@
 # coding: utf-8
 from google.appengine.ext import ndb
 
-class Page(ndb.Model):
-	locale_id = ndb.StringProperty(required=True)
-	name = ndb.StringProperty(required=True)
-	lead = ndb.StringProperty()
+NORMAL = 1
+DROPDOWN = 2
+
+class Menu(ndb.Model):
+	pass
 
 class Locale(ndb.Model):
-	pages = ndb.StructuredProperty(Page, repeated=True)
+	pass
+
+
+class Page(ndb.Model):
+	locale_id = ndb.KeyProperty(Locale, required=True)
+	name = ndb.StringProperty(required=True)
+	lead = ndb.StringProperty()
+	menu = ndb.KeyProperty(Menu, required=True)
+	content = ndb.TextProperty()
+
+
 
 
 # test = Locale(
