@@ -10,16 +10,7 @@
 
 <div class="row">
 	<div class="col-md-12">
-		<div class="panel panel-default">
-			<div class="panel-heading">Pages</div>
-			<div class="panel-body">
-				<div class="list-group">
-					{% for page in pages %}
-					<a href="/admin/page/{{ page.key.id() }}"  class="list-group-item">{{ page.key.id() }}</a>
-					{% endfor %}
-				</div>
-			</div>
-		</div>		
+		{% include 'admin_view_pages_panel.html' %}
 	</div>
 </div>
 <div class="row">

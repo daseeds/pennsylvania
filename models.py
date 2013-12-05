@@ -12,7 +12,7 @@ class Locale(ndb.Model):
 
 
 class Page(ndb.Model):
-	locale_id = ndb.KeyProperty(Locale, required=True)
+	locale = ndb.KeyProperty(Locale, required=True)
 	name = ndb.StringProperty(required=True)
 	lead = ndb.StringProperty()
 	menu = ndb.KeyProperty(Menu, required=True)

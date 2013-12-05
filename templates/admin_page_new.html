@@ -1,0 +1,35 @@
+{% import 'forms.html' as forms %}
+{% extends "admin_base.html" %}
+{% block breadcrumbs %}
+<ol class="breadcrumb">
+	<li><a href="/admin">admin</a></li>
+</ol>	
+{% endblock breadcrumbs %}
+{% block content %}
+
+		<div class="panel panel-default">
+			<div class="panel-heading">New page</div>
+			<div class="panel-body">
+
+				<form class="form-horizontal" role="form" action="{{action}}" method="post">
+					{% if page %}
+					{{ forms.input('unique id and url', 'page_id', page.key.id()) }}
+					{{ forms.input('Menu name (in current locale)', 'name', page.name) }}
+					{{ forms.select('Select locale', 'locale_id', locale_list, page.locale.id()) }}
+					{{ forms.select('Select menu', 'menu_id', menu_list, page.menu.id()) }}
+					{% else %}
+					{{ forms.input('unique id and url', 'page_id') }}
+					{{ forms.input('Menu name (in current locale)', 'name') }}
+					{{ forms.select('Select locale', 'locale_id', locale_list, ) }}
+					{{ forms.select('Select menu', 'menu_id', menu_list) }}
+					{% endif %}
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<button type="submit" class="btn btn-default">{{action_label}}</button>
+						</div>
+					</div>
+
+				</form>
+			</div>
+		</div>
+{% endblock content %}

@@ -80,24 +80,52 @@ class AdminNewMenu(AdminBaseHandler):
 
 
 class AdminNewPage(AdminBaseHandler):
-	def post(self, locale_id):
+	def get(self):
+		locales = Locale.query().fetch()
+		locale_list = []
+		for locale in locales:
+			locale_list.append(locale.key.id())
+
+		menus = Menu.query().fetch()
+		menu_list = []
+		for menu in menus:
+			menu_list.append(menu.key.id())
+
+		template_values = {
+			'locale_list': locale_list,
+			'menu_list': menu_list,
+			'action': '/admin/page/new',
+			'action_label': 'New',
+		}	
+		return self.render_response('admin_page_new.html', **template_values)
+
+	def post(self):
+		logging.info(self.request.get('locale_id'))
+		logging.info(self.request.get('menu_id'))
+		logging.info(self.request.get('page_id'))
+		logging.info(self.request.get('name'))
 		page = Page(id=self.request.get('page_id'), 
 					name = self.request.get('name'),
-					locale_id = locale_id)
+					locale = ndb.Key(Locale, self.request.get('locale_id')),
+					menu = ndb.Key(Menu, self.request.get('menu_id')))
 		page.put()
-		return self.redirect('/admin/%s' % locale_id)
+		return self.redirect('/admin')
 
 class AdminUpdatePage(AdminBaseHandler):
-	def post(self, locale_id, page_id):
+	def post(self, page_id):
 
 		page = Page.get_by_id(page_id)
+		page.id = self.request.get('page_id')
+		page.menu = ndb.Key(Menu, self.request.get('menu_id'))
+		page.locale = ndb.Key(Locale, self.request.get('locale_id'))
+		page.put()
 
-		return self.redirect('/admin/{0}/{1}'.format(unicode(locale_id), unicode(page_id)))
+		return self.redirect('/admin/page/{0}'.format(unicode(page_id)))
 
 class AdminViewLocale(AdminBaseHandler):
 	def get(self, locale_id):
 
-		page_query = Page.query(Page.locale_id==ndb.Key(Locale, locale_id))
+		page_query = Page.query(Page.locale==ndb.Key(Locale, locale_id))
 		pages = page_query.fetch()
 
 		template_values = {
@@ -110,17 +138,29 @@ class AdminViewLocale(AdminBaseHandler):
 		return self.render_response('admin_view_pages.html', **template_values)
 
 class AdminViewPage(AdminBaseHandler):
-	def get(self, locale_id, page_id):
+	def get(self, page_id):
 
 		page = Page.get_by_id(page_id)
+		locales = Locale.query().fetch()
+		locale_list = []
+		for locale in locales:
+			locale_list.append(locale.key.id())
+
+		menus = Menu.query().fetch()
+		menu_list = []
+		for menu in menus:
+			menu_list.append(menu.key.id())
 
 		template_values = {
 			'url': users.create_logout_url(self.request.uri),
 			'url_linktext': 'Logout',
 			'user': users.get_current_user(),
 			'page': page,
-			'locale': locale_id,
+			'locale_list': locale_list,
+			'menu_list': menu_list,
+			'action': '/admin/page/{0}/update'.format(page_id),
+			'action_label': 'Update',
 		}	
-		return self.render_response('admin_view_page.html', **template_values)
+		return self.render_response('admin_page_new.html', **template_values)
 
 

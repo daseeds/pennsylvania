@@ -1,0 +1,14 @@
+		<div class="panel panel-default">
+			<div class="panel-heading">Pages - <a href="/admin/page/new">New page</a></div>
+			<div class="panel-body">
+				<div class="list-group">
+					{% for page in pages %}
+					<a href="/admin/page/{{ page.key.id() }}"  class="list-group-item">
+					<span class="badge">{{page.locale.id()}}</span>
+					<span class="badge">{{page.menu.id()}}</span>
+					{{ page.key.id() }}
+					</a>
+					{% endfor %}
+				</div>
+			</div>
+		</div>		
