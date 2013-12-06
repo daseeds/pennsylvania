@@ -68,7 +68,8 @@ class AdminMain(AdminBaseHandler):
 
 class AdminNewLocale(AdminBaseHandler):
 	def post(self):
-		locale = Locale(id=self.request.get('locale_id'))
+		locale = Locale(id=self.request.get('locale_id'),
+						name=self.request.get('name'))
 		locale.put()
 		return self.redirect('/admin')
 
@@ -121,6 +122,11 @@ class AdminUpdatePage(AdminBaseHandler):
 		page.put()
 
 		return self.redirect('/admin/page/{0}'.format(unicode(page_id)))
+
+class AdminPageDelete(AdminBaseHandler):
+	def post(self, page_id):
+		ndb.Key(Page, page_id).delete()
+		return self.redirect('/admin')
 
 class AdminViewLocale(AdminBaseHandler):
 	def get(self, locale_id):

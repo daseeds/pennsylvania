@@ -8,7 +8,7 @@ class Menu(ndb.Model):
 	pass
 
 class Locale(ndb.Model):
-	pass
+	name = ndb.StringProperty()
 
 
 class Page(ndb.Model):

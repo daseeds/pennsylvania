@@ -35,27 +35,44 @@ class BaseHandler(webapp2.RequestHandler):
 		# Log the error.
 		logging.exception(exception)
 		# Set a custom message.
-		response.write("An error occurred.")
+		self.response.write("An error occurred.")
 		# If the exception is a HTTPException, use its error code.
 		# Otherwise use a generic 500 error code.
 		if isinstance(exception, webapp2.HTTPException):
-			response.set_status(exception.code)
+			self.response.set_status(exception.code)
 		else:
-			response.set_status(500)
+			self.response.set_status(500)
 
 
 class MainPage(BaseHandler):
 	def get(self):
-		self.render_response('index.html')
+		page = Page.query(Page.locale==ndb.Key(Locale, "en"), Page.menu==ndb.Key(Menu, "the-manor")).fetch()
+		self.redirect('/{0}/{1}'.format("en", page[0].key.id()))
 
 class LaTour(webapp2.RequestHandler):
 	def get(self):
 		self.render_response('latour.html')
 
 class ModelViewer(BaseHandler):
-    def get(self, locale_id, page_id):
-        logging.info("locale: %s page: %s", locale_id, page_id)
-        self.render_response('index.html')
+	def get(self, locale_id, page_id):
+
+		menus = Menu.query().fetch()
+		page = Page.get_by_id(page_id)
+
+		pages = Page.query(Page.locale==ndb.Key(Locale, locale_id)).fetch()
+		locales = Locale.query().fetch()
+
+
+		logging.info("locale: %s page: %s", locale_id, page_id)
+		template_values = {
+			'page': page,
+			'locale_id': locale_id,
+			'menus': menus,
+			'pages': pages,
+			'locales': locales,
+		}	
+		return self.render_response('page.html', **template_values)
+
 
 
 application = webapp2.WSGIApplication([
@@ -65,6 +82,7 @@ application = webapp2.WSGIApplication([
 	webapp2.Route(r'/admin/page/new', AdminNewPage),
 	webapp2.Route(r'/admin/page/<page_id:([^/]+)?>', AdminViewPage),
     webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/update', AdminUpdatePage),
+    webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/delete', AdminPageDelete),
     webapp2.Route(r'/admin/<locale_id:([^/]+)?>', AdminViewLocale),
     webapp2.Route(r'/', MainPage),
 	webapp2.Route(r'/latour', LaTour),
