@@ -5,7 +5,7 @@ import webapp2
 
 from webapp2_extras.routes import RedirectRoute
 from webapp2_extras import jinja2
-
+from functools import wraps
 from models import Locale, Page, Menu
 
 from google.appengine.api import images
@@ -23,12 +23,22 @@ def jinja2_factory(app):
         })
 	return j
 
+def admin_protect(f):
+    @wraps(f)
+    def decorated_function(self, *args, **kwargs):
+        user = users.get_current_user()
+        if not user or not users.is_current_user_admin():
+            return self.redirect(users.create_login_url(self.request.uri))
+        return f(self, *args, **kwargs)
+    return decorated_function
+
 class AdminBaseHandler(webapp2.RequestHandler):
 	@webapp2.cached_property
 	def jinja2(self):
 	# Returns a Jinja2 renderer cached in the app registry.
 		return jinja2.get_jinja2(factory=jinja2_factory)
 
+	@admin_protect
 	def render_response(self, _template, **context):
 		# Renders a template and writes the result to the response.
 		rv = self.jinja2.render_template(_template, **context)
