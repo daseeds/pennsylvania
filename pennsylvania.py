@@ -31,17 +31,17 @@ class BaseHandler(webapp2.RequestHandler):
 		# Renders a template and writes the result to the response.
 		rv = self.jinja2.render_template(_template, **context)
 		self.response.write(rv)
-	def handle_exception(self, exception, debug):
-		# Log the error.
-		logging.exception(exception)
-		# Set a custom message.
-		self.response.write("An error occurred.")
-		# If the exception is a HTTPException, use its error code.
-		# Otherwise use a generic 500 error code.
-		if isinstance(exception, webapp2.HTTPException):
-			self.response.set_status(exception.code)
-		else:
-			self.response.set_status(500)
+	# def handle_exception(self, exception, debug):
+	# 	# Log the error.
+	# 	logging.exception(exception)
+	# 	# Set a custom message.
+	# 	self.response.write("An error occurred.")
+	# 	# If the exception is a HTTPException, use its error code.
+	# 	# Otherwise use a generic 500 error code.
+	# 	if isinstance(exception, webapp2.HTTPException):
+	# 		self.response.set_status(exception.code)
+	# 	else:
+	# 		self.response.set_status(500)
 
 
 class MainPage(BaseHandler):
@@ -62,6 +62,12 @@ class ModelViewer(BaseHandler):
 		pages = Page.query(Page.locale==ndb.Key(Locale, locale_id)).fetch()
 		locales = Locale.query().fetch()
 
+		# enriched locales with each localized page id for smooth transfert
+		for locale in locales:
+			this_locale = ndb.Key(Locale, locale.key.id())
+			this_menu = ndb.Key(Menu, page.menu.id())
+			localized_page = Page.query(Page.locale==this_locale, Page.menu==this_menu).fetch()
+			locale.page = localized_page[0]
 
 		logging.info("locale: %s page: %s", locale_id, page_id)
 		template_values = {

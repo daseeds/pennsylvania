@@ -38,7 +38,7 @@
               <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 {% for locale in locales %}
-                <li><a href="/{{locale.key.id()}}/{{page.key.id()}}">{{locale.name}}</a></li>
+                <li><a href="/{{locale.key.id()}}/{{locale.page.key.id()}}">{{locale.name}}</a></li>
                 {% endfor %}
               </ul>
             </li>
