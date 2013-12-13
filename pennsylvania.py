@@ -79,6 +79,11 @@ class ModelViewer(BaseHandler):
 		}	
 		return self.render_response('page.html', **template_values)
 
+class LocaleViewer(BaseHandler):
+	def get(self, locale_id):
+		page = Page.query(Page.locale==ndb.Key(Locale, locale_id), Page.menu==ndb.Key(Menu, "the-manor")).fetch()
+		self.redirect('/{0}/{1}'.format(locale_id, page[0].key.id()))
+		
 
 
 application = webapp2.WSGIApplication([
@@ -93,5 +98,6 @@ application = webapp2.WSGIApplication([
     webapp2.Route(r'/', MainPage),
 	webapp2.Route(r'/latour', LaTour),
     webapp2.Route(r'/<locale_id:([^/]+)?>/<page_id:([^/]+)?>', ModelViewer),
+    webapp2.Route(r'/<locale_id:([^/]+)?>', LocaleViewer),
 
 	], debug=True)
