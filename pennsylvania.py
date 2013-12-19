@@ -6,7 +6,7 @@ import webapp2
 from webapp2_extras.routes import RedirectRoute
 from webapp2_extras import jinja2
 
-from models import Locale, Page
+from models import Locale, Page, Menu, SubMenu
 from admin import *
 
 
@@ -49,9 +49,10 @@ class MainPage(BaseHandler):
 		page = Page.query(Page.locale==ndb.Key(Locale, "en"), Page.menu==ndb.Key(Menu, "the-manor")).fetch()
 		self.redirect('/{0}/{1}'.format("en", page[0].key.id()))
 
-class LaTour(webapp2.RequestHandler):
-	def get(self):
-		self.render_response('latour.html')
+class LocaleViewer(BaseHandler):
+	def get(self, locale_id):
+		page = Page.query(Page.locale==ndb.Key(Locale, locale_id), Page.menu==ndb.Key(Menu, "the-manor")).fetch()
+		self.redirect('/{0}/{1}'.format(locale_id, page[0].key.id()))
 
 class ModelViewer(BaseHandler):
 	def get(self, locale_id, page_id):
@@ -79,24 +80,18 @@ class ModelViewer(BaseHandler):
 		}	
 		return self.render_response('page.html', **template_values)
 
-class LocaleViewer(BaseHandler):
-	def get(self, locale_id):
-		page = Page.query(Page.locale==ndb.Key(Locale, locale_id), Page.menu==ndb.Key(Menu, "the-manor")).fetch()
-		self.redirect('/{0}/{1}'.format(locale_id, page[0].key.id()))
-		
-
 
 application = webapp2.WSGIApplication([
     webapp2.Route(r'/admin', AdminMain),
     webapp2.Route(r'/admin/locale/new', AdminNewLocale),
 	webapp2.Route(r'/admin/menu/new', AdminNewMenu),
+	webapp2.Route(r'/admin/submenu/new', AdminNewSubMenu),
 	webapp2.Route(r'/admin/page/new', AdminNewPage),
 	webapp2.Route(r'/admin/page/<page_id:([^/]+)?>', AdminViewPage),
     webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/update', AdminUpdatePage),
     webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/delete', AdminPageDelete),
     webapp2.Route(r'/admin/<locale_id:([^/]+)?>', AdminViewLocale),
     webapp2.Route(r'/', MainPage),
-	webapp2.Route(r'/latour', LaTour),
     webapp2.Route(r'/<locale_id:([^/]+)?>/<page_id:([^/]+)?>', ModelViewer),
     webapp2.Route(r'/<locale_id:([^/]+)?>', LocaleViewer),
 

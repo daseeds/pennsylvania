@@ -4,12 +4,16 @@ from google.appengine.ext import ndb
 NORMAL = 1
 DROPDOWN = 2
 
+class SubMenu(ndb.Model):
+	order = ndb.IntegerProperty()	
+
 class Menu(ndb.Model):
-	pass
+	order = ndb.IntegerProperty()
+	parent = ndb.KeyProperty(kind='Menu', repeated=True)
+	submenus = ndb.StructuredProperty(SubMenu, repeated=True)
 
 class Locale(ndb.Model):
 	name = ndb.StringProperty()
-
 
 class Page(ndb.Model):
 	locale = ndb.KeyProperty(Locale, required=True)

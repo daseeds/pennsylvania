@@ -6,7 +6,7 @@ import webapp2
 from webapp2_extras.routes import RedirectRoute
 from webapp2_extras import jinja2
 from functools import wraps
-from models import Locale, Page, Menu
+from models import Locale, Page, Menu, SubMenu
 
 from google.appengine.api import images
 from google.appengine.api import users
@@ -64,6 +64,12 @@ class AdminMain(AdminBaseHandler):
 		menu_query = Menu.query()
 		menus = menu_query.fetch()
 
+		menu_list = []
+		for menu in menus:
+			menu_list.append(menu.key.id())
+
+		submenus = SubMenu.query().fetch()
+
 		pages = Page.query().fetch()
 
 		template_values = {
@@ -73,6 +79,8 @@ class AdminMain(AdminBaseHandler):
 			'locales': locales,
 			'menus': menus,
 			'pages': pages,
+			'submenus': submenus,
+			'menu_list': menu_list,
 		}	
 		return self.render_response('admin_view_locales.html', **template_values)
 
@@ -89,6 +97,14 @@ class AdminNewMenu(AdminBaseHandler):
 		menu.put()
 		return self.redirect('/admin')
 
+class AdminNewSubMenu(AdminBaseHandler):
+	def post(self):
+		submenu = SubMenu(id=self.request.get('submenu_id'))
+		submenu.put()
+		menu = ndb.Key('Menu', self.request.get('menu_id')).get()
+		menu.submenus.append(submenu)
+		menu.put()
+		return self.redirect('/admin')
 
 class AdminNewPage(AdminBaseHandler):
 	def get(self):
