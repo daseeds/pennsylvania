@@ -58,6 +58,12 @@ class ModelViewer(BaseHandler):
 	def get(self, locale_id, page_id):
 
 		menus = Menu.query().fetch()
+		for menu in menus:
+			localized_page = Page.query(Page.locale==ndb.Key(Locale, locale_id), Page.menu==ndb.Key(Menu, menu.key.id())).fetch()
+			logging.info("adding %s", localized_page)
+			menu.page = localized_page[0]
+
+
 		page = Page.get_by_id(page_id)
 
 		pages = Page.query(Page.locale==ndb.Key(Locale, locale_id)).fetch()

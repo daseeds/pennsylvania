@@ -25,7 +25,9 @@
 					{% if menu.submenus %}
 					<div class="panel-body">
 						<div class="list-group">
-							
+							{% for submenu in submenus %}
+							<a href="/admin/{{ submenu.key.id() }}"  class="list-group-item">{{ submenu.key.id() }}</a>
+							{% endfor %}
 						</div>
 					</div>
 					{% endif %}

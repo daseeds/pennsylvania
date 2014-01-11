@@ -10,7 +10,7 @@ class SubMenu(ndb.Model):
 class Menu(ndb.Model):
 	order = ndb.IntegerProperty()
 	parent = ndb.KeyProperty(kind='Menu', repeated=True)
-	submenus = ndb.StructuredProperty(SubMenu, repeated=True)
+	submenus = ndb.KeyProperty(SubMenu, repeated=True)
 
 class Locale(ndb.Model):
 	name = ndb.StringProperty()
