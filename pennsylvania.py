@@ -103,15 +103,17 @@ class MailSender(BaseHandler):
 		if not mail.is_email_valid(self.request.get('email')):
 			return self.redirect('/{0}/{1}#myModal'.format(locale_id, page_id))
 
-		mail.send_mail(sender="manoirjuganville <manoirjuganville@gmail.com>",
-              to="manoirjuganville <cyril.jean@gmail.com>",
+		mail.send_mail(sender="Manoir De Juganville <manoirjuganville@gmail.com>",
+              to="Manoir De Juganville <cyril.jean@gmail.com>",
               subject="Booking from juganville.com",
               cc=self.request.get('email'),
               body="""
-                locale: {0}
-                page: {1}
-				Book message
-				""".format(locale_id, page_id))
+mail from: {4}
+{3}
+
+locale: {0}
+page: {1}
+				""".format(locale_id, page_id, self.request.get('message'), self.request.get('email')))
 		self.redirect('/{0}/{1}'.format(locale_id, page_id))
 
 class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):

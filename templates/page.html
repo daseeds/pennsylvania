@@ -6,6 +6,7 @@
   <p class="lead">{{page.lead}}</p>
   
   <p><button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#myModal">Book</button></p>
+  <div class="alert alert-warning">{{page.content|safe}}</div>
 </div>
 {% endif %}
 {% if page.pagination == "right" %}
