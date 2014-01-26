@@ -108,8 +108,8 @@ class MailSender(BaseHandler):
               subject="Booking from juganville.com",
               cc=self.request.get('email'),
               body="""
-mail from: {4}
-{3}
+mail from: {3}
+{2}
 
 locale: {0}
 page: {1}
