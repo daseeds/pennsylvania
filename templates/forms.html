@@ -27,3 +27,24 @@
 	</div>
 </div>
 {% endmacro %}
+
+{% macro textarea(label, name, value='') %}
+<div class="form-group">
+	<label class="col-sm-2 control-label">{{ label }}</label>
+	<div class="col-sm-10">
+		<textarea class="form-control" rows="3" name="{{ name }}">{{ value|e }}</textarea> 
+	</div>
+</div>
+{% endmacro %}
+
+{% macro textarea_ckeditor(label, name, value='') %}
+<div class="form-group">
+	<label class="col-sm-2 control-label" for="exampleInputPassword2">content</label>
+	<div class="col-sm-10">
+		<textarea id="editor" class="form-control" rows="5" name="{{ name }}">{{ value|e }}</textarea> 
+		<script>
+		CKEDITOR.replace( 'editor' );
+		</script>
+	</div>
+</div>	
+{% endmacro %}

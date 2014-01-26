@@ -1,9 +1,30 @@
 {% extends "base.html" %}
 {% block content %}
+{% if page.pagination == "jumbo" %}
 <div class="jumbotron">
-  <h1>XVI Century Manor</h1>
-  <p class="lead">Looking for holiday accomodation in Normandy ? Our XVI century Manor House is an excellent base from which to explore the attractions of the area. It’s within easy–driving distance of Sainte Mère Eglise, the D.Day Landing Beaches, Bayeux and Le Mont St Michel.</p>
+  <h1>{{page.title}}</h1>
+  <p class="lead">{{page.lead}}</p>
   
   <p><a class="btn btn-lg btn-success" href="#">Book</a></p>
 </div>
+{% endif %}
+{% if page.pagination == "right" %}
+<div class="row">
+	<div class="col-md-4 pull-right">
+
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<h2>{{page.title}}</h2>
+				<p class="lead">{{page.lead}}</p>
+				{{page.content|safe}}
+
+				<h1> {{page.room_price}} € <a class="btn btn-lg btn-success" href="#">Book</a></h1>
+				<p>{{page.room_price_detail}}</p>
+
+			</div>
+		</div>
+
+	</div>
+</div>
+{% endif %}
 {% endblock content %}

@@ -4,6 +4,8 @@ from google.appengine.ext import ndb
 NORMAL = 1
 DROPDOWN = 2
 
+pagination_choice = ["jumbo", "right", "left"]
+
 # class SubMenu(ndb.Model):
 # 	order = ndb.IntegerProperty()	
 
@@ -18,11 +20,14 @@ class Locale(ndb.Model):
 class Page(ndb.Model):
 	locale = ndb.KeyProperty(Locale, required=True)
 	name = ndb.StringProperty(required=True)
+	title = ndb.StringProperty()
 	lead = ndb.StringProperty()
 	menu = ndb.KeyProperty(Menu, required=True)
 	content = ndb.TextProperty()
+	room_price = ndb.IntegerProperty(default=0)
+	room_price_detail = ndb.StringProperty(default="per room per night, for 2 person")
 	backgrounds = ndb.BlobKeyProperty(repeated=True)
-
+	pagination = ndb.StringProperty(default="jumbo", choices=pagination_choice)
 
 
 # test = Locale(

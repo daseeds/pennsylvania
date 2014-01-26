@@ -6,7 +6,7 @@ import webapp2
 from webapp2_extras.routes import RedirectRoute
 from webapp2_extras import jinja2
 from functools import wraps
-from models import Locale, Page, Menu
+from models import Locale, Page, Menu, pagination_choice
 
 from google.appengine.api import images
 from google.appengine.api import users
@@ -81,7 +81,6 @@ class AdminMain(AdminBaseHandler):
 			'locales': locales,
 			'menus': menus,
 			'pages': pages,
-			# 'submenus': submenus,
 			'menu_list': menu_list,
 		}	
 		return self.render_response('admin_view_locales.html', **template_values)
@@ -128,6 +127,7 @@ class AdminNewPage(AdminBaseHandler):
 			'menu_list': menu_list,
 			'action': '/admin/page/new',
 			'action_label': 'New',
+			'pagination_choice': pagination_choice,
 		}	
 		return self.render_response('admin_page_new.html', **template_values)
 
@@ -139,7 +139,8 @@ class AdminNewPage(AdminBaseHandler):
 		page = Page(id=self.request.get('page_id'), 
 					name = self.request.get('name'),
 					locale = ndb.Key(Locale, self.request.get('locale_id')),
-					menu = ndb.Key(Menu, self.request.get('menu_id')))
+					menu = ndb.Key(Menu, self.request.get('menu_id')),
+					pagination = self.request.get('pagination'))
 		page.put()
 		return self.redirect('/admin')
 
@@ -150,6 +151,12 @@ class AdminUpdatePage(AdminBaseHandler):
 		page.id = self.request.get('page_id')
 		page.menu = ndb.Key(Menu, self.request.get('menu_id'))
 		page.locale = ndb.Key(Locale, self.request.get('locale_id'))
+		page.pagination = self.request.get('pagination')
+		page.title = self.request.get('title')
+		page.lead = self.request.get('lead')
+		page.content = self.request.get('content')
+		page.room_price = int(self.request.get('room_price'))
+		page.room_price_detail = self.request.get('room_price_detail')
 		page.put()
 
 		return self.redirect('/admin/page/{0}'.format(unicode(page_id)))
@@ -206,6 +213,7 @@ class AdminViewPage(AdminBaseHandler):
 			'action': '/admin/page/{0}/update'.format(page_id),
 			'action_label': 'Update',
 			'upload_url': blobstore.create_upload_url('/upload'),
+			'pagination_choice': pagination_choice,
 		}	
 		return self.render_response('admin_page_new.html', **template_values)
 
