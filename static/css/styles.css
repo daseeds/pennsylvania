@@ -4,6 +4,10 @@ body {
   color: #FFFFFF;
 }
 
+body.modal-open {
+  color: #333;
+}
+
 a.navbar-brand {
 	font-size: 25px;
 

@@ -10,6 +10,7 @@ from models import Locale, Page, Menu
 from admin import *
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
+from google.appengine.api import mail
 
 def jinja2_factory(app):
 	j = jinja2.Jinja2(app)
@@ -61,7 +62,6 @@ class ModelViewer(BaseHandler):
 		menus = Menu.query().order(Menu.order).fetch()
 		for menu in menus:
 			localized_page = Page.query(Page.locale==ndb.Key(Locale, locale_id), Page.menu==ndb.Key(Menu, menu.key.id())).fetch()
-			logging.info("adding %s", localized_page)
 			menu.page = localized_page[0]
 			if (menu.submenus):
 				menu.submenus_enhanced = []
@@ -82,9 +82,13 @@ class ModelViewer(BaseHandler):
 			this_locale = ndb.Key(Locale, locale.key.id())
 			this_menu = ndb.Key(Menu, page.menu.id())
 			localized_page = Page.query(Page.locale==this_locale, Page.menu==this_menu).fetch()
-			locale.page = localized_page[0]
+			if len(localized_page):
+				locale.page = localized_page[0]
+			else: #else default to english
+				this_locale = ndb.Key(Locale, "en")
+				localized_page = Page.query(Page.locale==this_locale, Page.menu==this_menu).fetch()
+				locale.page = localized_page[0]
 
-		logging.info("locale: %s page: %s", locale_id, page_id)
 		template_values = {
 			'page': page,
 			'locale_id': locale_id,
@@ -93,6 +97,22 @@ class ModelViewer(BaseHandler):
 			'locales': locales,
 		}	
 		return self.render_response('page.html', **template_values)
+
+class MailSender(BaseHandler):
+	def post(self, locale_id, page_id):
+		if not mail.is_email_valid(self.request.get('email')):
+			return self.redirect('/{0}/{1}#myModal'.format(locale_id, page_id))
+
+		mail.send_mail(sender="manoirjuganville <manoirjuganville@gmail.com>",
+              to="manoirjuganville <cyril.jean@gmail.com>",
+              subject="Booking from juganville.com",
+              cc=self.request.get('email'),
+              body="""
+                locale: {0}
+                page: {1}
+				Book message
+				""".format(locale_id, page_id))
+		self.redirect('/{0}/{1}'.format(locale_id, page_id))
 
 class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
 	def get(self, resource):
@@ -123,5 +143,6 @@ application = webapp2.WSGIApplication([
     webapp2.Route(r'/', MainPage),
     webapp2.Route(r'/<locale_id:([^/]+)?>/<page_id:([^/]+)?>', ModelViewer),
     webapp2.Route(r'/<locale_id:([^/]+)?>', LocaleViewer),
+	webapp2.Route(r'/<locale_id:([^/]+)?>/<page_id:([^/]+)?>/email', MailSender),
 
 	], debug=True)
