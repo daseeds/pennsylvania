@@ -4,8 +4,8 @@
 		<div class="list-group">
 			{% for page in pages %}
 			<a href="/admin/page/{{ page.key.id() }}"  class="list-group-item">
-				<span class="badge">{{page.locale.id()}}</span>
-				<span class="badge">{{page.menu.id()}}</span>
+				<span class="label label-primary">{{page.menu.id()}}</span>
+				<span class="label label-info">{{page.locale.id()}}</span>
 				{{ page.key.id() }}
 			</a>
 			{% endfor %}

@@ -17,13 +17,19 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{menu.page.name}} <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                {% for submenu in menu.submenus %}
-                <li><a href="/{{locale_id}}/{{menu.page.key.id()}}">{{ submenu.id() }}</a></li>
+                {% for submenu in menu.submenus_enhanced %}
+                <li><a href="/{{locale_id}}/{{submenu.id}}">{{ submenu.name }}</a></li>
                 {% endfor %}
               </ul>
             </li>
             {% else %}
-            <li {% if page.menu.id()==menu.key.id()%}class="active"{% endif %}><a href="/{{locale_id}}/{{menu.page.key.id()}}">{{menu.page.name}} </a></li>
+              {% if not menu.parent %}
+                <li {% if page.menu.id()==menu.key.id()%} class="active" {% endif %}>
+                  <a href="/{{locale_id}}/{{menu.page.key.id()}}">
+                    {{menu.page.name}} 
+                  </a>
+                </li>
+              {% endif %}
             {% endif %}
             {% endfor %}
 <!--             <li class="active"><a href="index.html">The Manor </a></li>

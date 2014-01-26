@@ -6,11 +6,13 @@ import webapp2
 from webapp2_extras.routes import RedirectRoute
 from webapp2_extras import jinja2
 from functools import wraps
-from models import Locale, Page, Menu, SubMenu
+from models import Locale, Page, Menu
 
 from google.appengine.api import images
 from google.appengine.api import users
 from google.appengine.ext import ndb
+from google.appengine.ext import blobstore
+from google.appengine.ext.webapp import blobstore_handlers
 
 def jinja2_factory(app):
 	j = jinja2.Jinja2(app)
@@ -68,7 +70,7 @@ class AdminMain(AdminBaseHandler):
 		for menu in menus:
 			menu_list.append(menu.key.id())
 
-		submenus = SubMenu.query().fetch()
+		# submenus = SubMenu.query().fetch()
 
 		pages = Page.query().fetch()
 
@@ -79,7 +81,7 @@ class AdminMain(AdminBaseHandler):
 			'locales': locales,
 			'menus': menus,
 			'pages': pages,
-			'submenus': submenus,
+			# 'submenus': submenus,
 			'menu_list': menu_list,
 		}	
 		return self.render_response('admin_view_locales.html', **template_values)
@@ -94,15 +96,18 @@ class AdminNewLocale(AdminBaseHandler):
 class AdminNewMenu(AdminBaseHandler):
 	def post(self):
 		menu = Menu(id=self.request.get('menu_id'))
+		menu.order = 1
 		menu.put()
 		return self.redirect('/admin')
 
 class AdminNewSubMenu(AdminBaseHandler):
 	def post(self):
-		submenu = SubMenu(id=self.request.get('submenu_id'))
+		submenu = Menu(id=self.request.get('submenu_id'))
+		submenu.order = 1
+		submenu.parent = ndb.Key('Menu', self.request.get('menu_id'))
 		submenu.put()
 		menu = ndb.Key('Menu', self.request.get('menu_id')).get()
-		menu.submenus.append(ndb.Key(SubMenu, self.request.get('submenu_id')))
+		menu.submenus.append(ndb.Key(Menu, self.request.get('submenu_id')))
 		menu.put()
 		return self.redirect('/admin')
 
@@ -154,6 +159,14 @@ class AdminPageDelete(AdminBaseHandler):
 		ndb.Key(Page, page_id).delete()
 		return self.redirect('/admin')
 
+class AdminPageDeleteBackground(AdminBaseHandler):
+	def get(self, page_id, blobstore_key):
+		page = Page.get_by_id(page_id)
+		page.backgrounds.remove(blobstore_key)
+		page.put()
+		return self.redirect('/admin/page/{0}'.format(page_id))
+
+
 class AdminViewLocale(AdminBaseHandler):
 	def get(self, locale_id):
 
@@ -192,7 +205,23 @@ class AdminViewPage(AdminBaseHandler):
 			'menu_list': menu_list,
 			'action': '/admin/page/{0}/update'.format(page_id),
 			'action_label': 'Update',
+			'upload_url': blobstore.create_upload_url('/upload'),
 		}	
 		return self.render_response('admin_page_new.html', **template_values)
+
+
+
+class AdminUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
+	@admin_protect
+	def post(self):
+
+		page = Page.get_by_id(self.request.get('page_id'))
+
+		upload_files = self.get_uploads('picture')
+		blob_info = upload_files[0]
+		page.backgrounds.append(blob_info.key())
+		page.put()
+
+		self.redirect('/admin/page/{0}'.format(self.request.get('page_id')))
 
 

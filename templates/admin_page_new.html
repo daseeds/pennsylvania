@@ -24,19 +24,44 @@
 					{{ forms.input('Menu name (in current locale)', 'name', page.name) }}
 					{{ forms.select('Select locale', 'locale_id', locale_list, page.locale.id()) }}
 					{{ forms.select('Select menu', 'menu_id', menu_list, page.menu.id()) }}
+
 					{% else %}
 					{{ forms.input('unique id and url', 'page_id') }}
 					{{ forms.input('Menu name (in current locale)', 'name') }}
 					{{ forms.select('Select locale', 'locale_id', locale_list, ) }}
 					{{ forms.select('Select menu', 'menu_id', menu_list) }}
 					{% endif %}
+
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">
-							<button type="submit" class="btn btn-default">{{action_label}}</button>
+							<button type="submit" class="btn btn-primary ">{{action_label}}</button>
 						</div>
 					</div>
 
 				</form>
+				{% if page %}
+				<form class="form-horizontal" role="form"  action="{{upload_url}}" enctype="multipart/form-data" method="post">
+					<input type="hidden" name="page_id" value="{{page.key.id()}}"/>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Background images</label>
+						{% for background in page.backgrounds %}
+						<div class="col-sm-2">
+							<img src="/serve/{{background}}"  class="img-responsive img-thumbnail">
+							<a href="/admin/page/{{ page.key.id() }}/{{background}}/delete" class="btn btn-danger" name="delete">Delete</a>
+							<!-- <input type="button" class="btn btn-danger" name="delete" value="Delete"/> -->
+						</div>
+
+						{% endfor %}
+						<div class="col-sm-10">
+							<input type="file" class="btn btn-primary" name="picture"/>
+						</div>
+						<div class="col-sm-offset-2 col-sm-10">
+
+							<button type="submit" class="btn btn-primary ">Add new image</button>
+						</div>
+					</div>
+				</form>
+				{% endif %}
 			</div>
 		</div>
 {% endblock content %}

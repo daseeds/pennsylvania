@@ -6,9 +6,10 @@ import webapp2
 from webapp2_extras.routes import RedirectRoute
 from webapp2_extras import jinja2
 
-from models import Locale, Page, Menu, SubMenu
+from models import Locale, Page, Menu
 from admin import *
-
+from google.appengine.ext import blobstore
+from google.appengine.ext.webapp import blobstore_handlers
 
 def jinja2_factory(app):
 	j = jinja2.Jinja2(app)
@@ -57,12 +58,19 @@ class LocaleViewer(BaseHandler):
 class ModelViewer(BaseHandler):
 	def get(self, locale_id, page_id):
 
-		menus = Menu.query().fetch()
+		menus = Menu.query().order(Menu.order).fetch()
 		for menu in menus:
 			localized_page = Page.query(Page.locale==ndb.Key(Locale, locale_id), Page.menu==ndb.Key(Menu, menu.key.id())).fetch()
 			logging.info("adding %s", localized_page)
 			menu.page = localized_page[0]
-
+			if (menu.submenus):
+				menu.submenus_enhanced = []
+				for submenu in menu.submenus:
+					localized_page = Page.query(Page.locale==ndb.Key(Locale, locale_id), Page.menu==submenu).fetch()
+					my_dict = dict()
+					my_dict['id'] =  localized_page[0].key.id()
+					my_dict['name'] =  localized_page[0].name
+					menu.submenus_enhanced.append(my_dict)
 
 		page = Page.get_by_id(page_id)
 
@@ -86,8 +94,21 @@ class ModelViewer(BaseHandler):
 		}	
 		return self.render_response('page.html', **template_values)
 
+class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
+	def get(self, resource):
+		try:
+			logging.info("ServeHandler resource: %s", resource)
+			resource = str(urllib.unquote(resource))
+			blob_info = blobstore.BlobInfo.get(resource)
+			self.response.headers['Cache-Control'] = 'public,max-age=86400'
+			self.response.headers['Pragma'] = 'Public'
+			self.send_blob(blob_info)
+		except (ValueError, TypeError):
+			self.response.out.write("bug")
+
 
 application = webapp2.WSGIApplication([
+	webapp2.Route(r'/serve/<:([^/]+)?>', ServeHandler, name='ServeHandler'),
     webapp2.Route(r'/admin', AdminMain),
     webapp2.Route(r'/admin/locale/new', AdminNewLocale),
 	webapp2.Route(r'/admin/menu/new', AdminNewMenu),
@@ -96,7 +117,9 @@ application = webapp2.WSGIApplication([
 	webapp2.Route(r'/admin/page/<page_id:([^/]+)?>', AdminViewPage),
     webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/update', AdminUpdatePage),
     webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/delete', AdminPageDelete),
+    webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/<blobstore_key:([^/]+)?>/delete', AdminPageDeleteBackground),
     webapp2.Route(r'/admin/<locale_id:([^/]+)?>', AdminViewLocale),
+	webapp2.Route(r'/upload', AdminUploadHandler),
     webapp2.Route(r'/', MainPage),
     webapp2.Route(r'/<locale_id:([^/]+)?>/<page_id:([^/]+)?>', ModelViewer),
     webapp2.Route(r'/<locale_id:([^/]+)?>', LocaleViewer),

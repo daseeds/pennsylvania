@@ -47,6 +47,16 @@
     <script src="/static/js/libs/jquery-1.9.1.js"></script>
     <script src="/static/js/libs/jquery.backstretch.min.js"></script>
     <script src="/static/js/libs/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/static/js/app.js"></script>
+    <!--<script src="/static/js/app.js"></script>-->
+    <script>
+      $('body').backstretch([
+        {% set i = 0 %}
+        {% for background in page.backgrounds %}
+          {% if i > 0 %},{% endif %}
+          "/serve/{{background}}"
+          {% set i = i + 1 %}
+        {% endfor %}
+        ]);
+    </script>
   </body>
   </html>
