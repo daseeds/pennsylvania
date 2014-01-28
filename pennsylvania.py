@@ -98,7 +98,6 @@ class ModelViewer(BaseHandler):
 			'locales': locales,
 		}	
 		return self.render_response('page.html', **template_values)
-
 	def get_menus(self):
 		menus = memcache.get('menus')
 		if menus is None:
@@ -122,7 +121,7 @@ class ModelViewer(BaseHandler):
 	
 	def get_locales(self):
 		locales = memcache.get('locales')
-		if menus is None:
+		if locales is None:
 			locales = Locale.query().fetch()
 			memcache.set(key="locales", value=locales)
 		return locales
