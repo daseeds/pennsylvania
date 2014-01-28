@@ -11,6 +11,7 @@ from admin import *
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.api import mail
+from google.appengine.api import memcache
 
 def jinja2_factory(app):
 	j = jinja2.Jinja2(app)
@@ -59,7 +60,7 @@ class LocaleViewer(BaseHandler):
 class ModelViewer(BaseHandler):
 	def get(self, locale_id, page_id):
 
-		menus = Menu.query().order(Menu.order).fetch()
+		menus = self.get_menus()
 		for menu in menus:
 			localized_page = Page.query(Page.locale==ndb.Key(Locale, locale_id), Page.menu==ndb.Key(Menu, menu.key.id())).fetch()
 			menu.page = localized_page[0]
@@ -72,10 +73,10 @@ class ModelViewer(BaseHandler):
 					my_dict['name'] =  localized_page[0].name
 					menu.submenus_enhanced.append(my_dict)
 
-		page = Page.get_by_id(page_id)
+		page = self.get_page_by_id(page_id)
 
-		pages = Page.query(Page.locale==ndb.Key(Locale, locale_id)).fetch()
-		locales = Locale.query().fetch()
+		pages = self.get_pages(locale_id)
+		locales = self.get_locales()
 
 		# enriched locales with each localized page id for smooth transfert
 		for locale in locales:
@@ -97,6 +98,34 @@ class ModelViewer(BaseHandler):
 			'locales': locales,
 		}	
 		return self.render_response('page.html', **template_values)
+
+	def get_menus(self):
+		menus = memcache.get('menus')
+		if menus is None:
+			menus = Menu.query().order(Menu.order).fetch()
+			memcache.set(key="menus", value=menus)
+		return menus
+
+	def get_pages(self, locale_id):
+		pages = memcache.get("pages {0}".format(locale_id))
+		if pages is None:
+			pages = Page.query(Page.locale==ndb.Key(Locale, locale_id)).fetch()
+			memcache.set(key="pages {0}".format(locale_id), value=pages)
+		return pages					
+		
+	def get_page_by_id(self, page_id):
+		page = memcache.get("{0}".format(page_id))
+		if page is None:
+			page = Page.get_by_id(page_id)
+			memcache.set(key="{0}".format(page_id), value=page)
+		return page				
+	
+	def get_locales(self):
+		locales = memcache.get('locales')
+		if menus is None:
+			locales = Locale.query().fetch()
+			memcache.set(key="locales", value=locales)
+		return locales
 
 class MailSender(BaseHandler):
 	def post(self, locale_id, page_id):
