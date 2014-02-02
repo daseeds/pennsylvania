@@ -13,6 +13,7 @@ from google.appengine.api import users
 from google.appengine.ext import ndb
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
+from google.appengine.api import memcache
 
 def jinja2_factory(app):
 	j = jinja2.Jinja2(app)
@@ -158,12 +159,14 @@ class AdminUpdatePage(AdminBaseHandler):
 		page.room_price = int(self.request.get('room_price'))
 		page.room_price_detail = self.request.get('room_price_detail')
 		page.put()
+		memcache.flush_all()
 
 		return self.redirect('/admin/page/{0}'.format(unicode(page_id)))
 
 class AdminPageDelete(AdminBaseHandler):
 	def post(self, page_id):
 		ndb.Key(Page, page_id).delete()
+		memcache.flush_all()
 		return self.redirect('/admin')
 
 class AdminPageDeleteBackground(AdminBaseHandler):
@@ -171,6 +174,7 @@ class AdminPageDeleteBackground(AdminBaseHandler):
 		page = Page.get_by_id(page_id)
 		page.backgrounds.remove(blobstore_key)
 		page.put()
+		memcache.flush_all()
 		return self.redirect('/admin/page/{0}'.format(page_id))
 
 
@@ -229,6 +233,7 @@ class AdminUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 		blob_info = upload_files[0]
 		page.backgrounds.append(blob_info.key())
 		page.put()
+		memcache.flush_all()
 
 		self.redirect('/admin/page/{0}'.format(self.request.get('page_id')))
 
