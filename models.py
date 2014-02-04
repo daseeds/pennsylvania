@@ -28,6 +28,8 @@ class Page(ndb.Model):
 	room_price_detail = ndb.StringProperty(default="per room per night, for 2 person")
 	backgrounds = ndb.BlobKeyProperty(repeated=True)
 	pagination = ndb.StringProperty(default="jumbo", choices=pagination_choice)
+	widget = ndb.TextProperty(default="")
+	widget_script = ndb.TextProperty(default="")
 
 
 # test = Locale(

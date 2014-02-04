@@ -158,6 +158,8 @@ class AdminUpdatePage(AdminBaseHandler):
 		page.content = self.request.get('content')
 		page.room_price = int(self.request.get('room_price'))
 		page.room_price_detail = self.request.get('room_price_detail')
+		page.widget = self.request.get('widget')
+		page.widget_script = self.request.get('widget_script')
 		page.put()
 		memcache.flush_all()
 

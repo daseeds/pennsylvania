@@ -10,3 +10,4 @@ TODO
 - detect locale based on browser config
 - have a blobstore image manager
 - detect and avoid blobstore image duplicate (hash ?)
+- add video

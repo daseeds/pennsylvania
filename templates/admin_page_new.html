@@ -6,7 +6,8 @@
 </ol>	
 {% endblock breadcrumbs %}
 {% block content %}
-
+<div class="row">
+	<div class="col-md-6">
 		<div class="panel panel-default">
 			<div class="panel-heading">New page
 				{% if page %}
@@ -28,6 +29,8 @@
 					{{ forms.input('title', 'title', page.title) }}
 					{{ forms.input('lead', 'lead', page.lead) }}
 					{{ forms.textarea_ckeditor('content', 'content', page.content|safe) }}
+					{{ forms.textarea_code('widget', 'widget', page.widget|safe, 3) }}
+					{{ forms.textarea_code('widget script (page bottom)', 'widget_script', page.widget_script|safe, 20) }}
 					{{ forms.input('room_price', 'room_price', page.room_price) }}
 					{{ forms.input('room_price_detail', 'room_price_detail', page.room_price_detail) }}
 
@@ -71,4 +74,9 @@
 				{% endif %}
 			</div>
 		</div>
+	</div>
+	<div class="col-md-6">
+			
+	</div>
+</div>
 {% endblock content %}

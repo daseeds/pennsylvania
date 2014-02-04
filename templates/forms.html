@@ -28,11 +28,11 @@
 </div>
 {% endmacro %}
 
-{% macro textarea(label, name, value='') %}
+{% macro textarea_code(label, name, value='', rows='3') %}
 <div class="form-group">
 	<label class="col-sm-2 control-label">{{ label }}</label>
 	<div class="col-sm-10">
-		<textarea class="form-control" rows="3" name="{{ name }}">{{ value|e }}</textarea> 
+		<code><textarea class="form-control" rows="{{rows}}" name="{{ name }}">{{ value|e }}</textarea> </code>
 	</div>
 </div>
 {% endmacro %}
