@@ -1,7 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+
 import os
 import urllib
 import logging
 import webapp2
+import datetime
 
 from webapp2_extras.routes import RedirectRoute
 from webapp2_extras import jinja2
@@ -12,6 +16,8 @@ from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.api import mail
 from google.appengine.api import memcache
+
+HTTP_DATE_FMT = "%a, %d %b %Y %H:%M:%S GMT"
 
 def jinja2_factory(app):
 	j = jinja2.Jinja2(app)
@@ -145,16 +151,36 @@ page: {1}
 		self.redirect('/{0}/{1}'.format(locale_id, page_id))
 
 class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
-	def get(self, resource):
+	def output(self, resource, serve):
 		try:
-			logging.info("ServeHandler resource: %s", resource)
+
+			logging.debug("ServeHandler resource: %s", resource)
 			resource = str(urllib.unquote(resource))
 			blob_info = blobstore.BlobInfo.get(resource)
-			self.response.headers['Cache-Control'] = 'public,max-age=86400'
+			self.response.headers['Cache-Control'] = 'public,max-age=31104000'
+			self.response.headers['Last-Modified'] = 'Thu, 15 Apr 2013 20:00:00 GMT'
+			self.response.headers['Expires'] = 'Thu, 15 Apr 2015 20:00:00 GMT'
 			self.response.headers['Pragma'] = 'Public'
-			self.send_blob(blob_info)
+			self.response.md5_etag()
+			if serve:
+				self.send_blob(blob_info)
+			else:
+				self.response.set_status(304)
 		except (ValueError, TypeError):
 			self.response.out.write("bug")
+	def get(self, resource):
+		serve = True
+		if 'If-Modified-Since' in self.request.headers:
+			# last_seen = datetime.datetime.strptime(self.request.headers['If-Modified-Since'], HTTP_DATE_FMT)
+			# if last_seen >= content.last_modified.replace(microsecond=0):
+			serve = False
+		if 'If-None-Match' in self.request.headers:
+			# etags = [x.strip('" ')
+			# for x in self.request.headers['If-None-Match'].split(',')]
+			# if content.etag in etags:
+			serve = False
+		self.output(resource, serve)
+
 
 
 application = webapp2.WSGIApplication([
