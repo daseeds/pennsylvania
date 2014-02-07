@@ -11,3 +11,4 @@ TODO
 - have a blobstore image manager
 - detect and avoid blobstore image duplicate (hash ?)
 - add video
+- add caroussel visualizer, image selector

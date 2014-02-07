@@ -1,7 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
+
+{% if page.pagination == "slides" %}
+
+
+
+{% endif %}
 {% if page.pagination == "jumbo_left" %}
-<div class="row">
+<!-- <div class="row">
 	<div class="col-md-4 pull-left">
 		<div class="jumbotron">
 			<h1>{{page.title}}</h1>
@@ -11,7 +17,54 @@
 			<div class="alert alert-warning">{{page.content|safe}}</div>
 		</div>
 	</div>
+</div> -->
+
+<div class="row">
+	<div class="col-lg-4 panel">
+          <h2>{{page.title}}</h2>
+          <p class="lead">{{page.lead}}</p>
+          
+          <div class="alert alert-warning">{{page.content|safe}}</div>
+          <p><a class="btn btn-primary" href="#" role="button">View rooms »</a></p>
+          <p><a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">View rooms <b class="caret"></b></a></p>
+	</div>
 </div>
+{% endif %}
+{% if page.pagination == "white" %}
+<div class="row white">
+	<div class="col-sm-8">
+		<h1>How to book accomodation :</h1>
+		<h2>Check our vacancies</h2>
+		<a target="_blank" href="http://manche-chambre.for-system.com/f34860_fr-.aspx" class="btn btn-primary btn-lg" >Online availability check</a>
+
+
+
+		<h2>Give us a call ...</h2>
+		<a href="tel:+33233950197" class="btn btn-primary btn-lg" >+33 2 33 95 01 97</a>
+
+		<h2>... or send us a mail</h2>
+		<a class="btn btn-primary btn-lg email" href="mailto:manoirjuganville@gmail.com">manoirjuganville@gmail.com</a>
+	</div>
+	<div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+		<div class="sidebar-module sidebar-module-inset">
+			<h4>Le Manoir de Juganville</h4>
+			<div class="vcard">
+
+				<p class="adr">
+					<span class="street-address">39 Les Mézières</span><br>
+					<span class="region">Saint Martin de Varreville</span></br>
+					<span class="postal-code">50480</span><br>
+					<span class="country-name">France</span><br>
+				</p>
+				<p class="tel"><a href="tel:+33233950197">+33 2 33 95 01 97</a></p>
+				<p class="tel"><a href="tel:+33631677201">+33 6 31 67 72 01</a></p>
+				<a class="email" href="mailto:manoirjuganville@gmail.com">manoirjuganville@gmail.com</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
 {% endif %}
 {% if page.pagination == "jumbo" %}
 <div class="jumbotron">

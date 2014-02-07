@@ -11,13 +11,17 @@
 
   <title>Le Manoir de Juganville</title>
 
+  <link rel="stylesheet" href="/static/css/normalize.css">
+  <link rel="stylesheet" href="/static/css/superslides.css">
+  <link rel="stylesheet" href="/static/css/layout.css">
+
   <!-- Bootstrap core CSS -->
   <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet">
   <!-- <link href="/static/js/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
 
   <!--   <link href="/static/css/minitoggle.css" rel="stylesheet">-->
-  <link href="/static/css/api.min.css" rel="stylesheet"> 
-
+  <!-- <link href="/static/css/api.min.css" rel="stylesheet"> 
+ -->
   <!-- Custom styles for this template -->
   <link href="/static/css/styles.css" rel="stylesheet">
 
@@ -30,7 +34,44 @@
 </head>
 
 <body>
-  {% include 'view_nav.html' %}
+
+{% include 'view_nav.html' %}
+  
+  <div class="logo">
+    <!-- <a href="http://juganville.com"> -->
+      <h1>Le Manoir de Juganville</h1>
+    <!-- </a> -->
+  </div>
+
+  <div class="loading-container">
+    <div class="pulse"></div>
+  </div>
+  <div id="slides">
+    <ul class="slides-container">
+      {% for background in page.backgrounds %}
+      <li>
+        <img src="/serve/{{background}}" alt="">
+         <div class="slides-text-container">
+          <h1>Welcome in our XVI century Manor</h1>
+          <p>           </p>
+         </div>
+      </li>
+      {% endfor %}
+    </ul>
+    <nav class="slides-navigation">
+      <a href="#" class="next">
+        <i class="icon-chevron-right"></i>
+      </a>
+      <a href="#" class="prev">
+        <i class="icon-chevron-left"></i>
+      </a>
+    </nav>
+  </div>
+
+  
+
+
+
 
   <div class="container">
 
@@ -49,13 +90,16 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="/static/js/libs/jquery-1.9.1.js">\x3C/script>')</script>
-    <script src="/static/js/libs/jquery.backstretch.min.js"></script>
+    <script>window.jQuery || document.write('<script src="/static/js/libs/jquery-1.9.1.js"></script>')</script>
+    <script src="/static/js/libs/jquery.easing.1.3.js"></script>
+    <script src="/static/js/libs/jquery.animate-enhanced.min.js"></script>
+    <script src="/static/js/libs/jquery.superslides.min.js" type="text/javascript" charset="utf-8"></script>
+    <!-- <script src="/static/js/libs/jquery.backstretch.min.js"></script> -->
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
     <!--<script src="/static/js/libs/bootstrap/js/bootstrap.min.js"></script>-->
 
-    <!--<script src="/static/js/app.js"></script>-->
-    <script>
+    <script src="/static/js/app.js"></script>
+    <!-- <script>
     $('body').backstretch([
       {% set i = 0 %}
       {% for background in page.backgrounds %}
@@ -64,7 +108,7 @@
       {% set i = i + 1 %}
       {% endfor %}
       ]);
-    </script>
+    </script> -->
 
     <!-- Scripts from page object
     ================================================== -->

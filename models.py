@@ -1,10 +1,12 @@
-# coding: utf-8
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+
 from google.appengine.ext import ndb
 
 NORMAL = 1
 DROPDOWN = 2
 
-pagination_choice = ["jumbo", "right", "left", "jumbo_left"]
+pagination_choice = ["jumbo", "right", "left", "jumbo_left", "white", "slides"]
 
 # class SubMenu(ndb.Model):
 # 	order = ndb.IntegerProperty()	
