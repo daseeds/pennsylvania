@@ -76,24 +76,51 @@
 </div>
 {% endif %}
 {% if page.pagination == "right" %}
-<div class="row">
-	<div class="col-md-4 pull-right">
 
-		<div class="panel panel-default">
-			<div class="panel-body">
-				<h2>{{page.title}}</h2>
-				<p class="lead">{{page.lead}}</p>
-				{{page.content|safe}}
+<div class="pane">
+	<div class="container">
+		<div class="row">
+			
 
-				{{page.widget|safe}}
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<h2>{{page.title}}</h2>
+						<p class="lead">{{page.lead}}</p>
+						{{page.content|safe}}
 
-				<!-- <h1> {{page.room_price}} € <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#myModal">Book</button></h1>
-				<p>{{page.room_price_detail}}</p> -->
-				<button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#priceDetail">Price details</button>
-				
-			</div>
+						{{page.widget|safe}}
+
+						<!-- <h1> {{page.room_price}} € <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#myModal">Book</button></h1>
+						<p>{{page.room_price_detail}}</p> -->
+						<button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#priceDetail">Price details</button>
+						
+					</div>
+				</div>
+		
 		</div>
+	</div>
+</div>
+<div class="pane">
+	<div class="container">
+		<div class="row">
+			
 
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<h2>{{page.title}}</h2>
+						<p class="lead">{{page.lead}}</p>
+						{{page.content|safe}}
+
+						{{page.widget|safe}}
+
+						<!-- <h1> {{page.room_price}} € <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#myModal">Book</button></h1>
+						<p>{{page.room_price_detail}}</p> -->
+						<button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#priceDetail">Price details</button>
+						
+					</div>
+				</div>
+		
+		</div>
 	</div>
 </div>
 <!-- Modal -->

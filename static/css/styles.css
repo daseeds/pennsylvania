@@ -5,7 +5,7 @@
 body {
 
   height: 100%;
-  color: #FFFFFF;
+ /* color: #FFFFFF;*/
 }
 
 .white {
@@ -34,14 +34,16 @@ a.navbar-brand {
   text-align: center;
 }
 
-.panel {
-  /* Fallback for web browsers that doesn't support RGBa */
+/*.panel {
+  
+
   background: rgb(0, 0, 0);
-  /* RGBa with 0.6 opacity */
+  
+
   background: rgba(0, 0, 0, 0.6); 
 
   border-color: #000;
-}
+}*/
 
 .jumbotron .btn {
   font-size: 21px;
@@ -79,7 +81,7 @@ a.navbar-brand {
   }
 
 .navbar {
-  z-index: 999999;
+  z-index: 40;
   margin-bottom: 0px;
   border-radius: 0px;
 }
@@ -87,6 +89,33 @@ a.navbar-brand {
 .navbar-brand {
   display: initial;
 }
+
+#navbar-tel-button{
+  display: initial;
+}
+
+.main-separator {
+  width: 100%;
+  height: 40px;
+  text-align: center;
+  border-bottom: 1px solid rgba(0,0,0,0.6);
+  border-top: 1px solid rgba(0,0,0,0.6);
+}
+
+.main-separator img {
+  max-height: 40px;
+}
+
+.pane:nth-of-type(2n+1) {
+  background-color: #f6f6f6;
+}
+
+.pane {
+  padding: 80px 0;
+  z-index: 5;
+  /*min-width: 1060px;*/
+}
+
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) { 
@@ -104,9 +133,9 @@ a.navbar-brand {
     border-bottom: 0;
   }
 
-.navbar-brand {
+/*.navbar-brand {
   display: none;
-}
+}*/
 
 .logo {
   display: initial;
@@ -133,6 +162,19 @@ text-transform: uppercase;
 font-style: bold;
 letter-spacing: 1px;
 }
+
+#navbar-tel-button{
+  display: none;
+}
+
+.main-separator {
+  height: 70px;
+}
+
+.main-separator img {
+  max-height: 70px;
+}
+
 
 }
 
