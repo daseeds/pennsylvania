@@ -52,12 +52,19 @@ a.navbar-brand {
 
 
 .slides-text-container {
-  position: relative;
+margin-top: 70px;
+max-width: 100%;
+width: 100%;
+position: static;
+left: 90px;
+top: 13%;
+padding: 10px 20px;
+/*  position: relative;
   text-align: center;
   width: 100%;
   padding-top: 25%;
   padding-left:5%;
-  padding-right:5%;
+  padding-right:5%;*/
 }
 
 .slides-container h1 {
@@ -69,11 +76,12 @@ a.navbar-brand {
   text-transform: uppercase;
   font-style: bold;
   letter-spacing: 1px;
+  text-shadow: 0 1px 1px #000;
 }
 
-.slides-container {
+/*.slides-container {
   text-shadow: 0 0 1px rgba(0,0,0,.05), 0 1px 2px rgba(0,0,0,.3);
-}
+}*/
 
   .logo {
     display: none;
@@ -81,7 +89,7 @@ a.navbar-brand {
   }
 
 .navbar {
-  z-index: 40;
+  z-index: 4;
   margin-bottom: 0px;
   border-radius: 0px;
 }
@@ -115,6 +123,7 @@ a.navbar-brand {
   z-index: 5;
   /*min-width: 1060px;*/
 }
+
 
 
 /* Small devices (tablets, 768px and up) */
@@ -153,14 +162,8 @@ a.navbar-brand {
 
 
   .slides-container h1 {
-font-weight: 700;
 font-size: 40px;
 line-height: 37px;
-font-family: "futura-pt", sans-serif;
-color: #ffffff;
-text-transform: uppercase;
-font-style: bold;
-letter-spacing: 1px;
 }
 
 #navbar-tel-button{
@@ -197,11 +200,18 @@ letter-spacing: 1px;
 
 .slides-text-container {
   position: relative;
+  width: 50%;
+  max-width: 500px;
+  left: 90px;
+  top: 13%;
+  padding: 10px 20px;
+
+/*  position: relative;
   text-align: right;
   width: 100%;
   padding-top: 40%;
   padding-left:5%;
-  padding-right:5%;
+  padding-right:5%;*/
 }
 
 
