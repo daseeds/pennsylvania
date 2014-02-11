@@ -59,9 +59,9 @@
     <ul class="slides-container">
       {% for background in page.backgrounds %}
       <li>
-        <img src="/serve/{{background}}" alt="">
+        <img src="/serve/{{background.get().size_max}}" alt="">
          <div class="slides-text-container">
-          <h1>{{page.lead}}</h1>
+          <h1>{{background.get().caption}}</h1>
          </div>
       </li>
       {% endfor %}

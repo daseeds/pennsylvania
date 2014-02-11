@@ -10,7 +10,7 @@ import datetime
 from webapp2_extras.routes import RedirectRoute
 from webapp2_extras import jinja2
 
-from models import Locale, Page, Menu
+from models import Locale, Page, Menu, Picture
 from admin import *
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
@@ -51,6 +51,11 @@ class BaseHandler(webapp2.RequestHandler):
 	# 		self.response.set_status(exception.code)
 	# 	else:
 	# 		self.response.set_status(500)
+	def render_error(self, message):
+		logging.exception("Error 500: {0}".format(message))
+		self.response.write("Error 500: {0}".format(message))
+		return self.response.set_status(500)		
+
 
 
 class MainPage(BaseHandler):
@@ -69,6 +74,10 @@ class ModelViewer(BaseHandler):
 		menus = self.get_menus()
 		for menu in menus:
 			localized_page = Page.query(Page.locale==ndb.Key(Locale, locale_id), Page.menu==ndb.Key(Menu, menu.key.id())).fetch()
+			if len(localized_page) == 0:
+				return self.render_error("locale \"{0}\" is not available for menu \"{1}\"".format(locale_id, menu.key.id()))
+
+
 			menu.page = localized_page[0]
 			if (menu.submenus):
 				menu.submenus_enhanced = []
@@ -81,7 +90,13 @@ class ModelViewer(BaseHandler):
 
 		page = self.get_page_by_id(page_id)
 
+		if page is None:
+			return self.render_error("\"{0}\" returned None object".format(page_id))
+
 		pages = self.get_pages(locale_id)
+		if not pages:
+			return self.render_error("Error 500: cannot build pages List")
+
 		locales = self.get_locales()
 
 		# enriched locales with each localized page id for smooth transfert
@@ -115,6 +130,8 @@ class ModelViewer(BaseHandler):
 		pages = memcache.get("pages {0}".format(locale_id))
 		if pages is None:
 			pages = Page.query(Page.locale==ndb.Key(Locale, locale_id)).fetch()
+			if not pages:
+				return None
 			memcache.set(key="pages {0}".format(locale_id), value=pages)
 		return pages					
 		

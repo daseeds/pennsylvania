@@ -9,7 +9,7 @@ import webapp2
 from webapp2_extras.routes import RedirectRoute
 from webapp2_extras import jinja2
 from functools import wraps
-from models import Locale, Page, Menu, pagination_choice
+from models import Locale, Page, Menu, pagination_choice, Picture
 
 from google.appengine.api import images
 from google.appengine.api import users
@@ -176,8 +176,9 @@ class AdminPageDelete(AdminBaseHandler):
 
 class AdminPageDeleteBackground(AdminBaseHandler):
 	def get(self, page_id, blobstore_key):
+		pic = Picture.get_by_id(blobstore_key)
 		page = Page.get_by_id(page_id)
-		page.backgrounds.remove(blobstore_key)
+		page.backgrounds.remove(pic)
 		page.put()
 		memcache.flush_all()
 		return self.redirect('/admin/page/{0}'.format(page_id))
@@ -236,7 +237,10 @@ class AdminUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 
 		upload_files = self.get_uploads('picture')
 		blob_info = upload_files[0]
-		page.backgrounds.append(blob_info.key())
+
+		pic = Picture(size_max=blob_info.key())
+		pic.put()
+		page.backgrounds.append(ndb.Key(Picture, pic.key.id()))
 		page.put()
 		memcache.flush_all()
 

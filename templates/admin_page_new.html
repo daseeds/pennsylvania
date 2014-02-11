@@ -7,7 +7,7 @@
 {% endblock breadcrumbs %}
 {% block content %}
 <div class="row">
-	<div class="col-md-6">
+	<div class="col-md-12">
 		<div class="panel panel-default">
 			<div class="panel-heading">New page
 				{% if page %}
@@ -54,14 +54,37 @@
 					<input type="hidden" name="page_id" value="{{page.key.id()}}"/>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Background images</label>
-						{% for background in page.backgrounds %}
-						<div class="col-sm-2">
-							<img src="/serve/{{background}}"  class="img-responsive img-thumbnail">
-							<a href="/admin/page/{{ page.key.id() }}/{{background}}/delete" class="btn btn-danger" name="delete">Delete</a>
+						
+						<div class="col-sm-10">
+							<h2 class="sub-header">Picture list for this page</h2>
+					          <div class="table-responsive">
+					            <table class="table table-striped">
+					              <thead>
+					                <tr>
+					                  <th>#</th>
+					                  <th>Name</th>
+					                  <th>Size</th>
+					                  <th>Preview</th>
+					                  <th>Delete</th>
+					                </tr>
+					              </thead>
+					              <tbody>
+					              	{% for background in page.backgrounds %}
+					                <tr>
+					                  <td>1</td>
+					                  <td></td>
+					                  <td></td>
+					                  <td><img width="150px" src="/serve/{{background.get().size_max}}"  class="img-responsive img-thumbnail"></td>
+					                  <td><a href="/admin/page/{{ page.key.id() }}/{{background.get().key.id()}}/delete" class="btn btn-danger" name="delete">Delete</a></td>
+					                </tr>
+					                {% endfor %}
+									</tbody>
+								</table>
+							
 							<!-- <input type="button" class="btn btn-danger" name="delete" value="Delete"/> -->
 						</div>
 
-						{% endfor %}
+						
 						<div class="col-sm-10">
 							<input type="file" class="btn btn-primary" name="picture"/>
 						</div>
