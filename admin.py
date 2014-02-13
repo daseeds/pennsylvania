@@ -176,8 +176,8 @@ class AdminPageDelete(AdminBaseHandler):
 
 class AdminPageDeleteBackground(AdminBaseHandler):
 	def get(self, page_id, blobstore_key):
-		pic = Picture.get_by_id(blobstore_key)
 		page = Page.get_by_id(page_id)
+		pic = ndb.Key(Picture, int(blobstore_key))
 		page.backgrounds.remove(pic)
 		page.put()
 		memcache.flush_all()
