@@ -87,7 +87,7 @@ class AdminMain(AdminBaseHandler):
 			'pages': pages,
 			'menu_list': menu_list,
 		}	
-		return self.render_response('admin_view_locales.html', **template_values)
+		return self.render_response('admin_main.html', **template_values)
 
 class AdminNewLocale(AdminBaseHandler):
 	def post(self):
@@ -240,8 +240,12 @@ class AdminUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 
 		pic = Picture(size_max=blob_info.key())
 		pic.put()
-		page.backgrounds.append(ndb.Key(Picture, pic.key.id()))
-		page.put()
+
+		menu = page.menu.get()
+		menu.backgrounds.append(ndb.Key(Picture, pic.key.id()))
+		menu.put()
+		#page.backgrounds.append(ndb.Key(Picture, pic.key.id()))
+		#page.put()
 		memcache.flush_all()
 
 		self.redirect('/admin/page/{0}'.format(self.request.get('page_id')))

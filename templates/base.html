@@ -57,7 +57,7 @@
   </div>
   <div id="slides">
     <ul class="slides-container">
-      {% for background in page.backgrounds %}
+      {% for background in page.menu.get().backgrounds %}
       <li>
         <img src="/serve/{{background.get().size_max}}" alt="">
          <div class="slides-text-container">

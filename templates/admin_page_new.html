@@ -56,7 +56,7 @@
 						<label class="col-sm-2 control-label">Background images</label>
 						
 						<div class="col-sm-10">
-							<h2 class="sub-header">Picture list for this page</h2>
+							<h2 class="sub-header">Picture list for this menu item</h2>
 					          <div class="table-responsive">
 					            <table class="table table-striped">
 					              <thead>
@@ -69,7 +69,7 @@
 					                </tr>
 					              </thead>
 					              <tbody>
-					              	{% for background in page.backgrounds %}
+					              	{% for background in page.menu.get().backgrounds %}
 					                <tr>
 					                  <td>1</td>
 					                  <td></td>

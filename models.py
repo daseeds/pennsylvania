@@ -15,6 +15,7 @@ class Menu(ndb.Model):
 	order = ndb.IntegerProperty()
 	parent = ndb.KeyProperty(kind='Menu')
 	submenus = ndb.KeyProperty(kind='Menu', repeated=True)
+	backgrounds = ndb.KeyProperty(kind='Picture', repeated=True)
 
 class Locale(ndb.Model):
 	name = ndb.StringProperty()
@@ -36,7 +37,6 @@ class Page(ndb.Model):
 	content = ndb.TextProperty()
 	room_price = ndb.IntegerProperty(default=0)
 	room_price_detail = ndb.StringProperty(default="per room per night, for 2 person")
-	backgrounds = ndb.KeyProperty(kind='Picture', repeated=True)
 	pagination = ndb.StringProperty(default="jumbo", choices=pagination_choice)
 	widget = ndb.TextProperty(default="")
 	widget_script = ndb.TextProperty(default="")
