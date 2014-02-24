@@ -77,74 +77,7 @@
 {% endif %}
 {% if page.pagination == "right" %}
 
-<div class="pane">
-	<div class="container">
-		<div class="row">
-			
 
-				<div class="panel panel-default">
-					<div class="panel-body">
-						<h2>{{page.title}}</h2>
-						<p class="lead">{{page.lead}}</p>
-						{{page.content|safe}}
-
-						{{page.widget|safe}}
-
-						<!-- <h1> {{page.room_price}} € <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#myModal">Book</button></h1>
-						<p>{{page.room_price_detail}}</p> -->
-						<button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#priceDetail">Price details</button>
-						
-					</div>
-				</div>
-		
-		</div>
-	</div>
-</div>
-<div class="pane">
-	<div class="container">
-		<div class="row">
-			
-
-				<div class="panel panel-default">
-					<div class="panel-body">
-						<h2>{{page.title}}</h2>
-						<p class="lead">{{page.lead}}</p>
-						{{page.content|safe}}
-
-						{{page.widget|safe}}
-
-						<!-- <h1> {{page.room_price}} € <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#myModal">Book</button></h1>
-						<p>{{page.room_price_detail}}</p> -->
-						<button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#priceDetail">Price details</button>
-						
-					</div>
-				</div>
-		
-		</div>
-	</div>
-</div>
-<!-- Modal -->
-<div class="modal fade" id="priceDetail" tabindex="-1" role="dialog" aria-labelledby="priceDetailLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Price details</h4>
-      </div>
-      <div class="modal-body">
-        blah blah
-        
-        
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
-      </div>
-    </form>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 {% endif %}
 {% if page.pagination == "left" %}
 <div class="row">
@@ -163,6 +96,33 @@
 	</div>
 </div>
 {% endif %}
+
+{% for block in page.blocks %}
+{% if block.get().pagination == "no-pic" %}
+<div class="pane">
+	<div class="container">
+		<div class="row">
+			
+
+				<!-- <div class="panel panel-default">
+					<div class="panel-body"> -->
+						<h2>{{block.get().title}}</h2>
+						<p class="lead">{{page.lead}}</p>
+						{{block.get().content|safe}}
+
+						{{block.get().widget|safe}}
+					
+			<!-- 		</div>
+				</div> -->
+		
+		</div>
+	</div>
+</div>
+{% endif %}
+
+{% endfor %}
+
+
 
 {% endblock content %}
 {% block script %}

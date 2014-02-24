@@ -9,7 +9,7 @@ import webapp2
 from webapp2_extras.routes import RedirectRoute
 from webapp2_extras import jinja2
 from functools import wraps
-from models import Locale, Page, Menu, pagination_choice, Picture
+from models import Locale, Page, Menu, pagination_choice, Picture, block_choice, Block
 
 from google.appengine.api import images
 from google.appengine.api import users
@@ -174,14 +174,49 @@ class AdminPageDelete(AdminBaseHandler):
 		memcache.flush_all()
 		return self.redirect('/admin')
 
-class AdminPageDeleteBackground(AdminBaseHandler):
-	def get(self, page_id, blobstore_key):
+class AdminPageAddBlock(AdminBaseHandler):
+	def get(self, page_id):
+		block = Block()
+		block.put()
 		page = Page.get_by_id(page_id)
-		pic = ndb.Key(Picture, int(blobstore_key))
+		#del page.blocks[0:len(page.blocks)]
+		page.blocks.append(ndb.Key(Block, block.key.id()))
+		page.put()
+		memcache.flush_all()
+		return self.redirect('/admin/page/{0}'.format(unicode(page_id)))
+
+
+class AdminBlockUpdate(AdminBaseHandler):
+	def post(self, block_id):
+
+		block = Block.get_by_id(int(block_id))
+		block.title = self.request.get('title')
+		block.content = self.request.get('content')
+		block.widget = self.request.get('widget')
+		block.widget_script = self.request.get('widget_script')
+		block.pagination = self.request.get('pagination')
+		block.put()
+		memcache.flush_all()
+
+		return self.redirect('/admin/page/{0}'.format(unicode(self.request.get('page_id'))))
+
+
+class AdminPictureDelete(AdminBaseHandler):
+	def get(self, picture_id):
+		page = Page.get_by_id(self.request.get('page_id'))
+		pic = ndb.Key(Picture, int(picture_id))
 		page.backgrounds.remove(pic)
 		page.put()
 		memcache.flush_all()
-		return self.redirect('/admin/page/{0}'.format(page_id))
+		return self.redirect('/admin/page/{0}'.format(self.request.get('page_id')))
+
+class AdminPictureUpdate(AdminBaseHandler):
+	def post(self, picture_id):
+		pic = Picture.get_by_id(int(picture_id))
+		pic.caption = self.request.get('caption')
+		pic.put()
+		memcache.flush_all()
+		return self.redirect('/admin/page/{0}'.format(self.request.get('page_id')))
 
 
 class AdminViewLocale(AdminBaseHandler):
@@ -224,6 +259,7 @@ class AdminViewPage(AdminBaseHandler):
 			'action_label': 'Update',
 			'upload_url': blobstore.create_upload_url('/upload'),
 			'pagination_choice': pagination_choice,
+			'block_choice': block_choice,
 		}	
 		return self.render_response('admin_page_new.html', **template_values)
 
@@ -241,11 +277,8 @@ class AdminUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 		pic = Picture(size_max=blob_info.key())
 		pic.put()
 
-		menu = page.menu.get()
-		menu.backgrounds.append(ndb.Key(Picture, pic.key.id()))
-		menu.put()
-		#page.backgrounds.append(ndb.Key(Picture, pic.key.id()))
-		#page.put()
+		page.backgrounds.append(ndb.Key(Picture, pic.key.id()))
+		page.put()
 		memcache.flush_all()
 
 		self.redirect('/admin/page/{0}'.format(self.request.get('page_id')))

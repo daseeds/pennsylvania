@@ -1,0 +1,18 @@
+{% import 'forms.html' as forms %}
+<div class="row">
+  <div class="col-lg-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">Block</div>
+      <div class="panel-body">
+        <form class="form-horizontal" role="form">
+
+          {{ forms.input('title', 'title', blocks.title) }}
+          {{ forms.select('Select type', 'pagination', block_choice) }}
+          {{ forms.textarea_ckeditor('content', 'content', blocks.content|safe) }}
+          {{ forms.textarea_code('widget', 'widget', blocks.widget|safe, 3) }}
+          {{ forms.textarea_code('widget script (page bottom)', 'widget_script', blocks.widget_script|safe, 20) }}
+        </form>
+      </div>
+    </div>
+  </div>
+</div><!-- /.row -->

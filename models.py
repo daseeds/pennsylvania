@@ -7,6 +7,7 @@ NORMAL = 1
 DROPDOWN = 2
 
 pagination_choice = ["jumbo", "right", "left", "jumbo_left", "white", "slides"]
+block_choice = ["no-pic", "pic", "widget", "video", "full-video", "map"]
 
 # class SubMenu(ndb.Model):
 # 	order = ndb.IntegerProperty()	
@@ -15,7 +16,7 @@ class Menu(ndb.Model):
 	order = ndb.IntegerProperty()
 	parent = ndb.KeyProperty(kind='Menu')
 	submenus = ndb.KeyProperty(kind='Menu', repeated=True)
-	backgrounds = ndb.KeyProperty(kind='Picture', repeated=True)
+	
 
 class Locale(ndb.Model):
 	name = ndb.StringProperty()
@@ -27,6 +28,13 @@ class Picture(ndb.Model):
 	caption = ndb.StringProperty(default="")
 	etag = ndb.StringProperty(default="")
 
+class Block(ndb.Model):
+	title = ndb.StringProperty()
+	pagination = ndb.StringProperty(default="no-pic", choices=block_choice)
+	content = ndb.TextProperty()
+	picture = ndb.KeyProperty(Picture)
+	widget = ndb.TextProperty(default="")
+	widget_script = ndb.TextProperty(default="")
 
 class Page(ndb.Model):
 	locale = ndb.KeyProperty(Locale, required=True)
@@ -35,11 +43,10 @@ class Page(ndb.Model):
 	lead = ndb.StringProperty()
 	menu = ndb.KeyProperty(Menu, required=True)
 	content = ndb.TextProperty()
-	room_price = ndb.IntegerProperty(default=0)
-	room_price_detail = ndb.StringProperty(default="per room per night, for 2 person")
+	backgrounds = ndb.KeyProperty(kind='Picture', repeated=True)
 	pagination = ndb.StringProperty(default="jumbo", choices=pagination_choice)
-	widget = ndb.TextProperty(default="")
-	widget_script = ndb.TextProperty(default="")
+	blocks = ndb.KeyProperty(Block, repeated=True)
+
 
 
 # test = Locale(
