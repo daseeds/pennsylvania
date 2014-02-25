@@ -123,6 +123,7 @@
 	        <form method="post" class="form-horizontal" role="form" action="/admin/block/{{ block.get().key.id() }}/update">
 
 	          {{ forms.input('title', 'title', block.get().title) }}
+	          {{ forms.input('subtitle', 'subtitle', block.get().subtitle) }}
 	          {{ forms.select('Select type', 'pagination', block_choice, block.get().pagination) }}
 	          {{ forms.textarea_ckeditor('content', 'content', block.get().content|safe) }}
 	          {{ forms.textarea_code('widget', 'widget', block.get().widget|safe, 3) }}

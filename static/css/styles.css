@@ -124,6 +124,10 @@ padding: 10px 20px;
   /*min-width: 1060px;*/
 }
 
+#map-canvas {
+  width: auto;
+  height: 350px;
+}
 
 
 /* Small devices (tablets, 768px and up) */

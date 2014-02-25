@@ -185,12 +185,17 @@ class AdminPageAddBlock(AdminBaseHandler):
 		memcache.flush_all()
 		return self.redirect('/admin/page/{0}'.format(unicode(page_id)))
 
+class AdminBlockMoveUp(AdminBaseHandler):
+	def get(self, block_id):
+
+		page = Page.get_by_id(self.request.get('page_id'))
 
 class AdminBlockUpdate(AdminBaseHandler):
 	def post(self, block_id):
 
 		block = Block.get_by_id(int(block_id))
 		block.title = self.request.get('title')
+		block.subtitle = self.request.get('subtitle')
 		block.content = self.request.get('content')
 		block.widget = self.request.get('widget')
 		block.widget_script = self.request.get('widget_script')

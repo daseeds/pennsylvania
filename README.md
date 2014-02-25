@@ -8,7 +8,7 @@ TODO
 =====
 - integrates open system booking (custom css)
 - detect locale based on browser config
-- have a blobstore image manager
-- detect and avoid blobstore image duplicate (hash ?)
 - add video
 - add caroussel visualizer, image selector
+- have a blobstore image manager
+- detect and avoid blobstore image duplicate (hash ?)

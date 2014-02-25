@@ -7,7 +7,7 @@ NORMAL = 1
 DROPDOWN = 2
 
 pagination_choice = ["jumbo", "right", "left", "jumbo_left", "white", "slides"]
-block_choice = ["no-pic", "pic", "widget", "video", "full-video", "map"]
+block_choice = ["no-pic", "pic-left", "pic-right", "widget", "video", "full-video", "map"]
 
 # class SubMenu(ndb.Model):
 # 	order = ndb.IntegerProperty()	
@@ -30,6 +30,7 @@ class Picture(ndb.Model):
 
 class Block(ndb.Model):
 	title = ndb.StringProperty()
+	subtitle = ndb.StringProperty()
 	pagination = ndb.StringProperty(default="no-pic", choices=block_choice)
 	content = ndb.TextProperty()
 	picture = ndb.KeyProperty(Picture)

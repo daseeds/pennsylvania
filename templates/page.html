@@ -101,25 +101,70 @@
 {% if block.get().pagination == "no-pic" %}
 <div class="pane">
 	<div class="container">
-		<div class="row">
+		<div class="row-fluid">
+			<div class="col-lg-12">
 			
-
-				<!-- <div class="panel panel-default">
-					<div class="panel-body"> -->
 						<h2>{{block.get().title}}</h2>
 						<p class="lead">{{page.lead}}</p>
 						{{block.get().content|safe}}
 
 						{{block.get().widget|safe}}
 					
-			<!-- 		</div>
-				</div> -->
+			</div> 
 		
 		</div>
 	</div>
 </div>
 {% endif %}
+{% if block.get().pagination == "pic-left" %}
+<div class="pane">
+	<div class="container">
+		<div class="row-fluid">
+			<div class="col-lg-5">
+				<img class="img-responsive" src="http://placehold.it/350x350">
+			</div> 
+			<div class="col-lg-7">
+			
+						<h2>{{block.get().title}}</h2>
+						<p class="lead">{{block.get().subtitle}}</p>
+						{{block.get().content|safe}}
 
+						{{block.get().widget|safe}}
+					
+			</div> 
+		
+		</div>
+	</div>
+</div>
+{% endif %}
+{% if block.get().pagination == "pic-right" %}
+<div class="pane">
+	<div class="container">
+		<div class="row-fluid">
+
+			<div class="col-lg-7">
+			
+						<h2>{{block.get().title}}</h2>
+						<p class="lead">{{block.get().subtitle}}</p>
+						{{block.get().content|safe}}
+
+						{{block.get().widget|safe}}
+					
+			</div> 
+			<div class="col-lg-5">
+				<img class="img-responsive" src="http://placehold.it/350x350">
+			</div> 		
+		</div>
+	</div>
+</div>
+{% endif %}
+{% if block.get().pagination == "map" %}
+  <div class="container-fluid">
+    <div class="row-fluid">
+     <div id="map-canvas"></div>
+   </div>
+ </div>
+{% endif %}
 {% endfor %}
 
 
