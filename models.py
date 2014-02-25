@@ -41,11 +41,8 @@ class Page(ndb.Model):
 	locale = ndb.KeyProperty(Locale, required=True)
 	name = ndb.StringProperty(required=True)
 	title = ndb.StringProperty()
-	lead = ndb.StringProperty()
 	menu = ndb.KeyProperty(Menu, required=True)
-	content = ndb.TextProperty()
 	backgrounds = ndb.KeyProperty(kind='Picture', repeated=True)
-	pagination = ndb.StringProperty(default="jumbo", choices=pagination_choice)
 	blocks = ndb.KeyProperty(Block, repeated=True)
 
 

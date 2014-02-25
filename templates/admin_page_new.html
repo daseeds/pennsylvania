@@ -25,9 +25,7 @@
 					{{ forms.input('Menu name (in current locale)', 'name', page.name) }}
 					{{ forms.select('Select locale', 'locale_id', locale_list, page.locale.id()) }}
 					{{ forms.select('Select menu', 'menu_id', menu_list, page.menu.id()) }}
-					{{ forms.select('Select pagination', 'pagination', pagination_choice, page.pagination) }}
 					{{ forms.input('title', 'title', page.title) }}
-					{{ forms.input('lead', 'lead', page.lead) }}
 
 
 					{% else %}
@@ -35,7 +33,6 @@
 					{{ forms.input('Menu name (in current locale)', 'name') }}
 					{{ forms.select('Select locale', 'locale_id', locale_list, ) }}
 					{{ forms.select('Select menu', 'menu_id', menu_list) }}
-					{{ forms.select('Select pagination', 'pagination', pagination_choice) }}
 					{% endif %}
 
 					<div class="form-group">

@@ -130,6 +130,53 @@ padding: 10px 20px;
   height: 350px;
 }
 
+footer {
+  padding-top: 60px;
+
+}
+
+footer .panel {
+  width: 31%;
+  margin-right: 3%;
+  float: left;
+  display: block;
+  border-bottom: 0;
+}
+
+footer .panel.share a.twitter {
+background-position: -160px 0;
+}
+
+footer .panel.share a.facebook {
+background-position: -80px 0;
+}
+
+footer .panel.share a.gplus {
+background-position: 0 0;
+}
+
+footer .panel.share a {
+margin-right: 14px;
+display: inline-block;
+width: 48px;
+height: 48px;
+background-image: url(/static/img/icons.png);
+background-size: 296px 56px;
+background-repeat: no-repeat;
+text-indent: -100em;
+overflow: hidden;
+font-size: 0;
+}
+
+footer p.licensing {
+width: 60%;
+margin: 0 auto;
+color: #777;
+text-align: center;
+clear: both;
+font-size: 13px;
+padding-bottom: 40px;
+}
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) { 
