@@ -60,6 +60,11 @@ class AdminBaseHandler(webapp2.RequestHandler):
 	# 		self.response.set_status(exception.code)
 	# 	else:
 	# 		self.response.set_status(500)
+	def picture_delete(self, picture_id):
+		pic = ndb.Key(Picture, int(picture_id))
+		blob_info = blobstore.BlobInfo.get(pic.get().size_max)
+		blob_info.delete()
+		pic.delete()
 
 class AdminMain(AdminBaseHandler):
 	def get(self):
@@ -88,6 +93,7 @@ class AdminMain(AdminBaseHandler):
 			'menu_list': menu_list,
 		}	
 		return self.render_response('admin_main.html', **template_values)
+
 
 class AdminNewLocale(AdminBaseHandler):
 	def post(self):
@@ -186,9 +192,22 @@ class AdminPageAddBlock(AdminBaseHandler):
 		return self.redirect('/admin/page/{0}'.format(unicode(page_id)))
 
 class AdminBlockMoveUp(AdminBaseHandler):
-	def get(self, block_id):
+	def get(self, page_id, block_id):
 
-		page = Page.get_by_id(self.request.get('page_id'))
+		page = Page.get_by_id(page_id)
+
+		logging.info(page.blocks)
+
+
+		a = page.blocks.index(ndb.Key(Block, int(block_id)))
+
+		page.blocks[a-1], page.blocks[a] =  page.blocks[a],  page.blocks[a-1]
+		logging.info( page.blocks)
+
+		page.put()
+		memcache.flush_all()
+		return self.redirect('/admin/page/{0}'.format(unicode(page_id)))
+		
 
 class AdminBlockUpdate(AdminBaseHandler):
 	def post(self, block_id):
@@ -205,6 +224,17 @@ class AdminBlockUpdate(AdminBaseHandler):
 
 		return self.redirect('/admin/page/{0}'.format(unicode(self.request.get('page_id'))))
 
+class AdminBlockPictureDelete(AdminBaseHandler):
+	def get(self, block_id, picture_id):
+		block = Block.get_by_id(int(block_id))
+		
+		block.picture = None
+		block.put()
+
+		self.picture_delete(picture_id)
+		memcache.flush_all()
+		return self.redirect(self.request.get('return-to'))
+
 
 class AdminPictureDelete(AdminBaseHandler):
 	def get(self, picture_id):
@@ -212,6 +242,7 @@ class AdminPictureDelete(AdminBaseHandler):
 		pic = ndb.Key(Picture, int(picture_id))
 		page.backgrounds.remove(pic)
 		page.put()
+		self.picture_delete(picture_id)
 		memcache.flush_all()
 		return self.redirect('/admin/page/{0}'.format(self.request.get('page_id')))
 
@@ -274,7 +305,7 @@ class AdminUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 	@admin_protect
 	def post(self):
 
-		page = Page.get_by_id(self.request.get('page_id'))
+
 
 		upload_files = self.get_uploads('picture')
 		blob_info = upload_files[0]
@@ -282,10 +313,17 @@ class AdminUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 		pic = Picture(size_max=blob_info.key())
 		pic.put()
 
-		page.backgrounds.append(ndb.Key(Picture, pic.key.id()))
-		page.put()
+		if (self.request.get('page_id')):
+			page = Page.get_by_id(self.request.get('page_id'))
+			page.backgrounds.append(ndb.Key(Picture, pic.key.id()))
+			page.put()
+		if (self.request.get('block_id')):
+			block = Block.get_by_id(int(self.request.get('block_id')))
+			block.picture = ndb.Key(Picture, pic.key.id())
+			block.put()
+
 		memcache.flush_all()
 
-		self.redirect('/admin/page/{0}'.format(self.request.get('page_id')))
+		self.redirect(self.request.get('return-to'))
 
 

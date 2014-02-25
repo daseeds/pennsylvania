@@ -2468,7 +2468,7 @@
     background-color: transparent;
     padding: 0;
     float: left;
-    width: 48%;
+    /*width: 48%;*/
     white-space: nowrap;
 }
 .OsProduit.api .OsProduitPlanning .OsPlanningForm .FormBox.Prix .PrixLabel {
@@ -2479,7 +2479,7 @@
 }
 .OsProduit.api .OsProduitPlanning .OsPlanningForm .FormBox.Prix .PrixValeur {
     color: #fff;
-    font-size: 36px;
+    font-size: 32px;
     font-weight: bold;
     /*height: 34px;*/
     /*line-height: 31px;*/
@@ -2490,7 +2490,7 @@
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
-    /*background-color: #333;*/
+    background-color: #333;
 }
 .OsProduit.api .OsProduitPlanning .OsPlanningForm .FormBox.Prix .PrixValeur .PrixDuree {
     color: #fff;

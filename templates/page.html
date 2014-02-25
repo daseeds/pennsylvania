@@ -121,7 +121,11 @@
 	<div class="container">
 		<div class="row-fluid">
 			<div class="col-lg-5">
+				{% if block.get().picture %}
+				<img class="img-responsive" src="/serve/{{block.get().picture.get().size_max}}">
+				{% else %}
 				<img class="img-responsive" src="http://placehold.it/350x350">
+				{% endif %}
 			</div> 
 			<div class="col-lg-7">
 			
@@ -152,18 +156,44 @@
 					
 			</div> 
 			<div class="col-lg-5">
+				{% if block.get().picture %}
+				<img class="img-responsive" src="/serve/{{block.get().picture.get().size_max}}">
+				{% else %}
 				<img class="img-responsive" src="http://placehold.it/350x350">
+				{% endif %}
 			</div> 		
 		</div>
 	</div>
 </div>
 {% endif %}
 {% if block.get().pagination == "map" %}
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3WbMksq6Er0id9QJD6o-bkIp7XSHSgLc&sensor=false"></script>
+<script>
+
+</script>
   <div class="container-fluid">
     <div class="row-fluid">
      <div id="map-canvas"></div>
    </div>
  </div>
+{% endif %}
+{% if block.get().pagination == "widget" %}
+<div class="pane">
+	<div class="container">
+		<div class="row-fluid">
+
+			<div class="col-lg-12">
+			
+						<h2>{{block.get().title}}</h2>
+						<p class="lead">{{block.get().subtitle}}</p>
+						{{block.get().content|safe}}
+
+						{{block.get().widget|safe}}
+					
+			</div> 
+		</div>
+	</div>
+</div>
 {% endif %}
 {% endfor %}
 
@@ -171,5 +201,7 @@
 
 {% endblock content %}
 {% block script %}
-{{page.widget_script|safe}}
+{% for block in page.blocks %}
+	{{block.get().widget_script|safe}}
+{% endfor %}
 {% endblock script %}
