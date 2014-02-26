@@ -149,8 +149,7 @@ class AdminNewPage(AdminBaseHandler):
 		page = Page(id=self.request.get('page_id'), 
 					name = self.request.get('name'),
 					locale = ndb.Key(Locale, self.request.get('locale_id')),
-					menu = ndb.Key(Menu, self.request.get('menu_id')),
-					pagination = self.request.get('pagination'))
+					menu = ndb.Key(Menu, self.request.get('menu_id')))
 		page.put()
 		return self.redirect('/admin')
 
