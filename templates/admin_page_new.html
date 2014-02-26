@@ -108,6 +108,7 @@
 
 		</div>
 	</div>
+	{% if page %}
 	<a href="/admin/page/{{page.key.id()}}/add_block" class="btn btn-info">Add a block</a>
 	<div class="row">
 		{% for block in page.blocks %}
@@ -149,5 +150,6 @@
 		</div>
 
 	{% endfor %}
+	{% endif %}
 	</div><!-- /.row -->
 {% endblock content %}
