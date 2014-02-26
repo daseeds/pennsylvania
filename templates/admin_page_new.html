@@ -26,6 +26,7 @@
 					{{ forms.select('Select locale', 'locale_id', locale_list, page.locale.id()) }}
 					{{ forms.select('Select menu', 'menu_id', menu_list, page.menu.id()) }}
 					{{ forms.input('title', 'title', page.title) }}
+					{{ forms.input('Description (used as summary in social web, 200-300 char max', 'description', page.description) }}
 
 
 					{% else %}

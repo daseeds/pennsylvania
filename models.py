@@ -44,7 +44,7 @@ class Page(ndb.Model):
 	menu = ndb.KeyProperty(Menu, required=True)
 	backgrounds = ndb.KeyProperty(kind='Picture', repeated=True)
 	blocks = ndb.KeyProperty(Block, repeated=True)
-
+	description = ndb.StringProperty(default="")
 
 
 # test = Locale(
