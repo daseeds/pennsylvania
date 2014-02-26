@@ -60,8 +60,8 @@ class BaseHandler(webapp2.RequestHandler):
 
 class MainPage(BaseHandler):
 	def get(self):
-		page = Page.query(Page.locale==ndb.Key(Locale, "en"), Page.menu==ndb.Key(Menu, "the-manor")).fetch()
-		self.redirect('/{0}/{1}'.format("en", page[0].key.id()))
+		page = Page.query(Page.locale==ndb.Key(Locale, "fr"), Page.menu==ndb.Key(Menu, "the-manor")).fetch()
+		self.redirect('/{0}/{1}'.format("fr", page[0].key.id()))
 
 class LocaleViewer(BaseHandler):
 	def get(self, locale_id):
