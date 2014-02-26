@@ -2481,8 +2481,8 @@
     color: #fff;
     font-size: 32px;
     font-weight: bold;
-    /*height: 34px;*/
-    /*line-height: 31px;*/
+    height: auto; 
+    line-height: auto;
     margin: 0;
     padding: 10px 0;
     text-align: center;
