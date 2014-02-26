@@ -136,11 +136,9 @@ footer {
 }
 
 footer .panel {
-  width: 31%;
-  margin-right: 3%;
-  float: left;
-  display: block;
-  border-bottom: 0;
+margin: 0 0 30px 0;
+padding: 0 0 40px 0;
+border-bottom: 1px solid #5f5f5f;
 }
 
 footer .panel.share a.twitter {
@@ -168,6 +166,21 @@ overflow: hidden;
 font-size: 0;
 }
 
+body > footer > div > aside.panel.external-links > a {
+  color: #777;
+  text-decoration: none;
+
+}
+
+footer .panel.external-links a a:hover a:visited {
+  color: #777;
+  text-decoration: none;
+}
+
+footer .panel:last-of-type {
+margin-right: 0;
+}
+
 footer p.licensing {
 width: 60%;
 margin: 0 auto;
@@ -177,6 +190,8 @@ clear: both;
 font-size: 13px;
 padding-bottom: 40px;
 }
+
+
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) { 
@@ -198,7 +213,7 @@ padding-bottom: 40px;
   display: none;
 }*/
 
-.logo {
+.logo-brand {
   display: initial;
   top: 60px;
   position: absolute;
@@ -258,14 +273,15 @@ line-height: 37px;
   top: 13%;
   padding: 10px 20px;
 
-/*  position: relative;
-  text-align: right;
-  width: 100%;
-  padding-top: 40%;
-  padding-left:5%;
-  padding-right:5%;*/
 }
 
+footer .panel {
+  width: 31%;
+  margin-right: 3%;
+  float: left;
+  display: block;
+  border-bottom: 0;
+}
 
 }
 
