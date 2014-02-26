@@ -2468,7 +2468,7 @@
     background-color: transparent;
     padding: 0;
     float: left;
-    /*width: 48%;*/
+    width: auto;
     white-space: nowrap;
 }
 .OsProduit.api .OsProduitPlanning .OsPlanningForm .FormBox.Prix .PrixLabel {
