@@ -173,6 +173,8 @@ body > footer > div > aside.panel.external-links > a {
 
 }
 
+
+
 footer .panel.external-links a a:hover a:visited {
   color: #777;
   text-decoration: none;
@@ -190,6 +192,19 @@ text-align: center;
 clear: both;
 font-size: 13px;
 padding-bottom: 40px;
+}
+
+footer a.gitedefrance {
+
+  background-image: url(/static/img/gites-de-france.png);
+  background-repeat: no-repeat;
+  display: inline-block;
+  overflow: hidden;
+  font-size: 0;
+  width: 65px;
+  height: 65px;
+  background-position-x: -485px;
+  background-position-y: -94px;
 }
 
 
