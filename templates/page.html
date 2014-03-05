@@ -173,7 +173,10 @@
 </script>
   <div class="container-fluid">
     <div class="row-fluid">
-     <div id="map-canvas"></div>
+    	<div class="google-maps">
+    	<iframe class="google-iframe" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d10381.110259343859!2d-1.261644124483195!3d49.4225662636431!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x480b79eb31387f63%3A0x74079de05acd3045!2sLe+Manoir+de+Juganville!5e0!3m2!1sfr!2s!4v1393997901683" onmousewheel="false" frameborder="0" style="border:0"></iframe>
+    	</div>
+     <!-- <div id="map-canvas"></div> -->
    </div>
  </div>
 {% endif %}
@@ -183,13 +186,13 @@
 		<div class="row-fluid">
 
 			<div class="col-lg-12">
-			
+				
 						<h2>{{block.get().title}}</h2>
 						<p class="lead">{{block.get().subtitle}}</p>
 						{{block.get().content|safe}}
 
 						{{block.get().widget|safe}}
-					
+				
 			</div> 
 		</div>
 	</div>
