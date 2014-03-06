@@ -284,8 +284,18 @@ line-height: 37px;
 
 }
 
+img {
+  pointer-events: none;
+}
 
+/*iframe{
+  pointer-events: none;
+}
+*/
+iframe[seamless]{
 
+   overflow: hidden;
+}
 
 
 /* Medium devices (desktops, 992px and up) */

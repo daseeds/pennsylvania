@@ -1,12 +1,29 @@
 var supportTouch;
 var map;
 
+var body = document.body,
+    timer;
+
+
+
 $(document).ready(function() {
   $(document).on('init.slides', function() {
     $('.loading-container').fadeOut(function() {
       $(this).remove();
     });
   });
+
+  $("#google-iframe").on('mousewheel', function() {
+
+//    alert("scroll")
+    return false;
+  }, false);
+
+  $(".gm-style").on('mousewheel', function() {
+
+//    alert("scroll")
+    return false;
+  }, false);
 
   $('#slides').superslides({
     slide_easing: 'easeInOutCubic',
@@ -29,7 +46,11 @@ $(document).ready(function() {
 
   supportTouch = !! ('ontouchstart' in window) || !! ('msmaxtouchpoints' in window.navigator);
 
+
+
 });
+
+
 
 var manoirLatLng = {
     latLng: new google.maps.LatLng(49.4246006,-1.2569717),
