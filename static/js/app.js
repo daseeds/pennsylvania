@@ -36,11 +36,13 @@ $(document).ready(function() {
 /*  document.ontouchmove = function(e) {
     e.preventDefault();
   };*/
-  $('#slides').hammer().on('swipeleft', function() {
+  $('#slides').hammer().on('swipeleft', function(e) {
+    e.preventDefault();
     $(this).superslides('animate', 'next');
   });
 
-  $('#slides').hammer().on('swiperight', function() {
+  $('#slides').hammer().on('swiperight', function(e) {
+    e.preventDefault();
     $(this).superslides('animate', 'prev');
   });
 
