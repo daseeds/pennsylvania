@@ -35,27 +35,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="panel panel-default">
-			<div class="panel-heading">Create a new menu item</div>
-			<div class="panel-body">
 
-				<form class="form-horizontal" role="form" action="/admin/menu/new" method="post">
-					{{ forms.input('menu unique id', 'menu_id') }}
-					{{ forms.submit_button('New menu') }}
-				</form>
-			</div>
-		</div>
-		<div class="panel panel-default">
-			<div class="panel-heading">Create a new sub menu</div>
-			<div class="panel-body">
-
-				<form class="form-horizontal" role="form" action="/admin/submenu/new" method="post">
-					{{ forms.input('submenu unique id', 'submenu_id') }}
-					{{ forms.select('Select parent menu', 'menu_id', menu_list) }}
-					{{ forms.submit_button('New submenu') }}
-				</form>
-			</div>
-		</div>
 		<div class="panel panel-default">
 			<div class="panel-heading">Dictionary</div>
 			<div class="panel-body">
@@ -104,6 +84,27 @@
 	</div>
 	<div class="col-md-4">
 			{% include 'admin_view_locales_panel.html' %}
+		<div class="panel panel-default">
+			<div class="panel-heading">Create a new menu item</div>
+			<div class="panel-body">
+
+				<form class="form-horizontal" role="form" action="/admin/menu/new" method="post">
+					{{ forms.input('menu unique id', 'menu_id') }}
+					{{ forms.submit_button('New menu') }}
+				</form>
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">Create a new sub menu</div>
+			<div class="panel-body">
+
+				<form class="form-horizontal" role="form" action="/admin/submenu/new" method="post">
+					{{ forms.input('submenu unique id', 'submenu_id') }}
+					{{ forms.select('Select parent menu', 'menu_id', menu_list) }}
+					{{ forms.submit_button('New submenu') }}
+				</form>
+			</div>
+		</div>
 	</div>
 </div>
 
