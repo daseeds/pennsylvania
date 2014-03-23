@@ -71,13 +71,14 @@ class LocaleViewer(BaseHandler):
 class ModelViewer(BaseHandler):
 	def get(self, locale_id, page_id):
 
+		## Menus
 		menus = self.get_menus()
 		for menu in menus:
 			localized_page = Page.query(Page.locale==ndb.Key(Locale, locale_id), Page.menu==ndb.Key(Menu, menu.key.id())).fetch()
 			if len(localized_page) == 0:
 				return self.render_error("locale \"{0}\" is not available for menu \"{1}\"".format(locale_id, menu.key.id()))
 
-
+			# enhance with submenu id and name, easier to render
 			menu.page = localized_page[0]
 			if (menu.submenus):
 				menu.submenus_enhanced = []
@@ -88,6 +89,13 @@ class ModelViewer(BaseHandler):
 					my_dict['name'] =  localized_page[0].name
 					menu.submenus_enhanced.append(my_dict)
 
+		## Dict for current locale
+		localedicts = self.get_dict(locale_id)
+		dictionary = dict()
+		for localedict in localedicts:
+			dictionary[localedict.name] = localedict.value
+
+		## Page
 		page = self.get_page_by_id(page_id)
 
 		if page is None:
@@ -97,9 +105,10 @@ class ModelViewer(BaseHandler):
 		if not pages:
 			return self.render_error("Error 500: cannot build pages List")
 
+		## Locale
 		locales = self.get_locales()
 
-		# enriched locales with each localized page id for smooth transfert
+		# enhance locales object with each localized page id for smooth transfert
 		for locale in locales:
 			this_locale = ndb.Key(Locale, locale.key.id())
 			this_menu = ndb.Key(Menu, page.menu.id())
@@ -117,8 +126,17 @@ class ModelViewer(BaseHandler):
 			'menus': menus,
 			'pages': pages,
 			'locales': locales,
+			'dictionary' : dictionary,
 		}	
 		return self.render_response('page.html', **template_values)
+
+	def get_dict(self, locale_id):
+		localedict = memcache.get('localedict {0}'.format(locale_id))
+		if localedict is None:
+			localedict = LocaleDict.query(LocaleDict.locale==ndb.Key(Locale, locale_id)).fetch()
+			memcache.set(key='localedict {0}'.format(locale_id), value=localedict)
+		return localedict
+
 	def get_menus(self):
 		menus = memcache.get('menus')
 		if menus is None:
@@ -206,6 +224,9 @@ application = webapp2.WSGIApplication([
     webapp2.Route(r'/admin/locale/new', AdminNewLocale),
 	webapp2.Route(r'/admin/menu/new', AdminNewMenu),
 	webapp2.Route(r'/admin/submenu/new', AdminNewSubMenu),
+	webapp2.Route(r'/admin/localedict/new', AdminNewLocaleDict),
+	webapp2.Route(r'/admin/localedict/<localedict_id:([^/]+)?>/update', AdminUpdateLocaleDict),
+	webapp2.Route(r'/admin/localedict/<localedict_id:([^/]+)?>/delete', AdminDeleteLocaleDict),
 	webapp2.Route(r'/admin/page/new', AdminNewPage),
 	webapp2.Route(r'/admin/page/<page_id:([^/]+)?>', AdminViewPage),
     webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/update', AdminUpdatePage),

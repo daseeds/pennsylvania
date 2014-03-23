@@ -9,7 +9,7 @@ import webapp2
 from webapp2_extras.routes import RedirectRoute
 from webapp2_extras import jinja2
 from functools import wraps
-from models import Locale, Page, Menu, pagination_choice, Picture, block_choice, Block
+from models import Locale, Page, Menu, pagination_choice, Picture, block_choice, Block, LocaleDict
 
 from google.appengine.api import images
 from google.appengine.api import users
@@ -71,6 +71,9 @@ class AdminMain(AdminBaseHandler):
 
 		locale_query = Locale.query()
 		locales = locale_query.fetch()
+		locale_list = []
+		for locale in locales:
+			locale_list.append(locale.key.id())
 
 		menu_query = Menu.query()
 		menus = menu_query.fetch()
@@ -79,7 +82,7 @@ class AdminMain(AdminBaseHandler):
 		for menu in menus:
 			menu_list.append(menu.key.id())
 
-		# submenus = SubMenu.query().fetch()
+		localedicts = LocaleDict.query().fetch()
 
 		pages = Page.query().fetch()
 
@@ -91,9 +94,35 @@ class AdminMain(AdminBaseHandler):
 			'menus': menus,
 			'pages': pages,
 			'menu_list': menu_list,
+			'localedicts' : localedicts,
+			'locale_list': locale_list,
 		}	
 		return self.render_response('admin_main.html', **template_values)
 
+class AdminNewLocaleDict(AdminBaseHandler):
+	def post(self):
+		localedict = LocaleDict(locale=ndb.Key(Locale, self.request.get('locale_id')),
+								name=self.request.get('name'),
+								value=self.request.get('value'))
+		localedict.put()
+		memcache.flush_all()
+		return self.redirect('/admin')
+
+
+class AdminUpdateLocaleDict(AdminBaseHandler):
+	def post(self, localedict_id):
+		localedict = LocaleDict.get_by_id(int(localedict_id))
+		localedict.name = self.request.get('name')
+		localedict.value = self.request.get('value')
+		localedict.put()
+		memcache.flush_all()
+		return self.redirect('/admin')
+
+class AdminDeleteLocaleDict(AdminBaseHandler):
+	def get(self, localedict_id):
+		ndb.Key(LocaleDict, int(localedict_id)).delete()
+		memcache.flush_all()
+		return self.redirect('/admin')
 
 class AdminNewLocale(AdminBaseHandler):
 	def post(self):

@@ -48,3 +48,11 @@
 	</div>
 </div>	
 {% endmacro %}
+
+{% macro extract_dict(default, my_dict) %}
+{% if my_dict[default] %}
+{{ my_dict[default] }}
+{% else %}
+{{ default }}
+{% endif %}
+{% endmacro %}

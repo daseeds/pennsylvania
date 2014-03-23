@@ -46,6 +46,11 @@ class Page(ndb.Model):
 	blocks = ndb.KeyProperty(Block, repeated=True)
 	description = ndb.StringProperty(default="")
 
+class LocaleDict(ndb.Model):
+	locale = ndb.KeyProperty(Locale, required=True)
+	name = ndb.StringProperty(required=True)
+	value = ndb.StringProperty(required=True)
+
 
 # test = Locale(
 # 	url = 'en',
