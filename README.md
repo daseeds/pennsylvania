@@ -6,6 +6,8 @@ pennsylvania
 
 TODO
 =====
+- add heads up for 3 main rooms in welcome page with direct access link
+- add a "price" block to replace ugly tables
 - ~~integrates open system booking (custom css)~~
 - detect locale based on browser config
 - add video
