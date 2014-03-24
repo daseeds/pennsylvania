@@ -178,7 +178,8 @@ class AdminNewPage(AdminBaseHandler):
 		page = Page(id=self.request.get('page_id'), 
 					name = self.request.get('name'),
 					locale = ndb.Key(Locale, self.request.get('locale_id')),
-					menu = ndb.Key(Menu, self.request.get('menu_id')))
+					menu = ndb.Key(Menu, self.request.get('menu_id')),
+					creation_author = users.get_current_user())
 		page.put()
 		return self.redirect('/admin')
 
@@ -192,13 +193,14 @@ class AdminUpdatePage(AdminBaseHandler):
 		page.locale = ndb.Key(Locale, self.request.get('locale_id'))
 		page.title = self.request.get('title')
  		page.description = self.request.get('description')
+ 		page.modification_author = users.get_current_user()
 		page.put()
 		memcache.flush_all()
 
 		return self.redirect('/admin/page/{0}'.format(unicode(page_id)))
 
 class AdminPageDelete(AdminBaseHandler):
-	def post(self, page_id):
+	def get(self, page_id):
 		ndb.Key(Page, page_id).delete()
 		memcache.flush_all()
 		return self.redirect('/admin')
@@ -210,6 +212,7 @@ class AdminPageAddBlock(AdminBaseHandler):
 		page = Page.get_by_id(page_id)
 		#del page.blocks[0:len(page.blocks)]
 		page.blocks.append(ndb.Key(Block, block.key.id()))
+		page.modification_author = users.get_current_user()
 		page.put()
 		memcache.flush_all()
 		return self.redirect('/admin/page/{0}'.format(unicode(page_id)))
@@ -227,6 +230,7 @@ class AdminBlockMoveUp(AdminBaseHandler):
 		page.blocks[a-1], page.blocks[a] =  page.blocks[a],  page.blocks[a-1]
 		logging.info( page.blocks)
 
+		page.modification_author = users.get_current_user()
 		page.put()
 		memcache.flush_all()
 		return self.redirect('/admin/page/{0}'.format(unicode(page_id)))
@@ -243,6 +247,11 @@ class AdminBlockUpdate(AdminBaseHandler):
 		block.widget_script = self.request.get('widget_script')
 		block.pagination = self.request.get('pagination')
 		block.put()
+
+		page = Page.get_by_id(unicode(self.request.get('page_id')))
+		page.modification_author = users.get_current_user()
+		page.put()
+
 		memcache.flush_all()
 
 		return self.redirect('/admin/page/{0}'.format(unicode(self.request.get('page_id'))))
@@ -264,6 +273,7 @@ class AdminPictureDelete(AdminBaseHandler):
 		page = Page.get_by_id(self.request.get('page_id'))
 		pic = ndb.Key(Picture, int(picture_id))
 		page.backgrounds.remove(pic)
+		page.modification_author = users.get_current_user()
 		page.put()
 		self.picture_delete(picture_id)
 		memcache.flush_all()
@@ -274,6 +284,11 @@ class AdminPictureUpdate(AdminBaseHandler):
 		pic = Picture.get_by_id(int(picture_id))
 		pic.caption = self.request.get('caption')
 		pic.put()
+
+		page = Page.get_by_id(unicode(self.request.get('page_id')))
+		page.modification_author = users.get_current_user()
+		page.put()
+
 		memcache.flush_all()
 		return self.redirect('/admin/page/{0}'.format(self.request.get('page_id')))
 

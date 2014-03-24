@@ -45,6 +45,11 @@ class Page(ndb.Model):
 	backgrounds = ndb.KeyProperty(kind='Picture', repeated=True)
 	blocks = ndb.KeyProperty(Block, repeated=True)
 	description = ndb.StringProperty(default="")
+	creation_date = ndb.DateTimeProperty(auto_now_add=True)
+	creation_author = ndb.UserProperty()
+	modification_date = ndb.DateTimeProperty(auto_now =True)
+	modification_author = ndb.UserProperty()
+
 
 class LocaleDict(ndb.Model):
 	locale = ndb.KeyProperty(Locale, required=True)

@@ -9,18 +9,31 @@
 <div class="row">
 	<div class="col-md-12">
 		<div class="panel panel-default">
-			<div class="panel-heading">New page
-				{% if page %}
-				<form action="/admin/page/{{ page.key.id() }}/delete" method="post">
-					<button type="submit" class="btn btn-danger btn-xs">Delete
-					</button>
-				</form>
-				{% endif %}
-			</div>
+			<div class="panel-heading">New page</div>
 			<div class="panel-body">
 
 				<form class="form-horizontal" role="form" action="{{action}}" method="post">
 					{% if page %}
+					  <div class="form-group">
+					    <label class="col-sm-2 control-label">Creation</label>
+					    <div class="col-sm-10">
+					      <p class="form-control-static"><em>{% if page.creation_date != None %}{{page.creation_date.strftime("%Y-%m-%d %H:%M:%S")}}{% endif %}</em> by <strong>{{page.creation_author}}</strong></p>
+					    </div>
+					  </div>
+					  <div class="form-group">
+					    <label class="col-sm-2 control-label">Last Modification</label>
+					    <div class="col-sm-10">
+					      <p class="form-control-static"><em>{% if page.modification_date != None %}{{page.modification_date.strftime("%Y-%m-%d %H:%M:%S")}}{% endif %}</em> by <strong>{{page.modification_author}}</strong></p>
+					    </div>
+					  </div>
+					  <div class="form-group">
+					    <label class="col-sm-2 control-label">Actions</label>
+					    <div class="col-sm-10">
+					      <p class="form-control-static">
+					      	<a href="/admin/page/{{page.key.id()}}/add_block" class="btn btn-xs btn-info">Add a block</a>
+					      	<a href="/admin/page/{{ page.key.id() }}/delete" class="btn btn-xs btn-danger">Delete</a></p>
+					    </div>
+					  </div>
 					{{ forms.input('unique id and url', 'page_id', page.key.id()) }}
 					{{ forms.input('Menu name (in current locale)', 'name', page.name) }}
 					{{ forms.select('Select locale', 'locale_id', locale_list, page.locale.id()) }}
@@ -109,17 +122,24 @@
 		</div>
 	</div>
 	{% if page %}
-	<a href="/admin/page/{{page.key.id()}}/add_block" class="btn btn-info">Add a block</a>
+	
 	<div class="row">
 		{% for block in page.blocks %}
 
 		<div class="col-lg-12">
 			<div class="panel panel-default">
-				<div class="panel-heading">Block <a href="/admin/page/{{page.key.id()}}/{{block.id()}}/moveup" class="btn btn-default">Move Up</a>
-				</div>
+				<div class="panel-heading">Block</div>
 				<div class="panel-body">
-					<form method="post" class="form-horizontal" role="form" action="/admin/block/{{ block.get().key.id() }}/update">
 
+					<form method="post" class="form-horizontal" role="form" action="/admin/block/{{ block.get().key.id() }}/update">
+						<div class="form-group">
+					    <label class="col-sm-2 control-label">Actions</label>
+					    <div class="col-sm-10">
+					      <p class="form-control-static">
+					      	<a href="/admin/page/{{page.key.id()}}/{{block.id()}}/moveup" class="btn btn-xs btn-primary">Move Up</a>
+					      	<a href="/admin/page/{{page.key.id()}}/{{block.id()}}/delete" class="btn btn-xs btn-danger">Delete</a></p>
+					    </div>
+					  </div>
 						{{ forms.input('title', 'title', block.get().title) }}
 						{{ forms.input('subtitle', 'subtitle', block.get().subtitle) }}
 						{{ forms.select('Select type', 'pagination', block_choice, block.get().pagination) }}
