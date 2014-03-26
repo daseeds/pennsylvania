@@ -30,7 +30,8 @@ $(document).ready(function() {
     slide_speed: 800,
     pagination: true,
     hashchange: true,
-    scrollable: true
+    scrollable: true,
+    play: 4000,
   });
 
 /*  document.ontouchmove = function(e) {
@@ -49,7 +50,7 @@ $(document).ready(function() {
   supportTouch = !! ('ontouchstart' in window) || !! ('msmaxtouchpoints' in window.navigator);
 
 
-
+  //$('#slides').superslides('start')
 });
 
 

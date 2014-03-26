@@ -256,6 +256,17 @@ class AdminBlockUpdate(AdminBaseHandler):
 
 		return self.redirect('/admin/page/{0}'.format(unicode(self.request.get('page_id'))))
 
+class AdminBlockDelete(AdminBaseHandler):
+	def get(self, page_id, block_id):
+		block = ndb.Key(Block, int(block_id))
+		page = Page.get_by_id(page_id)
+		page.blocks.remove(block)
+		page.put()
+		block.delete()
+		memcache.flush_all()
+		return self.redirect('/admin/page/{0}'.format(unicode(page_id)))
+
+
 class AdminBlockPictureDelete(AdminBaseHandler):
 	def get(self, block_id, picture_id):
 		block = Block.get_by_id(int(block_id))

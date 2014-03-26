@@ -233,6 +233,7 @@ application = webapp2.WSGIApplication([
     webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/delete', AdminPageDelete),
     webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/add_block', AdminPageAddBlock),
     webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/<block_id:([^/]+)?>/moveup', AdminBlockMoveUp),
+    webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/<block_id:([^/]+)?>/delete', AdminBlockDelete),
     webapp2.Route(r'/admin/picture/<picture_id:([^/]+)?>/delete', AdminPictureDelete),
     webapp2.Route(r'/admin/picture/<picture_id:([^/]+)?>/update', AdminPictureUpdate),
     webapp2.Route(r'/admin/block/<block_id:([^/]+)?>/update', AdminBlockUpdate),

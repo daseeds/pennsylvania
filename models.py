@@ -7,7 +7,7 @@ NORMAL = 1
 DROPDOWN = 2
 
 pagination_choice = ["jumbo", "right", "left", "jumbo_left", "white", "slides"]
-block_choice = ["no-pic", "pic-left", "pic-right", "widget", "video", "full-video", "map"]
+block_choice = ["no-pic", "pic-left", "pic-right", "widget", "video", "full-video", "map", "price-pic-left"]
 
 # class SubMenu(ndb.Model):
 # 	order = ndb.IntegerProperty()	
