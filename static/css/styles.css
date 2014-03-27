@@ -332,5 +332,11 @@ footer .panel {
     font-style: bold;
     letter-spacing: 1px;
   }
+
+a.navbar-brand {
+  font-size: 30px;
+
+}
+
 }
 

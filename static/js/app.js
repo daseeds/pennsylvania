@@ -31,7 +31,7 @@ $(document).ready(function() {
     pagination: true,
     hashchange: true,
     scrollable: true,
-    play: 4000,
+    play: 6000,
   });
 
 /*  document.ontouchmove = function(e) {
