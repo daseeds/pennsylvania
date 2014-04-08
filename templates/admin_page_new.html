@@ -152,6 +152,50 @@
 						<input type="hidden" name="page_id" value="{{page.key.id()}}"/>
 						{{ forms.submit_button('Save') }}
 					</form>
+					{% if block.get().pagination == "price-pic-left" %}
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Prices</label>
+
+						<div class="col-sm-10">
+							<div class="table-responsive">
+
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Nb guests</th>
+											<th>price</th>
+											<th>action</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for price in block.get().prices %}
+										<tr>
+
+											<td></td>
+											<td>{{price.get().nb_guests}}</td>
+											<td>{{price.get().price}}</td>
+											<td>
+												<a href="/admin/page/{{page.key.id()}}/block/{{ block.get().key.id() }}/price/{{price.get().key.id()}}/delete" class="btn btn-danger" name="delete">Delete</a>
+												<input type="hidden" name="page_id" value="{{page.key.id()}}"/>
+												<a href="/admin/page/{{page.key.id()}}/block/{{ block.get().key.id() }}/price/{{price.get().key.id()}}/moveup" class="btn btn-primary" name="delete">Move Up</a>
+											</td>
+												
+										</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+
+							</div>
+						</div>
+					</div>
+					<form method="post" class="form-horizontal" role="form" action="/admin/page/{{page.key.id()}}/block/{{ block.get().key.id() }}/price/new">
+					{{ forms.input('nb guests', 'nb_guests') }}
+					{{ forms.input('price', 'price') }}
+					{{ forms.submit_button('Add new price in table') }}
+					</form>
+
+					{% endif %}
 					{% if block.get().picture %}
 					<img width="150px" src="/serve/{{block.get().picture.get().size_max}}"  class="img-responsive img-thumbnail">
 					<a href="/admin/block/{{block.id()}}/picture/{{block.get().picture.id()}}/delete?return-to=/admin/page/{{ page.key.id() }}" class="btn btn-danger" name="delete">Delete</a>

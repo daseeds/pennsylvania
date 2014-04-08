@@ -7,7 +7,7 @@ NORMAL = 1
 DROPDOWN = 2
 
 pagination_choice = ["jumbo", "right", "left", "jumbo_left", "white", "slides"]
-block_choice = ["no-pic", "pic-left", "pic-right", "widget", "video", "full-video", "map", "price-pic-left"]
+block_choice = ["no-pic", "pic-left", "pic-right", "widget", "video", "full-video", "map", "price-pic-left", "price-pic-right"]
 
 # class SubMenu(ndb.Model):
 # 	order = ndb.IntegerProperty()	
@@ -28,6 +28,10 @@ class Picture(ndb.Model):
 	caption = ndb.StringProperty(default="")
 	etag = ndb.StringProperty(default="")
 
+class Price(ndb.Model):
+	nb_guests = ndb.IntegerProperty()
+	price = ndb.StringProperty()
+
 class Block(ndb.Model):
 	title = ndb.StringProperty()
 	subtitle = ndb.StringProperty()
@@ -36,6 +40,7 @@ class Block(ndb.Model):
 	picture = ndb.KeyProperty(Picture)
 	widget = ndb.TextProperty(default="")
 	widget_script = ndb.TextProperty(default="")
+	prices = ndb.KeyProperty(Price, repeated=True)
 
 class Page(ndb.Model):
 	locale = ndb.KeyProperty(Locale, required=True)
@@ -55,6 +60,8 @@ class LocaleDict(ndb.Model):
 	locale = ndb.KeyProperty(Locale, required=True)
 	name = ndb.StringProperty(required=True)
 	value = ndb.StringProperty(required=True)
+
+
 
 
 # test = Locale(

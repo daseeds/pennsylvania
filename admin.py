@@ -9,7 +9,7 @@ import webapp2
 from webapp2_extras.routes import RedirectRoute
 from webapp2_extras import jinja2
 from functools import wraps
-from models import Locale, Page, Menu, pagination_choice, Picture, block_choice, Block, LocaleDict
+from models import Locale, Page, Menu, pagination_choice, Picture, block_choice, Block, LocaleDict, Price
 
 from google.appengine.api import images
 from google.appengine.api import users
@@ -303,6 +303,54 @@ class AdminPictureUpdate(AdminBaseHandler):
 		memcache.flush_all()
 		return self.redirect('/admin/page/{0}'.format(self.request.get('page_id')))
 
+class AdminBlockPriceNew(AdminBaseHandler):
+	def post(self, page_id, block_id):
+		price = Price()
+		price.nb_guests = int(self.request.get('nb_guests'))
+		price.price = self.request.get('price')
+		price.put()
+
+		block = Block.get_by_id(int(block_id))
+		block.prices.append(ndb.Key(Price, price.key.id()))
+		block.put()
+
+		page = Page.get_by_id(page_id)
+		page.modification_author = users.get_current_user()
+		page.put()
+		memcache.flush_all()
+		return self.redirect('/admin/page/{0}'.format(page_id))
+
+class AdminBlockPriceDelete(AdminBaseHandler):
+	def get(self, page_id, block_id, price_id):
+		price_key = ndb.Key(Price, int(price_id))
+		block = Block.get_by_id(int(block_id))
+
+		block.prices.remove(price_key)
+		block.put()
+
+		price_key.delete()
+
+		page = Page.get_by_id(page_id)
+		page.modification_author = users.get_current_user()
+		page.put()
+		memcache.flush_all()
+		return self.redirect('/admin/page/{0}'.format(page_id))
+
+class AdminBlockPriceMoveUp(AdminBaseHandler):
+	def get(self, page_id, block_id, price_id):
+		price = Price.get_by_id(int(price_id))
+		block = Block.get_by_id(int(block_id))
+
+		a = block.prices.index(ndb.Key(Price, int(price_id)))
+
+		block.prices[a-1], block.prices[a] =  block.prices[a],  block.prices[a-1]
+		block.put()
+
+		page = Page.get_by_id(page_id)
+		page.modification_author = users.get_current_user()
+		page.put()
+		memcache.flush_all()
+		return self.redirect('/admin/page/{0}'.format(page_id))
 
 class AdminViewLocale(AdminBaseHandler):
 	def get(self, locale_id):

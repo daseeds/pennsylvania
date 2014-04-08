@@ -157,27 +157,64 @@
 						<h2>{{block.get().title}}</h2>
 						<p class="lead">{{block.get().subtitle}}</p>
 						<div class="list-group">
+						  {% for price in block.get().prices %}
 						  <a data-toggle="modal" data-target="#myModal" class="list-group-item list-group-item-info">
-						  	<span class="badge">90 €</span>
+						  	<span class="badge">{{price.get().price}}</span>
 						  	<!-- <div class="pull-right"><p >90 €</p></div> -->
-						  	<div data-toggle="tooltip" data-placement="left" data-original-title="Default tooltip" title="Tooltip on left">
+						  	<div data-toggle="tooltip" data-placement="left" data-original-title="Default tooltip" title="">
+						  		{% for number in range(price.get().nb_guests) %}
 						  		<span class="glyphicon glyphicon-user"></span>
-						  		<span class="glyphicon glyphicon-user"></span>
+						  		{% endfor %}
 						  	</div>
-						  </a>
-						  <a data-toggle="modal" data-target="#myModal" class="list-group-item list-group-item-info">
-						  	<span class="badge">80 €</span>
-						  	<!-- <div class="pull-right"><p class="lead">80 €</p></div> -->
-						  	<span class="glyphicon glyphicon-user"></span></a>
-						  <a data-toggle="modal" data-target="#myModal" class="list-group-item list-group-item-info"><span class="badge">120 €</span><span class="glyphicon glyphicon-user"></span><span class="glyphicon glyphicon-user"></span><span class="glyphicon glyphicon-user"></span></a>
+						  </a>						  	
+
+						  {% endfor %}
 						</div>
 						{{block.get().content|safe}}
 
 						{{block.get().widget|safe}}
-
-					
+				
 			</div> 
 		
+		</div>
+	</div>
+</div>
+{% endif %}
+{% if block.get().pagination == "price-pic-right" %}
+<div class="pane">
+	<div class="container">
+		<div class="row-fluid">
+
+			<div class="col-lg-7">
+			
+						<h2>{{block.get().title}}</h2>
+						<p class="lead">{{block.get().subtitle}}</p>
+						<div class="list-group">
+						  {% for price in block.get().prices %}
+						  <a data-toggle="modal" data-target="#myModal" class="list-group-item list-group-item-info">
+						  	<span class="badge">{{price.get().price}}</span>
+						  	<!-- <div class="pull-right"><p >90 €</p></div> -->
+						  	<div data-toggle="tooltip" data-placement="left" data-original-title="Default tooltip" title="">
+						  		{% for number in range(price.get().nb_guests) %}
+						  		<span class="glyphicon glyphicon-user"></span>
+						  		{% endfor %}
+						  	</div>
+						  </a>						  	
+
+						  {% endfor %}
+						</div>
+						{{block.get().content|safe}}
+
+						{{block.get().widget|safe}}
+				
+			</div> 
+			<div class="col-lg-5">
+				{% if block.get().picture %}
+				<img class="img-responsive" src="/serve/{{block.get().picture.get().size_max}}">
+				{% else %}
+				<img class="img-responsive" src="http://placehold.it/350x350">
+				{% endif %}
+			</div> 
 		</div>
 	</div>
 </div>
