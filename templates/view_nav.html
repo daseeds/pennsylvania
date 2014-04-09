@@ -33,19 +33,6 @@
               {% endif %}
             {% endif %}
             {% endfor %}
-<!--             <li class="active"><a href="index.html">The Manor </a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Rooms <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="latour">La Tour</a></li>
-                <li><a href="#">Badldaquin</a></li>
-                <li><a href="#">Exotique</a></li>
-                <li><a href="#">Family Suite</a></li>
-              </ul>
-            </li>
-            <li><a href="#contact">The Garden </a></li>
-            <li><a href="#contact">Surrounding </a></li>
-            <li></li> -->
 
           </ul>
 
@@ -80,17 +67,16 @@
         <h4 class="modal-title" id="myModalLabel">{{ forms.extract_dict('Book', dictionary) }}</h4>
       </div>
       <div class="modal-body">
-        <div class="vcard">
-          <p class="fn"><a class="url" href="#">Le Manoir de Juganville</a></p>
-          <p class="adr">
-            <span class="street-address">39 Les Mézières</span><br>
-            <span class="region">Saint Martin de Varreville</span><br>
-            <span class="postal-code">50480</span><br>
-            <span class="country-name">France</span><br>
-          </p>
-          <p class="tel"><a href="tel:+33233950197">+33 2 33 95 01 97</a></p>
-          <p class="tel"><a href="tel:+33631677201">+33 6 31 67 72 01</a></p>
-          <a class="email" href="mailto:manoirjuganville@gmail.com">manoirjuganville@gmail.com</a>
+        <div itemscope itemtype="http://schema.org/Organization">
+          <span itemprop="name">Le Manoir de Juganville</span>
+          <div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+            <span itemprop="streetAddress">39 Les Mézières</span><br>
+            <span itemprop="postalCode">50480</span><br>
+            <span itemprop="addressLocality">Saint Martin de Varreville, France</span><br>
+          </div>
+          <a href="tel:+33233950197"><span itemprop="telephone">+33 2 33 95 01 97</span></a><br>
+          <a href="tel:+33631677201"><span itemprop="telephone">+33 6 31 67 72 01</span></a><br>
+          <a class="email" href="mailto:manoirjuganville@gmail.com"><span itemprop="email">manoirjuganville@gmail.com</span></a>
         </div>
         <hr>
         {{ forms.extract_dict('To book a room in Le Manoir de Juganville, give us a call (french and english spoken), or write us a message using the box below. You can also write us a mail, anyway you choose to contact us, it is our great pleasure to answer and reply your requests.', dictionary) }}
