@@ -67,7 +67,7 @@
         <h4 class="modal-title" id="myModalLabel">{{ forms.extract_dict('Book', dictionary) }}</h4>
       </div>
       <div class="modal-body">
-        <div itemscope itemtype="http://schema.org/Organization">
+        <div itemscope itemtype="http://schema.org/BedAndBreakfast">
           <span itemprop="name">Le Manoir de Juganville</span>
           <div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
             <span itemprop="streetAddress">39 Les Mézières</span><br>
@@ -77,6 +77,8 @@
           <a href="tel:+33233950197"><span itemprop="telephone">+33 2 33 95 01 97</span></a><br>
           <a href="tel:+33631677201"><span itemprop="telephone">+33 6 31 67 72 01</span></a><br>
           <a class="email" href="mailto:manoirjuganville@gmail.com"><span itemprop="email">manoirjuganville@gmail.com</span></a>
+          Price Range: <span itemprop="priceRange">$$</span>
+          Currency: <span itemprop="currenciesAccepted">EUR</span>
         </div>
         <hr>
         {{ forms.extract_dict('To book a room in Le Manoir de Juganville, give us a call (french and english spoken), or write us a message using the box below. You can also write us a mail, anyway you choose to contact us, it is our great pleasure to answer and reply your requests.', dictionary) }}
