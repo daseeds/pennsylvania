@@ -152,7 +152,7 @@
 						<input type="hidden" name="page_id" value="{{page.key.id()}}"/>
 						{{ forms.submit_button('Save') }}
 					</form>
-					{% if block.get().pagination == "price-pic-left" %}
+					{% if block.get().pagination == "price-pic-left" or block.get().pagination == "price-pic-right" %}
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Prices</label>
 
@@ -200,7 +200,7 @@
 					<img width="150px" src="/serve/{{block.get().picture.get().size_max}}"  class="img-responsive img-thumbnail">
 					<a href="/admin/block/{{block.id()}}/picture/{{block.get().picture.id()}}/delete?return-to=/admin/page/{{ page.key.id() }}" class="btn btn-danger" name="delete">Delete</a>
 					{% endif %}
-					{% if block.get().pagination == "pic-left" or block.get().pagination == "pic-right" %}
+					{% if block.get().pagination == "pic-left" or block.get().pagination == "pic-right" or block.get().pagination == "price-pic-left" or block.get().pagination == "price-pic-right" %}
 					<form class="form-horizontal" role="form"  action="{{upload_url}}" enctype="multipart/form-data" method="post">
 						<input type="file" class="btn btn-primary" name="picture"/> Picture MUST be 350x350 (sinon c'est pas beau)
 						<input type="hidden" name="block_id" value="{{block.id()}}"/>
