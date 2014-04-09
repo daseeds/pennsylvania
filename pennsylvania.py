@@ -173,11 +173,11 @@ class MailSender(BaseHandler):
 			return self.redirect('/{0}/{1}#myModal'.format(locale_id, page_id))
 
 		mail.send_mail(sender="Manoir De Juganville <manoirjuganville@gmail.com>",
-              to="Manoir De Juganville <cyril.jean@gmail.com>",
+              to="Manoir De Juganville <manoirjuganville@gmail.com>",
               subject="Booking from juganville.com",
               cc=self.request.get('email'),
               body="""
-mail from: {3}
+email from: {3}
 {2}
 
 locale: {0}
