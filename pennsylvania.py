@@ -176,6 +176,7 @@ class MailSender(BaseHandler):
               to="Manoir De Juganville <manoirjuganville@gmail.com>",
               subject="Booking from juganville.com",
               cc=self.request.get('email'),
+              reply_to=self.request.get('email'),
               body=u"""
 email from: {3}
 {2}
