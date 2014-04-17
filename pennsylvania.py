@@ -54,14 +54,56 @@ class BaseHandler(webapp2.RequestHandler):
 	def render_error(self, message):
 		logging.exception("Error 500: {0}".format(message))
 		self.response.write("Error 500: {0}".format(message))
-		return self.response.set_status(500)		
+		return self.response.set_status(500)
 
+	def get_locales(self):
+		locales = memcache.get('locales')
+		if locales is None:
+			locales = Locale.query().fetch()
+			memcache.set(key="locales", value=locales)
+		return locales
 
 
 class MainPage(BaseHandler):
-	def get(self):
-		page = Page.query(Page.locale==ndb.Key(Locale, "fr"), Page.menu==ndb.Key(Menu, "the-manor")).fetch()
-		self.redirect('/{0}/{1}'.format("fr", page[0].key.id()))
+	def resolve_locale(self):
+
+		# build a list of available locales from ndb
+		available_locales_query = self.get_locales()
+		available_locales = list()
+		for locale in available_locales_query:
+			available_locales.append(locale.key.id())
+
+		# using code from Cristian Perez <http://cpr.name> http://stackoverflow.com/questions/8514017/how-to-decide-the-language-from-cookies-headers-session-in-webapp2
+		acceptLanguage = self.request.headers.get('Accept-Language')
+		if acceptLanguage:
+			acceptLanguage = acceptLanguage.replace(' ', '')
+			# Extract all locales and their preference (q)
+			locales = []  # e.g. [('es', 1.0), ('en-US', 0.8), ('en', 0.6)]
+			for locale_str in acceptLanguage.split(','):
+				locale_parts = locale_str.split(';q=')
+				locale = locale_parts[0]
+				if len(locale_parts) > 1:
+					locale_q = float(locale_parts[1])
+				else:
+					locale_q = 1.0
+					locales.append((locale, locale_q))
+			# Sort locales according to preference
+			locales.sort(key=lambda locale_tuple: locale_tuple[1], reverse=True)
+			# Find first language match (prefix e.g. 'en' for 'en-GB')
+			for locale in locales:
+				for available_locale in available_locales:
+					if locale[0].split('-')[0].lower() == available_locale.lower():
+						return available_locale.lower()
+		return 'en'
+
+   	def get(self):
+
+		locale_id = self.resolve_locale()
+
+		page = Page.query(Page.locale==ndb.Key(Locale, locale_id), Page.menu==ndb.Key(Menu, "the-manor")).fetch()
+		self.redirect('/{0}/{1}'.format(locale_id, page[0].key.id()))
+
+
 
 class LocaleViewer(BaseHandler):
 	def get(self, locale_id):
@@ -160,12 +202,7 @@ class ModelViewer(BaseHandler):
 			memcache.set(key="{0}".format(page_id), value=page)
 		return page				
 	
-	def get_locales(self):
-		locales = memcache.get('locales')
-		if locales is None:
-			locales = Locale.query().fetch()
-			memcache.set(key="locales", value=locales)
-		return locales
+
 
 class MailSender(BaseHandler):
 	def post(self, locale_id, page_id):
