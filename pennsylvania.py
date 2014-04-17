@@ -64,6 +64,7 @@ class BaseHandler(webapp2.RequestHandler):
 		return locales
 
 
+
 class MainPage(BaseHandler):
 	def resolve_locale(self):
 
@@ -108,6 +109,10 @@ class MainPage(BaseHandler):
 class LocaleViewer(BaseHandler):
 	def get(self, locale_id):
 		page = Page.query(Page.locale==ndb.Key(Locale, locale_id), Page.menu==ndb.Key(Menu, "the-manor")).fetch()
+
+		if len(page) == 0:
+			self.abort(404)
+
 		self.redirect('/{0}/{1}'.format(locale_id, page[0].key.id()))
 
 class ModelViewer(BaseHandler):
@@ -118,7 +123,7 @@ class ModelViewer(BaseHandler):
 		for menu in menus:
 			localized_page = Page.query(Page.locale==ndb.Key(Locale, locale_id), Page.menu==ndb.Key(Menu, menu.key.id())).fetch()
 			if len(localized_page) == 0:
-				return self.render_error("locale \"{0}\" is not available for menu \"{1}\"".format(locale_id, menu.key.id()))
+				self.abort(404)
 
 			# enhance with submenu id and name, easier to render
 			menu.page = localized_page[0]
@@ -141,7 +146,7 @@ class ModelViewer(BaseHandler):
 		page = self.get_page_by_id(page_id)
 
 		if page is None:
-			return self.render_error("\"{0}\" returned None object".format(page_id))
+			self.abort(404)
 
 		pages = self.get_pages(locale_id)
 		if not pages:
@@ -287,3 +292,5 @@ application = webapp2.WSGIApplication([
 	webapp2.Route(r'/<locale_id:([^/]+)?>/<page_id:([^/]+)?>/email', MailSender),
 
 	], debug=True)
+
+
