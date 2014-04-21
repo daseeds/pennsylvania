@@ -13,7 +13,7 @@
   <meta property="og:title" content="{{page.name}} - Le Manoir de Juganville" />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="http://www.juganville.com/{{locale_id}}/{{page.key.id()}}/" />
-  <meta property="og:image" content="http://www.juganville.com/serve/{{page.backgrounds[0].get().size_max}}" />
+  
   <meta property="og:site_name" content="Le Manoir de Juganville"/>
   <meta property="og:description" content="{{page.description}}" />
 
@@ -21,13 +21,6 @@
 
   <link rel="stylesheet" href="/static/css/layout.css">
   <link href="/static/js/libs/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Bootstrap core CSS -->
-  
-  <!-- <link href="//netdna.bootstrapcdn.com/bootswatch/3.1.0/slate/bootstrap.min.css" rel="stylesheet"> -->
-<!--   <link href="//netdna.bootstrapcdn.com/bootswatch/3.0.2/flatly/bootstrap.min.css" rel="stylesheet">
- -->  
-
-
   {% endblock head %}
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -62,28 +55,7 @@
       
     </div>
   </div> -->
-<!--   <div id="slides">
-    <ul class="slides-container">
-      {% for background in page.backgrounds %}
-      <li>
-        <img src="/serve/{{background.get().size_max}}" alt="">
-         <div class="slides-text-container">
-          <h1>{{background.get().caption}}</h1>
-         </div>
-      </li>
-      {% endfor %}
-    </ul>
-    <nav class="slides-navigation">
-      <a href="#" class="next">
-        <i class="icon-chevron-right"></i>
-      </a>
-      <a href="#" class="prev">
-        <i class="icon-chevron-left"></i>
-      </a>
-    </nav>
-  </div>
- -->
-  
+
 
 
 <!--     <div class="bg-primary main-separator">

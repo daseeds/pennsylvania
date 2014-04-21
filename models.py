@@ -8,6 +8,7 @@ DROPDOWN = 2
 
 pagination_choice = ["jumbo", "right", "left", "jumbo_left", "white", "slides"]
 block_choice = ["no-pic", "pic-left", "pic-right", "widget", "video", "full-video", "map", "price-pic-left", "price-pic-right", "heads-up", "slides", "full-pic"]
+kind_choice = ["nav", "nav-button", "footer"]
 
 # class SubMenu(ndb.Model):
 # 	order = ndb.IntegerProperty()	
@@ -16,6 +17,7 @@ class Menu(ndb.Model):
 	order = ndb.IntegerProperty()
 	parent = ndb.KeyProperty(kind='Menu')
 	submenus = ndb.KeyProperty(kind='Menu', repeated=True)
+	kind = ndb.StringProperty(default="nav", choices=kind_choice)
 	
 
 class Locale(ndb.Model):

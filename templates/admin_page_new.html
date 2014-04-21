@@ -300,7 +300,11 @@
 												{% endfor %}
 											</select>
 											</td>
-											<td><img width="150px" src="/serve/{{headsup.get().picture.get().size_max}}" class="img-responsive img-thumbnail"></td>
+											<td>
+												{% if headsup.get().picture %}
+												<img width="150px" src="/serve/{{headsup.get().picture.get().size_max}}" class="img-responsive img-thumbnail">
+												{% endif %}
+											</td>
 											<td><a href="/admin/page/{{page.key.id()}}/block/{{block.id()}}/headsup/{{headsup.get().key.id()}}/delete" class="btn btn-xs btn-primary" name="delete">Delete</a>
 											<a href="/admin/page/{{page.key.id()}}/block/{{block.id()}}/headsup/{{headsup.get().key.id()}}/moveup" class="btn btn-xs btn-danger" name="delete">Move Up</a>
 											<button type="submit" class="btn btn-xs btn-success ">Save</button>

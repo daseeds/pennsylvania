@@ -9,7 +9,7 @@ import webapp2
 from webapp2_extras.routes import RedirectRoute
 from webapp2_extras import jinja2
 from functools import wraps
-from models import Locale, Page, Menu, pagination_choice, Picture, block_choice, Block, LocaleDict, Price, HeadsUp
+from models import Locale, Page, Menu, pagination_choice, Picture, block_choice, Block, LocaleDict, Price, HeadsUp, kind_choice
 
 from google.appengine.api import images
 from google.appengine.api import users
@@ -96,6 +96,7 @@ class AdminMain(AdminBaseHandler):
 			'menu_list': menu_list,
 			'localedicts' : localedicts,
 			'locale_list': locale_list,
+			'kind_choice' : kind_choice,
 		}	
 		return self.render_response('admin_main.html', **template_values)
 
@@ -134,6 +135,7 @@ class AdminNewLocale(AdminBaseHandler):
 class AdminNewMenu(AdminBaseHandler):
 	def post(self):
 		menu = Menu(id=self.request.get('menu_id'))
+		menu.kind = self.request.get('kind')
 		menu.order = 1
 		menu.put()
 		return self.redirect('/admin')

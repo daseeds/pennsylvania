@@ -90,6 +90,7 @@
 
 				<form class="form-horizontal" role="form" action="/admin/menu/new" method="post">
 					{{ forms.input('menu unique id', 'menu_id') }}
+					{{ forms.select('menu kind', 'kind', kind_choice) }}
 					{{ forms.submit_button('New menu') }}
 				</form>
 			</div>

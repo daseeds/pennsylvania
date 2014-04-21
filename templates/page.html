@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 
-
 {% if page.pagination == "jumbo_left" %}
 <!-- <div class="row">
 	<div class="col-md-4 pull-left">
@@ -276,7 +275,6 @@
 {% if block.pagination == "heads-up" %}
 <div class="pane">
 <div class="container">
-      <!-- Three columns of text below the carousel -->
       <div class="row">
       	{% for headsUp in block.headsUps %}
         <div class="col-lg-3 col-md-3 col-sm-6">
@@ -284,9 +282,9 @@
           <h2>{{headsUp.get().title}}</h2>
           <p>{{headsUp.get().content}}</p>
           <p><a class="btn btn-success" href="/{{locale_id}}/{{map_menu_page_locale[headsUp.get().menu.id()]}}" role="button">View details &raquo;</a></p>
-        </div><!-- /.col-lg-4 --> 
+        </div>
         {% endfor %} 	
-      </div><!-- /.row -->
+      </div>
 </div>
 </div>
 {% endif %}
@@ -326,7 +324,7 @@
 
 {% endblock content %}
 {% block script %}
-{% for block in page.blocks %}
+{% for block in blocks %}
 	{{block.widget_script|safe}}
 {% endfor %}
 {% endblock script %}
