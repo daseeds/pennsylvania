@@ -93,18 +93,18 @@
 </div>
 {% endif %}
 
-{% for block in page.blocks %}
-{% if block.get().pagination == "no-pic" %}
+{% for block in blocks %}
+{% if block.pagination == "no-pic" %}
 <div class="pane">
 	<div class="container">
 		<div class="row-fluid">
 			<div class="col-lg-12">
 			
-						<h2>{{block.get().title}}</h2>
+						<h2>{{block.title}}</h2>
 						<p class="lead">{{page.lead}}</p>
-						{{block.get().content|safe}}
+						{{block.content|safe}}
 
-						{{block.get().widget|safe}}
+						{{block.widget|safe}}
 					
 			</div> 
 		
@@ -112,24 +112,24 @@
 	</div>
 </div>
 {% endif %}
-{% if block.get().pagination == "pic-left" %}
+{% if block.pagination == "pic-left" %}
 <div class="pane">
 	<div class="container">
 		<div class="row-fluid">
 			<div class="col-lg-5">
-				{% if block.get().picture %}
-				<img class="img-responsive" src="/serve/{{block.get().picture.get().size_max}}">
+				{% if block.picture %}
+				<img class="img-responsive" src="/serve/{{block.picture.get().size_max}}">
 				{% else %}
 				<img class="img-responsive" src="http://placehold.it/350x350">
 				{% endif %}
 			</div> 
 			<div class="col-lg-7">
 			
-						<h2>{{block.get().title}}</h2>
-						<p class="lead">{{block.get().subtitle}}</p>
-						{{block.get().content|safe}}
+						<h2>{{block.title}}</h2>
+						<p class="lead">{{block.subtitle}}</p>
+						{{block.content|safe}}
 
-						{{block.get().widget|safe}}
+						{{block.widget|safe}}
 					
 			</div> 
 		
@@ -137,23 +137,23 @@
 	</div>
 </div>
 {% endif %}
-{% if block.get().pagination == "price-pic-left" %}
+{% if block.pagination == "price-pic-left" %}
 <div class="pane">
 	<div class="container">
 		<div class="row-fluid">
 			<div class="col-lg-5">
-				{% if block.get().picture %}
-				<img class="img-responsive" src="/serve/{{block.get().picture.get().size_max}}">
+				{% if block.picture %}
+				<img class="img-responsive" src="/serve/{{block.picture.get().size_max}}">
 				{% else %}
 				<img class="img-responsive" src="http://placehold.it/350x350">
 				{% endif %}
 			</div> 
 			<div class="col-lg-7">
 			
-						<h2>{{block.get().title}}</h2>
-						<p class="lead">{{block.get().subtitle}}</p>
+						<h2>{{block.title}}</h2>
+						<p class="lead">{{block.subtitle}}</p>
 						<div class="list-group">
-						  {% for price in block.get().prices %}
+						  {% for price in block.prices %}
 						  <a data-toggle="modal" data-target="#myModal" class="list-group-item list-group-item-info">
 						  	<span class="badge">{{price.get().price}}</span>
 						  	<!-- <div class="pull-right"><p >90 €</p></div> -->
@@ -166,9 +166,9 @@
 
 						  {% endfor %}
 						</div>
-						{{block.get().content|safe}}
+						{{block.content|safe}}
 
-						{{block.get().widget|safe}}
+						{{block.widget|safe}}
 				
 			</div> 
 		
@@ -176,17 +176,17 @@
 	</div>
 </div>
 {% endif %}
-{% if block.get().pagination == "price-pic-right" %}
+{% if block.pagination == "price-pic-right" %}
 <div class="pane">
 	<div class="container">
 		<div class="row-fluid">
 
 			<div class="col-lg-7">
 			
-						<h2>{{block.get().title}}</h2>
-						<p class="lead">{{block.get().subtitle}}</p>
+						<h2>{{block.title}}</h2>
+						<p class="lead">{{block.subtitle}}</p>
 						<div class="list-group">
-						  {% for price in block.get().prices %}
+						  {% for price in block.prices %}
 						  <a data-toggle="modal" data-target="#myModal" class="list-group-item list-group-item-info">
 						  	<span class="badge">{{price.get().price}}</span>
 						  	<!-- <div class="pull-right"><p >90 €</p></div> -->
@@ -199,14 +199,14 @@
 
 						  {% endfor %}
 						</div>
-						{{block.get().content|safe}}
+						{{block.content|safe}}
 
-						{{block.get().widget|safe}}
+						{{block.widget|safe}}
 				
 			</div> 
 			<div class="col-lg-5">
-				{% if block.get().picture %}
-				<img class="img-responsive" src="/serve/{{block.get().picture.get().size_max}}">
+				{% if block.picture %}
+				<img class="img-responsive" src="/serve/{{block.picture.get().size_max}}">
 				{% else %}
 				<img class="img-responsive" src="http://placehold.it/350x350">
 				{% endif %}
@@ -215,23 +215,23 @@
 	</div>
 </div>
 {% endif %}
-{% if block.get().pagination == "pic-right" %}
+{% if block.pagination == "pic-right" %}
 <div class="pane">
 	<div class="container">
 		<div class="row-fluid">
 
 			<div class="col-lg-7">
 			
-						<h2>{{block.get().title}}</h2>
-						<p class="lead">{{block.get().subtitle}}</p>
-						{{block.get().content|safe}}
+						<h2>{{block.title}}</h2>
+						<p class="lead">{{block.subtitle}}</p>
+						{{block.content|safe}}
 
-						{{block.get().widget|safe}}
+						{{block.widget|safe}}
 					
 			</div> 
 			<div class="col-lg-5">
-				{% if block.get().picture %}
-				<img class="img-responsive" src="/serve/{{block.get().picture.get().size_max}}">
+				{% if block.picture %}
+				<img class="img-responsive" src="/serve/{{block.picture.get().size_max}}">
 				{% else %}
 				<img class="img-responsive" src="http://placehold.it/350x350">
 				{% endif %}
@@ -240,7 +240,7 @@
 	</div>
 </div>
 {% endif %}
-{% if block.get().pagination == "map" %}
+{% if block.pagination == "map" %}
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3WbMksq6Er0id9QJD6o-bkIp7XSHSgLc&sensor=false"></script>
 <script>
 
@@ -255,23 +255,70 @@
    </div>
  </div>
 {% endif %}
-{% if block.get().pagination == "widget" %}
+{% if block.pagination == "widget" %}
 <div class="pane">
 	<div class="container">
 		<div class="row-fluid">
 
 			<div class="col-lg-12">
 				
-						<h2>{{block.get().title}}</h2>
-						<p class="lead">{{block.get().subtitle}}</p>
-						{{block.get().content|safe}}
+						<h2>{{block.title}}</h2>
+						<p class="lead">{{block.subtitle}}</p>
+						{{block.content|safe}}
 
-						{{block.get().widget|safe}}
+						{{block.widget|safe}}
 				
 			</div> 
 		</div>
 	</div>
 </div>
+{% endif %}
+{% if block.pagination == "heads-up" %}
+<div class="pane">
+<div class="container">
+      <!-- Three columns of text below the carousel -->
+      <div class="row">
+      	{% for headsUp in block.headsUps %}
+        <div class="col-lg-3 col-md-3 col-sm-6">
+          <img class="img-thumbnail img-responsive" src="/serve/{{headsUp.get().picture.get().size_max}}" alt="{{headsUp.get().title}}" >
+          <h2>{{headsUp.get().title}}</h2>
+          <p>{{headsUp.get().content}}</p>
+          <p><a class="btn btn-success" href="/{{locale_id}}/{{map_menu_page_locale[headsUp.get().menu.id()]}}" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-4 --> 
+        {% endfor %} 	
+      </div><!-- /.row -->
+</div>
+</div>
+{% endif %}
+{% if block.pagination == "slides" %}
+<div id="slides">
+    <ul class="slides-container">
+      {% for background in block.backgrounds %}
+      <li>
+        <img src="/serve/{{background.get().size_max}}" alt="">
+         <div class="slides-text-container">
+          <h1>{{background.get().caption}}</h1>
+         </div>
+      </li>
+      {% endfor %}
+    </ul>
+    <nav class="slides-navigation">
+      <a href="#" class="next">
+        <i class="icon-chevron-right"></i>
+      </a>
+      <a href="#" class="prev">
+        <i class="icon-chevron-left"></i>
+      </a>
+    </nav>
+  </div>
+{% endif %}
+{% if block.pagination == "full-pic" %}
+
+  <div class="container-fluid">
+    <div class="row-fluid">
+    	<img class="img-responsive full-pic" src="/serve/{{block.picture.get().size_max}}"  >
+   </div>
+ </div>
 {% endif %}
 {% endfor %}
 
@@ -280,6 +327,6 @@
 {% endblock content %}
 {% block script %}
 {% for block in page.blocks %}
-	{{block.get().widget_script|safe}}
+	{{block.widget_script|safe}}
 {% endfor %}
 {% endblock script %}

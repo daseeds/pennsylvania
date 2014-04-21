@@ -28,11 +28,6 @@
  -->  
 
 
-  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!--[if lt IE 9]>
-  <script src="../../assets/js/html5shiv.js"></script>
-  <script src="../../assets/js/respond.min.js"></script>
-  <![endif]-->
   {% endblock head %}
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -49,7 +44,9 @@
 <body>
 
 {% include 'view_nav.html' %}
-  
+          <!--[if lt IE 10]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+            <![endif]-->
 <!--   <div class="logo-brand">
     
     <a href="http://juganville.com"><img src="/static/img/manoir-logo.svg"></a>
@@ -57,15 +54,15 @@
     
   </div>
  -->
-  <div class="loading-container">
+<!--   <div class="loading-container">
     <p>Le Manoir de Juganville</p>
     <div class="inner-loading-container">
 
       <div class="pulse"></div>
       
     </div>
-  </div>
-  <div id="slides">
+  </div> -->
+<!--   <div id="slides">
     <ul class="slides-container">
       {% for background in page.backgrounds %}
       <li>
@@ -85,13 +82,13 @@
       </a>
     </nav>
   </div>
-
+ -->
   
 
 
-    <div class="bg-primary main-separator">
+<!--     <div class="bg-primary main-separator">
       <img src="/static/img/white-swirl-divider.png" alt="-=*=-">
-    </div>
+    </div> -->
 
 
 

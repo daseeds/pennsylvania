@@ -118,6 +118,9 @@ class LocaleViewer(BaseHandler):
 class ModelViewer(BaseHandler):
 	def get(self, locale_id, page_id):
 
+		## Menu / Page dict for current locale
+		map_menu_page_locale = dict()
+
 		## Menus
 		menus = self.get_menus()
 		for menu in menus:
@@ -127,6 +130,10 @@ class ModelViewer(BaseHandler):
 
 			# enhance with submenu id and name, easier to render
 			menu.page = localized_page[0]
+
+			# create a dict for menu to locale page mapping
+			map_menu_page_locale[menu.key.id()] = localized_page[0].key.id()
+
 			if (menu.submenus):
 				menu.submenus_enhanced = []
 				for submenu in menu.submenus:
@@ -167,6 +174,9 @@ class ModelViewer(BaseHandler):
 				localized_page = Page.query(Page.locale==this_locale, Page.menu==this_menu).fetch()
 				locale.page = localized_page[0]
 
+		## Block
+		blocks = self.get_blocks_by_page(page_id)
+
 		template_values = {
 			'page': page,
 			'locale_id': locale_id,
@@ -174,8 +184,22 @@ class ModelViewer(BaseHandler):
 			'pages': pages,
 			'locales': locales,
 			'dictionary' : dictionary,
+			'blocks' : blocks,
+			'map_menu_page_locale' : map_menu_page_locale,
 		}	
 		return self.render_response('page.html', **template_values)
+
+	def get_blocks_by_page(self, page_id):
+		blocks = memcache.get('blocks {0}'.format(page_id))
+		if blocks is None:
+			page = self.get_page_by_id(page_id)
+			# blocks_key_list = list()
+			# for block_key in page.blocks:
+			# 	blocks_key_list.append(block_key)
+
+			blocks = ndb.get_multi(page.blocks)
+			memcache.set(key='blocks {0}'.format(page_id), value=blocks)
+		return blocks
 
 	def get_dict(self, locale_id):
 		localedict = memcache.get('localedict {0}'.format(locale_id))
@@ -280,6 +304,10 @@ application = webapp2.WSGIApplication([
     webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/block/<block_id:([^/]+)?>/price/new', AdminBlockPriceNew),
     webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/block/<block_id:([^/]+)?>/price/<price_id:([^/]+)?>/delete', AdminBlockPriceDelete),
     webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/block/<block_id:([^/]+)?>/price/<price_id:([^/]+)?>/moveup', AdminBlockPriceMoveUp),
+    webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/block/<block_id:([^/]+)?>/headsup/new', AdminBlockHeadsUpNew),
+    webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/block/<block_id:([^/]+)?>/headsup/<headsup_id:([^/]+)?>/delete', AdminBlockHeadsUpDelete),
+    webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/block/<block_id:([^/]+)?>/headsup/<headsup_id:([^/]+)?>/moveup', AdminBlockHeadsUpMoveUp),
+    webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/block/<block_id:([^/]+)?>/headsup/<headsup_id:([^/]+)?>/update', AdminBlockHeadsUpUpdate),
     webapp2.Route(r'/admin/picture/<picture_id:([^/]+)?>/delete', AdminPictureDelete),
     webapp2.Route(r'/admin/picture/<picture_id:([^/]+)?>/update', AdminPictureUpdate),
     webapp2.Route(r'/admin/block/<block_id:([^/]+)?>/update', AdminBlockUpdate),

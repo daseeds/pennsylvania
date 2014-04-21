@@ -9,7 +9,7 @@ import webapp2
 from webapp2_extras.routes import RedirectRoute
 from webapp2_extras import jinja2
 from functools import wraps
-from models import Locale, Page, Menu, pagination_choice, Picture, block_choice, Block, LocaleDict, Price
+from models import Locale, Page, Menu, pagination_choice, Picture, block_choice, Block, LocaleDict, Price, HeadsUp
 
 from google.appengine.api import images
 from google.appengine.api import users
@@ -281,11 +281,19 @@ class AdminBlockPictureDelete(AdminBaseHandler):
 
 class AdminPictureDelete(AdminBaseHandler):
 	def get(self, picture_id):
-		page = Page.get_by_id(self.request.get('page_id'))
+		
 		pic = ndb.Key(Picture, int(picture_id))
-		page.backgrounds.remove(pic)
+		page = Page.get_by_id(self.request.get('page_id'))
+		if (self.request.get('block_id')):
+			block = Block.get_by_id(int(self.request.get('block_id')))
+			block.backgrounds.remove(pic)
+			block.put()
+		else:
+			page.backgrounds.remove(pic)
+
 		page.modification_author = users.get_current_user()
 		page.put()
+
 		self.picture_delete(picture_id)
 		memcache.flush_all()
 		return self.redirect('/admin/page/{0}'.format(self.request.get('page_id')))
@@ -302,6 +310,33 @@ class AdminPictureUpdate(AdminBaseHandler):
 
 		memcache.flush_all()
 		return self.redirect('/admin/page/{0}'.format(self.request.get('page_id')))
+
+class AdminBlockBackgroundDelete(AdminBaseHandler):
+	def get(self, page_id, block_id, picture_id):
+		page = Page.get_by_id(page_id)
+		pic = ndb.Key(Picture, int(picture_id))
+		block = Block.get_by_id(int(block_id))
+		block.backgrounds.remove(pic)
+		page.modification_author = users.get_current_user()
+		page.put()
+		block.put()
+		self.picture_delete(picture_id)
+		memcache.flush_all()
+		return self.redirect('/admin/page/{0}'.format(page_id))
+
+class AdminBlockBackgroundUpdate(AdminBaseHandler):
+	def post(self, page_id, block_id, picture_id):
+		pic = Picture.get_by_id(int(picture_id))
+		pic.caption = self.request.get('caption')
+		pic.put()
+
+		page = Page.get_by_id(page_id)
+		page.modification_author = users.get_current_user()
+		page.put()
+
+		memcache.flush_all()
+		return self.redirect('/admin/page/{0}'.format(page_id))
+
 
 class AdminBlockPriceNew(AdminBaseHandler):
 	def post(self, page_id, block_id):
@@ -344,6 +379,75 @@ class AdminBlockPriceMoveUp(AdminBaseHandler):
 		a = block.prices.index(ndb.Key(Price, int(price_id)))
 
 		block.prices[a-1], block.prices[a] =  block.prices[a],  block.prices[a-1]
+		block.put()
+
+		page = Page.get_by_id(page_id)
+		page.modification_author = users.get_current_user()
+		page.put()
+		memcache.flush_all()
+		return self.redirect('/admin/page/{0}'.format(page_id))
+
+class AdminBlockHeadsUpNew(AdminBaseHandler):
+	def post(self, page_id, block_id):
+		headsup = HeadsUp()
+		headsup.title = self.request.get('title')
+		headsup.content = self.request.get('content')
+		headsup.menu = ndb.Key(Menu, self.request.get('menu_id'))
+		headsup.put()
+
+		block = Block.get_by_id(int(block_id))
+		block.headsUps.append(ndb.Key(HeadsUp, headsup.key.id()))
+		block.put()
+
+		page = Page.get_by_id(page_id)
+		page.modification_author = users.get_current_user()
+		page.put()
+		memcache.flush_all()
+		return self.redirect('/admin/page/{0}'.format(page_id))
+
+
+class AdminBlockHeadsUpUpdate(AdminBaseHandler):
+	def post(self, page_id, block_id, headsup_id):
+		headsup = HeadsUp.get_by_id(int(headsup_id))
+		headsup.title = self.request.get('title')
+		headsup.content = self.request.get('content')
+		headsup.menu = ndb.Key(Menu, self.request.get('menu_id'))
+		headsup.put()
+
+		page = Page.get_by_id(page_id)
+		page.modification_author = users.get_current_user()
+		page.put()
+		memcache.flush_all()
+		return self.redirect('/admin/page/{0}'.format(page_id))
+
+class AdminBlockHeadsUpDelete(AdminBaseHandler):
+	def get(self, page_id, block_id, headsup_id):
+		headsup = HeadsUp.get_by_id(int(headsup_id))
+		headsup_key = ndb.Key(HeadsUp, int(headsup_id))
+		block = Block.get_by_id(int(block_id))
+
+		if headsup.picture is not None:
+			self.picture_delete(headsup.picture.id)
+
+		block.headsUps.remove(headsup_key)
+		block.put()
+
+		headsup_key.delete()
+
+		page = Page.get_by_id(page_id)
+		page.modification_author = users.get_current_user()
+		page.put()
+		memcache.flush_all()
+		return self.redirect('/admin/page/{0}'.format(page_id))
+
+class AdminBlockHeadsUpMoveUp(AdminBaseHandler):
+	def get(self, page_id, block_id, headsup_id):
+		headsup = HeadsUp.get_by_id(int(headsup_id))
+		block = Block.get_by_id(int(block_id))
+
+		a = block.headsUps.index(ndb.Key(HeadsUp, int(headsup_id)))
+
+		block.headsUps[a-1], block.headsUps[a] =  block.headsUps[a],  block.headsUps[a-1]
 		block.put()
 
 		page = Page.get_by_id(page_id)
@@ -410,15 +514,22 @@ class AdminUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 		pic = Picture(size_max=blob_info.key())
 		pic.put()
 
-		if (self.request.get('page_id')):
+		if (self.request.get('action') == "PageBackground"):
 			page = Page.get_by_id(self.request.get('page_id'))
 			page.backgrounds.append(ndb.Key(Picture, pic.key.id()))
 			page.put()
-		if (self.request.get('block_id')):
+		if (self.request.get('action') == "BlockPicture"):
 			block = Block.get_by_id(int(self.request.get('block_id')))
 			block.picture = ndb.Key(Picture, pic.key.id())
 			block.put()
-
+		if (self.request.get('action') == "BlockBackground"):
+			block = Block.get_by_id(int(self.request.get('block_id')))
+			block.backgrounds.append(ndb.Key(Picture, pic.key.id()))
+			block.put()
+		if (self.request.get('action') == "HeadsUpPicture"):
+			headsup = HeadsUp.get_by_id(int(self.request.get('headsup_id')))
+			headsup.picture = ndb.Key(Picture, pic.key.id())
+			headsup.put()
 		memcache.flush_all()
 
 		self.redirect(self.request.get('return-to'))

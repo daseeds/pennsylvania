@@ -105,6 +105,7 @@
 								<form class="form-horizontal" role="form"  action="{{upload_url}}" enctype="multipart/form-data" method="post">
 									<input type="file" class="btn btn-primary" name="picture"/>
 									<input type="hidden" name="page_id" value="{{page.key.id()}}"/>
+									<input type="hidden" name="action" value="PageBackground"/>
 									<input type="hidden" name="return-to" value="/admin/page/{{ page.key.id() }}"/>
 									<button type="submit" class="btn btn-primary ">Add new image</button>
 								</form>
@@ -128,7 +129,7 @@
 
 		<div class="col-lg-12">
 			<div class="panel panel-default">
-				<div class="panel-heading">Block</div>
+				<div class="panel-heading">Block {{block.get().pagination}}</div>
 				<div class="panel-body">
 
 					<form method="post" class="form-horizontal" role="form" action="/admin/block/{{ block.get().key.id() }}/update">
@@ -140,15 +141,17 @@
 					      	<a href="/admin/page/{{page.key.id()}}/{{block.id()}}/delete" class="btn btn-xs btn-danger">Delete</a></p>
 					    </div>
 					  </div>
-						{{ forms.input('title', 'title', block.get().title) }}
-						{{ forms.input('subtitle', 'subtitle', block.get().subtitle) }}
-						{{ forms.select('Select type', 'pagination', block_choice, block.get().pagination) }}
-						{{ forms.textarea_ckeditor('content', 'content', block.get().content|safe, block.id()) }}
-						{% if block.get().pagination == "widget" %}
-							{{ forms.textarea_code('widget', 'widget', block.get().widget|safe, 3) }}
+					    {{ forms.select('Select type', 'pagination', block_choice, block.get().pagination) }}
+					  	{% if block.get().pagination != "slides" and block.get().pagination != "heads-up" %}
+							{{ forms.input('title', 'title', block.get().title) }}
+							{{ forms.input('subtitle', 'subtitle', block.get().subtitle) }}
+							
+							{{ forms.textarea_ckeditor('content', 'content', block.get().content|safe, block.id()) }}
+							{% if block.get().pagination == "widget" %}
+								{{ forms.textarea_code('widget', 'widget', block.get().widget|safe, 3) }}
+							{% endif %}
+							{{ forms.textarea_code('script (page bottom)', 'widget_script', block.get().widget_script|safe, 20) }}
 						{% endif %}
-						{{ forms.textarea_code('script (page bottom)', 'widget_script', block.get().widget_script|safe, 20) }}
-						
 						<input type="hidden" name="page_id" value="{{page.key.id()}}"/>
 						{{ forms.submit_button('Save') }}
 					</form>
@@ -200,13 +203,131 @@
 					<img width="150px" src="/serve/{{block.get().picture.get().size_max}}"  class="img-responsive img-thumbnail">
 					<a href="/admin/block/{{block.id()}}/picture/{{block.get().picture.id()}}/delete?return-to=/admin/page/{{ page.key.id() }}" class="btn btn-danger" name="delete">Delete</a>
 					{% endif %}
-					{% if block.get().pagination == "pic-left" or block.get().pagination == "pic-right" or block.get().pagination == "price-pic-left" or block.get().pagination == "price-pic-right" %}
+					{% if block.get().pagination == "pic-left" or block.get().pagination == "pic-right" or block.get().pagination == "price-pic-left" or block.get().pagination == "price-pic-right" or block.get().pagination == "full-pic" %}
 					<form class="form-horizontal" role="form"  action="{{upload_url}}" enctype="multipart/form-data" method="post">
 						<input type="file" class="btn btn-primary" name="picture"/> Picture MUST be 350x350 (sinon c'est pas beau)
 						<input type="hidden" name="block_id" value="{{block.id()}}"/>
+						<input type="hidden" name="action" value="BlockPicture"/>
 						<input type="hidden" name="return-to" value="/admin/page/{{ page.key.id() }}"/>
 
 						<button type="submit" class="btn btn-primary ">Add image</button>
+					</form>
+					{% endif %}
+					{% if block.get().pagination == "slides" %}
+					<div class="form-group">
+					<label class="col-sm-2 control-label">Background images</label>
+
+					<div class="col-sm-10">
+						<h2 class="sub-header">Picture list for this slide block</h2>
+						<div class="table-responsive">
+
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Caption</th>
+										<th>Size</th>
+										<th>Preview</th>
+										<th>Delete</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for background in block.get().backgrounds %}
+									<tr>
+										<form  role="form"  action="/admin/picture/{{background.get().key.id()}}/update" enctype="multipart/form-data" method="post">
+											<td>1</td>
+											<td><input type="text" class="form-control" value="{{background.get().caption}}" name="caption" ></td>
+											<td></td>
+											<td><img width="150px" src="/serve/{{background.get().size_max}}"  class="img-responsive img-thumbnail"></td>
+											<td><a href="/admin/picture/{{background.get().key.id()}}/delete?block_id={{block.id()}}&page_id={{page.key.id()}}" class="btn btn-danger" name="delete">Delete</a>
+												<input type="hidden" name="page_id" value="{{page.key.id()}}"/>
+												<button type="submit" class="btn btn-success ">Save</button></td>
+											</form>
+										</tr>
+
+										{% endfor %}
+									</tbody>
+								</table>
+								
+							</div>
+
+
+							<div class="col-sm-10">
+
+							</div>
+							<div class="col-sm-offset-2 col-sm-10">
+								<form class="form-horizontal" role="form"  action="{{upload_url}}" enctype="multipart/form-data" method="post">
+									<input type="file" class="btn btn-primary" name="picture"/>
+									<input type="hidden" name="block_id" value="{{block.id()}}"/>
+									<input type="hidden" name="action" value="BlockBackground"/>
+									<input type="hidden" name="return-to" value="/admin/page/{{ page.key.id() }}"/>
+									<button type="submit" class="btn btn-primary ">Add new image</button>
+								</form>
+							</div>
+						</div>
+
+						
+					</div>			
+					{% endif %}
+					{% if block.get().pagination == "heads-up" %}
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Heads Up</label>
+
+						<div class="col-sm-10">
+							<div class="table-responsive">
+
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Title</th>
+											<th>Content</th>
+											<th>Link</th>
+											<th>Picture</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for headsup in block.get().headsUps %}
+										<tr>
+											<form  role="form"  action="/admin/page/{{page.key.id()}}/block/{{block.id()}}/headsup/{{headsup.get().key.id()}}/update" enctype="multipart/form-data" method="post">
+											<td>1</td>
+											<td><input type="text" class="form-control" value="{{headsup.get().title}}" name="title" ></td>
+											<td><textarea class="form-control" rows="5" name="content" >{{headsup.get().content}}</textarea></td>
+											<td>
+											<select value="{{headsup.get().menu.id()}}" size="5" name="menu_id" class="form-control">
+												{% for item in menu_list %}
+												<option {% if headsup.get().menu.id()==item %}selected{% endif %} value="{{item}}">{{item}}</option>
+												{% endfor %}
+											</select>
+											</td>
+											<td><img width="150px" src="/serve/{{headsup.get().picture.get().size_max}}" class="img-responsive img-thumbnail"></td>
+											<td><a href="/admin/page/{{page.key.id()}}/block/{{block.id()}}/headsup/{{headsup.get().key.id()}}/delete" class="btn btn-xs btn-primary" name="delete">Delete</a>
+											<a href="/admin/page/{{page.key.id()}}/block/{{block.id()}}/headsup/{{headsup.get().key.id()}}/moveup" class="btn btn-xs btn-danger" name="delete">Move Up</a>
+											<button type="submit" class="btn btn-xs btn-success ">Save</button>
+											</form>
+											<form class="form-horizontal" role="form"  action="{{upload_url}}" enctype="multipart/form-data" method="post">
+												<input type="file" class="btn btn-xs btn-primary" name="picture"/> Use small picture (max 800*600)
+												<input type="hidden" name="block_id" value="{{block.id()}}"/>
+												<input type="hidden" name="headsup_id" value="{{headsup.get().key.id()}}"/>
+												<input type="hidden" name="action" value="HeadsUpPicture"/>
+												<input type="hidden" name="return-to" value="/admin/page/{{ page.key.id() }}"/>
+
+												<button type="submit" class="btn btn-xs btn-primary ">Add image</button>
+											</form>
+											</td>
+										</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+
+							</div>
+						</div>
+					</div>
+					<form method="post" class="form-horizontal" role="form" action="/admin/page/{{page.key.id()}}/block/{{block.id()}}/headsup/new">
+					{{ forms.input('title', 'title') }}
+					{{ forms.input('content', 'content') }}
+					{{ forms.select('Select menu', 'menu_id', menu_list, page.menu.id()) }}
+					{{ forms.submit_button('Add heads up') }}
 					</form>
 					{% endif %}
 				</div>
