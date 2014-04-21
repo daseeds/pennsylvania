@@ -147,7 +147,7 @@
 							{{ forms.input('subtitle', 'subtitle', block.get().subtitle) }}
 							
 							{{ forms.textarea_ckeditor('content', 'content', block.get().content|safe, block.id()) }}
-							{% if block.get().pagination == "widget" %}
+							{% if block.get().pagination == "widget" or block.get().pagination == "widget-right" %}
 								{{ forms.textarea_code('widget', 'widget', block.get().widget|safe, 3) }}
 							{% endif %}
 							{{ forms.textarea_code('script (page bottom)', 'widget_script', block.get().widget_script|safe, 20) }}

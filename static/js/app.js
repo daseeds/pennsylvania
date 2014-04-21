@@ -87,9 +87,11 @@ function initialize() {
       '<h1 id="firstHeading" class="firstHeading">Le Manoir de Juganville</h1>'+
       '<div id="bodyContent">'+
       '<p>39 Les Mézières,<br>Saint Martin de Varreville,<br>France<br>'+
-      '<a href="juganville.com">juganville.com</a><br>02 33 95 01 97</p>'+
-      '<a href="https://plus.google.com/116401793659720366058/about?hl=en">'+
-      'more info</a> '+
+      '<a target="_blank" href="http://juganville.com">juganville.com</a><br>02 33 95 01 97</p>'+
+      '<a target="_blank" href="https://plus.google.com/116401793659720366058/about?hl=en">'+
+      'more info</a><br> '+ 
+      '<a target="_blank" href="https://www.google.com/maps/dir//49.422673,-1.257685/@49.4226527,-1.3263512,12z/data=!3m1!4b1!4m4!4m3!1m0!1m1!4e1?hl=en">'+
+      'directions</a>' +
       '</p>'+
       '</div>'+
       '</div>';
@@ -103,14 +105,14 @@ var infowindow = new google.maps.InfoWindow({
     position:  manoirLatLng.latLng,
     map: map,
     title: "Le Manoir de Juganville",
-    icon: iconBase + 'blue.png',
+    /*icon: iconBase + 'blue.png',*/
     content: "<p>Le Manoir de Juganville</p>"
   });
 
-  infowindow.open(map,marker);
+  infowindow.open(map, marker);
 
   google.maps.event.addListener(marker, 'click', function() {
-    infowindow.open(map,marker);
+    infowindow.open(map, marker);
   });
 
 }

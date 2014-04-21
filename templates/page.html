@@ -272,6 +272,27 @@
 	</div>
 </div>
 {% endif %}
+{% if block.pagination == "widget-right" %}
+<div class="pane">
+	<div class="container">
+		<div class="row-fluid">
+			<div class="col-lg-7">
+			
+				<h2>{{block.title}}</h2>
+				<p class="lead">{{block.subtitle}}</p>
+				{{block.content|safe}}
+					
+					
+			</div> 
+			<div class="col-lg-5">
+				{{block.widget|safe}}
+			</div> 		
+
+
+		</div>
+	</div>
+</div>
+{% endif %}
 {% if block.pagination == "heads-up" %}
 <div class="pane">
 <div class="container">
