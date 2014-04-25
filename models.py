@@ -7,7 +7,7 @@ NORMAL = 1
 DROPDOWN = 2
 
 pagination_choice = ["jumbo", "right", "left", "jumbo_left", "white", "slides"]
-block_choice = ["no-pic", "pic-left", "pic-right", "widget", "widget-right", "video", "full-video", "map", "price-pic-left", "price-pic-right", "heads-up", "slides", "full-pic"]
+block_choice = ["no-pic", "pic-left", "pic-right", "widget", "widget-right", "video", "full-video", "map", "price-pic-left", "price-pic-right", "heads-up", "slides", "full-pic", "parallax"]
 kind_choice = ["nav", "nav-button", "footer"]
 
 # class SubMenu(ndb.Model):

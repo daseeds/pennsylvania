@@ -6,7 +6,7 @@ body {
 
   height: 100%;
  /* color: #FFFFFF;*/
- padding-top: 61px; /* pad the top navbar */
+ /*padding-top: 61px;  pad the top navbar */
 }
 
 .white {
@@ -23,6 +23,12 @@ a.navbar-brand {
 
 	font-family: "garamond-premier-pro", serif;
 	font-style: italic;
+}
+
+.fixed-book {
+	position: fixed;
+	right: 30px;
+	bottom: 0;
 }
 
 .browsehappy {
@@ -308,8 +314,71 @@ line-height: 37px;
 
 }
 
+ .scroll-arrow {
+  display: block;
+  color: black;
+  text-shadow: 1px 1px #FFFFFF;
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  margin-left: -75px;
+  width: 150px;
+  z-index: 10;
+  height: 30px;
+  text-align: center;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+ .scroll-arrow:before {
+  /*font-family: 'squarespace-ui-font';*/
+  
+  font-family: "FontAwesome";
+  src: url('/static/font-awesome/fonts/fontawesome-webfont.eot');
+  src: url('/static/font-awesome/fonts/fontawesome-webfont.eot?#iefix') format('eot'), url('/static/font-awesome/fonts/fontawesome-webfont.woff') format('woff'), url('/static/font-awesome/fonts/fontawesome-webfont.ttf') format('truetype'), url('/static/font-awesome/fonts/fontawesome-webfont.svg#FontAwesomeRegular') format('svg');
+  font-style: normal;
+  speak: none;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  content: "\f13a";
+  text-align: center;
+  display: inline-block;
+  vertical-align: middle;
 
-
+}
+ .scroll-arrow:before {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+}
+ .scroll-arrow:before {
+  text-align: center;
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg);
+  cursor: pointer;
+}
+ .scroll-arrow span {
+  display: none;
+  font-family: "Verdana", "Geneva", "sans-serif";
+  letter-spacing: 2px;
+  font-size: 12px;
+  text-align: center;
+}
+ .scroll-arrow:hover span {
+  display: block;
+}
+.scroll-arrow:hover:before {
+  display: none;
+}
+.scroll-arrow,
+{
+  display: block;
+}
 
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 992px) {   

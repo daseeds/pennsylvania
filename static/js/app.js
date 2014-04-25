@@ -31,7 +31,7 @@ $(document).ready(function() {
     pagination: true,
     hashchange: true,
     scrollable: true,
-    play: 6000,
+    /*play: 6000,*/
   });
 
 /*  document.ontouchmove = function(e) {
@@ -51,6 +51,12 @@ $(document).ready(function() {
 
 
   //$('#slides').superslides('start')
+
+  //var s = skrollr.init();
+  			$.stellar({
+				horizontalScrolling: false,
+				verticalOffset: 40
+			});
 });
 
 
