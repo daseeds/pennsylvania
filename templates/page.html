@@ -332,8 +332,8 @@
       </li>
       {% endfor %}
     </ul>
-    <!-- <div class="scroll-arrow"><span>{{ forms.extract_dict('SCROLL DOWN', dictionary) }}</span></div> -->
-    <nav class="slides-navigation">
+
+	<nav class="slides-navigation">
       <a href="#" class="next">
         <i class="icon-chevron-right"></i>
       </a>
@@ -341,7 +341,11 @@
         <i class="icon-chevron-left"></i>
       </a>
     </nav>
-    <div class="mask">&nbsp;</div>
+	<div class="slides-arrow">
+	   <span>{{ forms.extract_dict('SCROLL DOWN', dictionary) }}</span>
+	</div>  
+
+    
   </div>
 {% endif %}
 {% if block.pagination == "full-pic" %}
@@ -381,6 +385,11 @@
     	<div class="mask">&nbsp;</div>
    </div>
  </div>
+{% endif %}
+{% if block.pagination == "floating-book" %}
+<section>
+	<a class="btn btn-success fixed-book" href="/en/book">Book</a>
+</section> 
 {% endif %}
 {% endfor %}
 
