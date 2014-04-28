@@ -303,7 +303,7 @@
           <img class="img-thumbnail img-responsive" src="/serve/{{headsUp.get().picture.get().size_max}}" alt="{{headsUp.get().title}}" >
           <h2>{{headsUp.get().title}}</h2>
           <p>{{headsUp.get().content}}</p>
-          <p><a class="btn btn-success" href="/{{locale_id}}/{{map_menu_page_locale[headsUp.get().menu.id()]}}" role="button">View details &raquo;</a></p>
+          <p><a class="btn btn-success" href="/{{locale_id}}/{{map_menu_page_locale[headsUp.get().menu.id()]}}" role="button">{{ forms.extract_dict('View details', dictionary) }} &raquo;</a></p>
         </div>
         {% endfor %} 	
       </div>
