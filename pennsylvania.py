@@ -317,7 +317,7 @@ application = webapp2.WSGIApplication([
     webapp2.Route(r'/', MainPage),
     webapp2.Route(r'/<locale_id:([^/]+)?>/<page_id:([^/]+)?>', ModelViewer),
     webapp2.Route(r'/<locale_id:([^/]+)?>', LocaleViewer),
-	webapp2.Route(r'/<locale_id:([^/]+)?>/<page_id:([^/]+)?>/email', MailSender),
+	# webapp2.Route(r'/<locale_id:([^/]+)?>/<page_id:([^/]+)?>/email', MailSender),
 
 	], debug=True)
 
