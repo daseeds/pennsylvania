@@ -285,9 +285,10 @@ footer a.gitedefrance {
   background-position-y: -94px;
 }
 
-img {
+/*img {
   pointer-events: none;
 }
+*/
 
 /*iframe{
   pointer-events: none;
