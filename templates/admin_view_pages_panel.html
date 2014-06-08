@@ -2,14 +2,14 @@
 	<div class="panel-heading">Pages - <a href="/admin/page/new">New page</a></div>
 	<div class="panel-body">
 		<div class="list-group">
-			{% for page in pages %}
+			{%- for page in pages %}
 			<a href="/admin/page/{{ page.key.id() }}"  class="list-group-item">
 				<span class="label label-primary">{{page.menu.id()}}</span>
 				<span class="label label-info">{{page.locale.id()}}</span>
 				{{ page.key.id() }}
-				<span class="label label-warning">Modified {% if page.modification_date != None %}{{page.modification_date.strftime("%Y-%m-%d %H:%M:%S")}}{% endif %} by {{page.modification_author}}</span>
+				<span class="label label-warning">Modified {%- if page.modification_date != None %}{{page.modification_date.strftime("%Y-%m-%d %H:%M:%S")}}{%- endif %} by {{page.modification_author}}</span>
 			</a>
-			{% endfor %}
+			{%- endfor %}
 		</div>
 	</div>
 </div>		
