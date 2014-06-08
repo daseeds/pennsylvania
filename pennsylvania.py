@@ -63,6 +63,14 @@ class BaseHandler(webapp2.RequestHandler):
 			memcache.set(key="locales", value=locales)
 		return locales
 
+	def get_pages(self, locale_id):
+		pages = memcache.get("pages {0}".format(locale_id))
+		if pages is None:
+			pages = Page.query(Page.locale==ndb.Key(Locale, locale_id)).fetch()
+			if not pages:
+				return None
+			memcache.set(key="pages {0}".format(locale_id), value=pages)
+		return pages	
 
 
 class MainPage(BaseHandler):
@@ -215,14 +223,7 @@ class ModelViewer(BaseHandler):
 			memcache.set(key="menus", value=menus)
 		return menus
 
-	def get_pages(self, locale_id):
-		pages = memcache.get("pages {0}".format(locale_id))
-		if pages is None:
-			pages = Page.query(Page.locale==ndb.Key(Locale, locale_id)).fetch()
-			if not pages:
-				return None
-			memcache.set(key="pages {0}".format(locale_id), value=pages)
-		return pages					
+				
 		
 	def get_page_by_id(self, page_id):
 		page = memcache.get("{0}".format(page_id))
@@ -231,7 +232,17 @@ class ModelViewer(BaseHandler):
 			memcache.set(key="{0}".format(page_id), value=page)
 		return page				
 	
+class SiteMap(BaseHandler):
+	def get(self):
+		pages = Page.query().fetch()
 
+		for page in pages:
+			page.fullurl = "http://juganville.com/{0}/{1}".format(page.locale.id(), page.key.id())
+
+		template_values = {
+			'pages': pages,
+		}	
+		return self.render_response('sitemap.xml', **template_values)
 
 class MailSender(BaseHandler):
 	def post(self, locale_id, page_id):
@@ -286,6 +297,7 @@ class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
 
 
 application = webapp2.WSGIApplication([
+	webapp2.Route(r'/sitemap.xml', SiteMap),
 	webapp2.Route(r'/serve/<:([^/]+)?>', ServeHandler, name='ServeHandler'),
     webapp2.Route(r'/admin', AdminMain),
     webapp2.Route(r'/admin/locale/new', AdminNewLocale),
@@ -317,7 +329,7 @@ application = webapp2.WSGIApplication([
     webapp2.Route(r'/', MainPage),
     webapp2.Route(r'/<locale_id:([^/]+)?>/<page_id:([^/]+)?>', ModelViewer),
     webapp2.Route(r'/<locale_id:([^/]+)?>', LocaleViewer),
-	# webapp2.Route(r'/<locale_id:([^/]+)?>/<page_id:([^/]+)?>/email', MailSender),
+
 
 	], debug=True)
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+   
+    <loc>http://www.example.com/foo.html</loc> 
+     
+    <image:image>
+       
+       <image:loc>http://example.com/image.jpg</image:loc> 
+    
+    <video:video>     
+      <video:content_loc>
+        http://www.example.com/video123.flv
+      
+      <video:player_loc allow_embed="yes" autoplay="ap=1">
+        http://www.example.com/videoplayer.swf?video=123
+      
+      <video:thumbnail_loc>.
+        http://www.example.com/thumbs/123.jpg
+      </video:thumbnail_loc>
+      <video:title>Des steaks à point à tous les coups</video:title>  
+      <video:description>
+        Des steaks à point à tous les coups
+      </video:description>
+    </video:video>
+    
