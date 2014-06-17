@@ -86,6 +86,8 @@ class AdminMain(AdminBaseHandler):
 
 		pages = Page.query().fetch()
 
+		pictures = Picture.query().fetch()
+
 		template_values = {
 			'url': users.create_logout_url(self.request.uri),
 			'url_linktext': 'Logout',
@@ -97,6 +99,7 @@ class AdminMain(AdminBaseHandler):
 			'localedicts' : localedicts,
 			'locale_list': locale_list,
 			'kind_choice' : kind_choice,
+			'pictures' : pictures,
 		}	
 		return self.render_response('admin_main.html', **template_values)
 
@@ -303,15 +306,21 @@ class AdminPictureDelete(AdminBaseHandler):
 class AdminPictureUpdate(AdminBaseHandler):
 	def post(self, picture_id):
 		pic = Picture.get_by_id(int(picture_id))
-		pic.caption = self.request.get('caption')
+		if self.request.get('caption'):
+			pic.caption = self.request.get('caption')
+		if self.request.get('name'):
+			pic.name = self.request.get('name')
 		pic.put()
 
-		page = Page.get_by_id(unicode(self.request.get('page_id')))
-		page.modification_author = users.get_current_user()
-		page.put()
+		if self.request.get('page_id'):
+			page = Page.get_by_id(unicode(self.request.get('page_id')))
+			page.modification_author = users.get_current_user()
+			page.put()
 
 		memcache.flush_all()
-		return self.redirect('/admin/page/{0}'.format(self.request.get('page_id')))
+		if self.request.get('page_id'):
+			return self.redirect('/admin/page/{0}'.format(self.request.get('page_id')))
+		return self.redirect('/admin')
 
 class AdminBlockBackgroundDelete(AdminBaseHandler):
 	def get(self, page_id, block_id, picture_id):

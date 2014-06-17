@@ -81,6 +81,37 @@
 				</form>
 			</div>
 		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">Pictures</div>
+			<div class="panel-body">
+				<div class="table-responsive">
+
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Name</th>
+								<th>Preview</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for picture in pictures %}
+							<tr>
+								<form  role="form"  action="/admin/picture/{{picture.key.id()}}/update" enctype="multipart/form-data" method="post">
+									<td></td>
+									<td><input type="text" class="form-control" value="{{picture.name}}" name="name" ></td>
+									<td><img width="150px" src="/serve/{{picture.size_max}}"  class="img-responsive img-thumbnail"></td>
+									<td>
+									<button type="submit" class="btn btn-primary ">Save</button></td>
+								</form>
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+					</div>
+			</div>
+		</div>		
 	</div>
 	<div class="col-md-4">
 			{% include 'admin_view_locales_panel.html' %}

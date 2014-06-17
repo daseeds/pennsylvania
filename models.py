@@ -29,6 +29,7 @@ class Picture(ndb.Model):
 	size_thumb = ndb.BlobKeyProperty()
 	caption = ndb.StringProperty(default="")
 	etag = ndb.StringProperty(default="")
+	name = ndb.StringProperty()
 
 class Price(ndb.Model):
 	nb_guests = ndb.IntegerProperty()
