@@ -6,6 +6,7 @@ pennsylvania
 
 TODO
 =====
+- add manual edition of customer feedback top right of first slide screen
 - rework the titles to avoid duplicate and increase relevance
 - check all description for each page
 - have a custom 404 with links to the site
