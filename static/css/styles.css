@@ -74,12 +74,64 @@ position: static;
 left: 90px;
 top: 13%;
 padding: 10px 20px;
-/*  position: relative;
-  text-align: center;
-  width: 100%;
-  padding-top: 25%;
-  padding-left:5%;
-  padding-right:5%;*/
+
+}
+
+.customer_feedback {
+  font-size: 16px;
+  /*font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;*/
+line-height: 1.3;
+  color: white;
+  background: rgba(0, 0, 0, 0.3);
+padding: 1px 10px;
+-webkit-box-shadow: 0 0 23px 5px rgba(0, 0, 0, 0.4);
+-moz-box-shadow: 0 0 23px 5px rgba(0, 0, 0, 0.4);
+box-shadow: 0 0 23px 5px rgba(0, 0, 0, 0.4);
+-webkit-border-radius: 3px;
+-moz-border-radius: 3px;
+-ms-border-radius: 3px;
+-o-border-radius: 3px;
+border-radius: 3px;
+position: fixed;
+right: 10px;
+max-width: 300px;
+}
+
+blockquote {
+  border-left: none;
+}
+
+blockquote:before {
+display: block;
+height: 0;
+content: "“";
+margin-left: -.7em;
+margin-bottom: .1em;
+font: italic 400%/1 Cochin,Georgia,"Times New Roman", serif;
+color: #18bc9c;
+}
+
+
+blockquote  cite {
+color: white;
+font-size: 14px;
+display: block;
+margin-top: 5px;
+font-style: italic;
+}
+
+blockquote  cite:before {
+content: "\2014 \2009";
+}
+
+.customer_feedback ul {
+list-style-type: none;
+}
+
+.customer_feedback ul li {
+font-size: 1.39058em;
+color: white;
+text-shadow: 0 1px 1px #555;
 }
 
 .slides-container h1 {
@@ -94,9 +146,7 @@ padding: 10px 20px;
   text-shadow: 0 1px 1px #000;
 }
 
-/*.slides-container {
-  text-shadow: 0 0 1px rgba(0,0,0,.05), 0 1px 2px rgba(0,0,0,.3);
-}*/
+
 
   .logo {
     display: none;
