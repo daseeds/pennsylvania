@@ -180,7 +180,7 @@ class AdminNewPage(AdminBaseHandler):
 		logging.info(self.request.get('menu_id'))
 		logging.info(self.request.get('page_id'))
 		logging.info(self.request.get('name'))
-		page = Page(id=self.request.get('page_id'), 
+		page = Page(id= unicode(self.request.get('page_id')), 
 					name = self.request.get('name'),
 					locale = ndb.Key(Locale, self.request.get('locale_id')),
 					menu = ndb.Key(Menu, self.request.get('menu_id')),
