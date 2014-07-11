@@ -21,7 +21,7 @@
 			<div class="panel-body">
 				<div class="list-group">
 					{% for menu in menus %}
-					<a href="/admin/{{ unicode(menu.key.id()) }}"  class="list-group-item">{{ unicode(menu.key.id()) }}</a>
+					<a href="/admin/{{menu.key.id()}}" class="list-group-item">{{menu.key.id()}}</a>
 					{% if menu.submenus %}
 					<div class="panel-body">
 						<div class="list-group">

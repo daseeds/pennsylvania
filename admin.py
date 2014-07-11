@@ -25,6 +25,7 @@ def jinja2_factory(app):
         })
 	j.environment.globals.update({
         'Locale': Locale,
+
         #'ndb': ndb, # could be used for ndb.OR in templates
         })
 	return j
@@ -85,6 +86,14 @@ class AdminMain(AdminBaseHandler):
 		localedicts = LocaleDict.query().fetch()
 
 		pages = Page.query().fetch()
+		for page in pages:
+			logging.info(page.key.id())
+			logging.info(page.key.urlsafe())
+			logging.info(page.key.app())
+			logging.info(type(page.key.id()))
+			logging.info(type(page.key.string_id()))
+			logging.info(page.name)
+			logging.info(type(page.name))
 
 		pictures = Picture.query().fetch()
 
@@ -180,7 +189,12 @@ class AdminNewPage(AdminBaseHandler):
 		logging.info(self.request.get('menu_id'))
 		logging.info(self.request.get('page_id'))
 		logging.info(self.request.get('name'))
-		page = Page(id= unicode(self.request.get('page_id')), 
+		s = self.request.get('page_id')
+		logging.info(type(s))
+		s.encode('utf-8')
+		logging.info(type(s))
+		#logging.info(self.request.get('page_id').encode('ascii').decode('utf-8'))
+		page = Page(id= self.request.get('page_id'), 
 					name = self.request.get('name'),
 					locale = ndb.Key(Locale, self.request.get('locale_id')),
 					menu = ndb.Key(Menu, self.request.get('menu_id')),
