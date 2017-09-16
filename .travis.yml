@@ -16,6 +16,8 @@ branches:
   - master
   - staging
 before_install:
+- openssl aes-256-cbc -K $encrypted_d1a02f5c23a8_key -iv $encrypted_d1a02f5c23a8_iv
+  -in credentials.tar.gz.enc -out credentials.tar.gz -d
 - openssl aes-256-cbc -K $encrypted_b28d4b4f6076_key -iv $encrypted_b28d4b4f6076_iv
   -in credentials.tar.gz.enc -out credentials.tar.gz -d
 - tar -xzf credentials.tar.gz
