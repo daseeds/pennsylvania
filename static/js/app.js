@@ -31,7 +31,7 @@ $(document).ready(function() {
     pagination: true,
     hashchange: true,
     scrollable: true,
-    play: 6000,
+    /*play: 6000,*/
   });
 
 /*  document.ontouchmove = function(e) {
@@ -51,12 +51,18 @@ $(document).ready(function() {
 
 
   //$('#slides').superslides('start')
+
+  //var s = skrollr.init();
+  			$.stellar({
+				horizontalScrolling: false,
+				verticalOffset: 40
+			});
 });
 
 
 
 var manoirLatLng = {
-    latLng: new google.maps.LatLng(49.4246006,-1.2569717),
+    latLng: new google.maps.LatLng(49.422673,-1.257685),
     label: "Le Manoir de Juganville"
 }
 
@@ -67,7 +73,7 @@ function initialize() {
   var map_canvas = document.getElementById("map-canvas");
   var map_options = {
           center: manoirLatLng.latLng,
-          zoom: 14,
+          zoom: 10,
           mapTypeId: google.maps.MapTypeId.ROADMAP,
           mapTypeControl: false,
           maxZoom: 20,
@@ -81,37 +87,40 @@ function initialize() {
     reference: 'CnRkAAAAGnBVNFDeQoOQHzgdOpOqJNV7K9-c5IQrWFUYD9TNhUmz5-aHhfqyKH0zmAcUlkqVCrpaKcV8ZjGQKzB6GXxtzUYcP-muHafGsmW-1CwjTPBCmK43AZpAwW0FRtQDQADj3H2bzwwHVIXlQAiccm7r4xIQmjt_Oqm2FejWpBxLWs3L_RoUbharABi5FMnKnzmRL2TGju6UA4k'
   };
 
-  var infowindow = new google.maps.InfoWindow();
-  var service = new google.maps.places.PlacesService(map);
+ var contentString = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h1 id="firstHeading" class="firstHeading">Le Manoir de Juganville</h1>'+
+      '<div id="bodyContent">'+
+      '<p>39 Les Mézières,<br>Saint Martin de Varreville,<br>France<br>'+
+      '<a target="_blank" href="http://juganville.com">juganville.com</a><br>02 33 95 01 97</p>'+
+      '<a target="_blank" href="https://plus.google.com/116401793659720366058/about?hl=en">'+
+      'more info</a><br> '+ 
+      '<a target="_blank" href="https://www.google.com/maps/dir//49.422673,-1.257685/@49.4226527,-1.3263512,12z/data=!3m1!4b1!4m4!4m3!1m0!1m1!4e1?hl=en">'+
+      'directions</a>' +
+      '</p>'+
+      '</div>'+
+      '</div>';
 
-  service.getDetails(request, function(place, status) {
-    if (status == google.maps.places.PlacesServiceStatus.OK) {
-      var marker = new google.maps.Marker({
-        map: map,
-        position: place.geometry.location
-      });
-      google.maps.event.addListener(marker, 'click', function() {
-        infowindow.setContent(place.name);
-        infowindow.open(map, this);
-      });
-    }
+var infowindow = new google.maps.InfoWindow({
+      content: contentString
   });
 
   var iconBase = 'http://google.com/mapfiles/ms/micons/';
   var marker = new google.maps.Marker({
     position:  manoirLatLng.latLng,
     map: map,
-    title: "cabinet",
-    icon: iconBase + 'blue.png',
-    content: "<p>920 Second Avenue S.<br /> Suite 1400 (International Centre II) <br />Minneapolis, MN 55402 <br />612-375-0077<p>Elevator Lobby located to the right of Caf&eacute; Patteen, we are on the 14th floor.</p>"
+    title: "Le Manoir de Juganville",
+    /*icon: iconBase + 'blue.png',*/
+    content: "<p>Le Manoir de Juganville</p>"
   });
+
+  infowindow.open(map, marker);
+
+  google.maps.event.addListener(marker, 'click', function() {
+    infowindow.open(map, marker);
+  });
+
 }
 
-function callback(results, status) {
-  if (status == google.maps.places.PlacesServiceStatus.OK) {
-    for (var i = 0; i < results.length; i++) {
-      var place = results[i];
-      createMarker(results[i]);
-    }
-  }
-}
+

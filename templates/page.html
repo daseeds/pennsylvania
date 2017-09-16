@@ -1,8 +1,8 @@
-{% extends "base.html" %}
-{% block content %}
+{%- import 'forms.html' as forms %}
+{%- extends "base.html" %}
+{%- block content %}
 
-
-{% if page.pagination == "jumbo_left" %}
+{%- if page.pagination == "jumbo_left" %}
 <!-- <div class="row">
 	<div class="col-md-4 pull-left">
 		<div class="jumbotron">
@@ -25,8 +25,8 @@
           <p><a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">View rooms <b class="caret"></b></a></p>
 	</div>
 </div>
-{% endif %}
-{% if page.pagination == "white" %}
+{%- endif %}
+{%- if page.pagination == "white" %}
 <div class="row white">
 	<div class="col-sm-8">
 		<h1>How to book accomodation :</h1>
@@ -61,8 +61,8 @@
 </div>
 
 
-{% endif %}
-{% if page.pagination == "jumbo" %}
+{%- endif %}
+{%- if page.pagination == "jumbo" %}
 <div class="jumbotron">
   <h1>{{page.title}}</h1>
   <p class="lead">{{page.lead}}</p>
@@ -70,12 +70,12 @@
   <p><button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#myModal">Book</button></p>
   <div class="alert alert-warning">{{page.content|safe}}</div>
 </div>
-{% endif %}
-{% if page.pagination == "right" %}
+{%- endif %}
+{%- if page.pagination == "right" %}
 
 
-{% endif %}
-{% if page.pagination == "left" %}
+{%- endif %}
+{%- if page.pagination == "left" %}
 <div class="row">
 	<div class="col-md-4 pull-left">
 
@@ -91,156 +91,156 @@
 
 	</div>
 </div>
-{% endif %}
+{%- endif %}
 
-{% for block in page.blocks %}
-{% if block.get().pagination == "no-pic" %}
+{%- for block in blocks %}
+{%- if block.pagination == "no-pic" %}
 <div class="pane">
 	<div class="container">
 		<div class="row-fluid">
 			<div class="col-lg-12">
 			
-						<h2>{{block.get().title}}</h2>
+						<h2>{{block.title}}</h2>
 						<p class="lead">{{page.lead}}</p>
-						{{block.get().content|safe}}
+						{{block.content|safe}}
 
-						{{block.get().widget|safe}}
+						{{block.widget|safe}}
 					
 			</div> 
 		
 		</div>
 	</div>
 </div>
-{% endif %}
-{% if block.get().pagination == "pic-left" %}
+{%- endif %}
+{%- if block.pagination == "pic-left" %}
 <div class="pane">
 	<div class="container">
 		<div class="row-fluid">
 			<div class="col-lg-5">
-				{% if block.get().picture %}
-				<img class="img-responsive" src="/serve/{{block.get().picture.get().size_max}}">
-				{% else %}
+				{%- if block.picture %}
+				<img class="img-responsive" src="/serve/{{block.picture.get().size_max}}">
+				{%- else %}
 				<img class="img-responsive" src="http://placehold.it/350x350">
-				{% endif %}
+				{%- endif %}
 			</div> 
 			<div class="col-lg-7">
 			
-						<h2>{{block.get().title}}</h2>
-						<p class="lead">{{block.get().subtitle}}</p>
-						{{block.get().content|safe}}
+						<h2>{{block.title}}</h2>
+						<p class="lead">{{block.subtitle}}</p>
+						{{block.content|safe}}
 
-						{{block.get().widget|safe}}
+						{{block.widget|safe}}
 					
 			</div> 
 		
 		</div>
 	</div>
 </div>
-{% endif %}
-{% if block.get().pagination == "price-pic-left" %}
+{%- endif %}
+{%- if block.pagination == "price-pic-left" %}
 <div class="pane">
 	<div class="container">
 		<div class="row-fluid">
 			<div class="col-lg-5">
-				{% if block.get().picture %}
-				<img class="img-responsive" src="/serve/{{block.get().picture.get().size_max}}">
-				{% else %}
+				{%- if block.picture %}
+				<img class="img-responsive" src="/serve/{{block.picture.get().size_max}}">
+				{%- else %}
 				<img class="img-responsive" src="http://placehold.it/350x350">
-				{% endif %}
+				{%- endif %}
 			</div> 
 			<div class="col-lg-7">
 			
-						<h2>{{block.get().title}}</h2>
-						<p class="lead">{{block.get().subtitle}}</p>
+						<h2>{{block.title}}</h2>
+						<p class="lead">{{block.subtitle}}</p>
 						<div class="list-group">
-						  {% for price in block.get().prices %}
-						  <a data-toggle="modal" data-target="#myModal" class="list-group-item list-group-item-info">
+						  {%- for price in block.prices %}
+						  <a class="list-group-item list-group-item-info">
 						  	<span class="badge">{{price.get().price}}</span>
 						  	<!-- <div class="pull-right"><p >90 €</p></div> -->
 						  	<div data-toggle="tooltip" data-placement="left" data-original-title="Default tooltip" title="">
-						  		{% for number in range(price.get().nb_guests) %}
+						  		{%- for number in range(price.get().nb_guests) %}
 						  		<span class="glyphicon glyphicon-user"></span>
-						  		{% endfor %}
+						  		{%- endfor %}
 						  	</div>
 						  </a>						  	
 
-						  {% endfor %}
+						  {%- endfor %}
 						</div>
-						{{block.get().content|safe}}
+						{{block.content|safe}}
 
-						{{block.get().widget|safe}}
+						{{block.widget|safe}}
 				
 			</div> 
 		
 		</div>
 	</div>
 </div>
-{% endif %}
-{% if block.get().pagination == "price-pic-right" %}
+{%- endif %}
+{%- if block.pagination == "price-pic-right" %}
 <div class="pane">
 	<div class="container">
 		<div class="row-fluid">
 
 			<div class="col-lg-7">
 			
-						<h2>{{block.get().title}}</h2>
-						<p class="lead">{{block.get().subtitle}}</p>
+						<h2>{{block.title}}</h2>
+						<p class="lead">{{block.subtitle}}</p>
 						<div class="list-group">
-						  {% for price in block.get().prices %}
-						  <a data-toggle="modal" data-target="#myModal" class="list-group-item list-group-item-info">
+						  {%- for price in block.prices %}
+						  <a class="list-group-item list-group-item-info">
 						  	<span class="badge">{{price.get().price}}</span>
 						  	<!-- <div class="pull-right"><p >90 €</p></div> -->
 						  	<div data-toggle="tooltip" data-placement="left" data-original-title="Default tooltip" title="">
-						  		{% for number in range(price.get().nb_guests) %}
+						  		{%- for number in range(price.get().nb_guests) %}
 						  		<span class="glyphicon glyphicon-user"></span>
-						  		{% endfor %}
+						  		{%- endfor %}
 						  	</div>
 						  </a>
 
-						  {% endfor %}
+						  {%- endfor %}
 						</div>
-						{{block.get().content|safe}}
+						{{block.content|safe}}
 
-						{{block.get().widget|safe}}
+						{{block.widget|safe}}
 				
 			</div> 
 			<div class="col-lg-5">
-				{% if block.get().picture %}
-				<img class="img-responsive" src="/serve/{{block.get().picture.get().size_max}}">
-				{% else %}
+				{%- if block.picture %}
+				<img class="img-responsive" src="/serve/{{block.picture.get().size_max}}">
+				{%- else %}
 				<img class="img-responsive" src="http://placehold.it/350x350">
-				{% endif %}
+				{%- endif %}
 			</div> 
 		</div>
 	</div>
 </div>
-{% endif %}
-{% if block.get().pagination == "pic-right" %}
+{%- endif %}
+{%- if block.pagination == "pic-right" %}
 <div class="pane">
 	<div class="container">
 		<div class="row-fluid">
 
 			<div class="col-lg-7">
 			
-						<h2>{{block.get().title}}</h2>
-						<p class="lead">{{block.get().subtitle}}</p>
-						{{block.get().content|safe}}
+						<h2>{{block.title}}</h2>
+						<p class="lead">{{block.subtitle}}</p>
+						{{block.content|safe}}
 
-						{{block.get().widget|safe}}
+						{{block.widget|safe}}
 					
 			</div> 
 			<div class="col-lg-5">
-				{% if block.get().picture %}
-				<img class="img-responsive" src="/serve/{{block.get().picture.get().size_max}}">
-				{% else %}
+				{%- if block.picture %}
+				<img class="img-responsive" src="/serve/{{block.picture.get().size_max}}">
+				{%- else %}
 				<img class="img-responsive" src="http://placehold.it/350x350">
-				{% endif %}
+				{%- endif %}
 			</div> 		
 		</div>
 	</div>
 </div>
-{% endif %}
-{% if block.get().pagination == "map" %}
+{%- endif %}
+{%- if block.pagination == "map" %}
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3WbMksq6Er0id9QJD6o-bkIp7XSHSgLc&sensor=false"></script>
 <script>
 
@@ -254,32 +254,150 @@
      <!-- <div id="map-canvas"></div> -->
    </div>
  </div>
-{% endif %}
-{% if block.get().pagination == "widget" %}
+{%- endif %}
+{%- if block.pagination == "widget" %}
 <div class="pane">
 	<div class="container">
 		<div class="row-fluid">
 
 			<div class="col-lg-12">
 				
-						<h2>{{block.get().title}}</h2>
-						<p class="lead">{{block.get().subtitle}}</p>
-						{{block.get().content|safe}}
+						<h2>{{block.title}}</h2>
+						<p class="lead">{{block.subtitle}}</p>
+						{{block.content|safe}}
 
-						{{block.get().widget|safe}}
+						{{block.widget|safe}}
 				
 			</div> 
 		</div>
 	</div>
 </div>
-{% endif %}
-{% endfor %}
+{%- endif %}
+{%- if block.pagination == "widget-right" %}
+<div class="pane">
+	<div class="container">
+		<div class="row-fluid">
+			<div class="col-lg-7">
+			
+				<h2>{{block.title}}</h2>
+				<p class="lead">{{block.subtitle}}</p>
+				{{block.content|safe}}
+					
+					
+			</div> 
+			<div class="col-lg-5">
+				{{block.widget|safe}}
+			</div> 		
+
+
+		</div>
+	</div>
+</div>
+{%- endif %}
+{%- if block.pagination == "heads-up" %}
+<div class="pane">
+<div class="container">
+      <div class="row">
+      	{%- for headsUp in block.headsUps %}
+        <div class="col-lg-3 col-md-3 col-sm-6">
+          <img class="img-thumbnail img-responsive" src="/serve/{{headsUp.get().picture.get().size_max}}" alt="{{headsUp.get().title}}" >
+          <h2>{{headsUp.get().title}}</h2>
+          <p>{{headsUp.get().content}}</p>
+          <p><a class="btn btn-success" href="/{{locale_id}}/{{map_menu_page_locale[headsUp.get().menu.id()]}}" role="button">{{ forms.extract_dict('View details', dictionary) }} &raquo;</a></p>
+        </div>
+        {%- endfor %} 	
+      </div>
+</div>
+</div>
+{%- endif %}
+{%- if block.pagination == "slides" %}
+<style>
+.mask{ 
+	width: 100%;
+	bottom: 0px;
+	height: 108px;
+	position: absolute;
+	background: url(/static/img/aboutmask.png) no-repeat; 
+	background-position: center;
+}
+</style>
+<div id="slides">
+    <ul class="slides-container">
+      {%- for background in block.backgrounds %}
+      <li>
+        <img src="/serve/{{background.get().size_max}}" alt="">
+         <div class="slides-text-container">
+          <h1>{{background.get().caption}}</h1>
+         </div>
+      </li>
+      {%- endfor %}
+    </ul>
+
+	<nav class="slides-navigation">
+      <a href="#" class="next">
+        <i class="icon-chevron-right"></i>
+      </a>
+      <a href="#" class="prev">
+        <i class="icon-chevron-left"></i>
+      </a>
+    </nav>
+	<div class="slides-arrow">
+	   <span>{{ forms.extract_dict('MORE BELOW', dictionary) }}</span>
+	</div>  
+
+    
+  </div>
+{%- endif %}
+{%- if block.pagination == "full-pic" %}
+
+  <div class="container-fluid">
+    <div class="row-fluid">
+    	<img class="img-responsive full-pic" src="/serve/{{block.picture.get().size_max}}"  >
+   </div>
+ </div>
+{%- endif %}
+{%- if block.pagination == "parallax" %}
+<style>
+/* Slide 1 */
+		.photo {
+			background-attachment: fixed;
+			background-position: 50% 0;
+			background-repeat: no-repeat;
+			height: 450px;
+			position: relative;
+			background-size: cover;
+			width: 100%;
+		}
+#slide-1 {background-image:url('/serve/{{block.picture.get().size_max}}')}
+.mask{ 
+	width: 100%;
+	bottom: 50px;
+	height: 108px;
+	position: absolute;
+	background: url(/static/img/aboutmask.png) no-repeat; 
+	background-position: center;
+}
+</style>
+  <div class="container-fluid">
+    <div class="row-fluid photo" 
+    	id="slide-1" 
+    	data-stellar-background-ratio="0.5">
+    	<!-- <div class="mask">&nbsp;</div> -->
+   </div>
+ </div>
+{%- endif %}
+{%- if block.pagination == "floating-book" %}
+<section>
+	<a class="btn btn-success fixed-book" href="/en/book">Book</a>
+</section> 
+{%- endif %}
+{%- endfor %}
 
 
 
-{% endblock content %}
-{% block script %}
-{% for block in page.blocks %}
-	{{block.get().widget_script|safe}}
-{% endfor %}
-{% endblock script %}
+{%- endblock content %}
+{%- block script %}
+{%- for block in blocks %}
+	{{block.widget_script|safe}}
+{%- endfor %}
+{%- endblock script %}

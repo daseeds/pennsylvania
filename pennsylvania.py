@@ -63,6 +63,14 @@ class BaseHandler(webapp2.RequestHandler):
 			memcache.set(key="locales", value=locales)
 		return locales
 
+	def get_pages(self, locale_id):
+		pages = memcache.get("pages {0}".format(locale_id))
+		if pages is None:
+			pages = Page.query(Page.locale==ndb.Key(Locale, locale_id)).fetch()
+			if not pages:
+				return None
+			memcache.set(key="pages {0}".format(locale_id), value=pages)
+		return pages	
 
 
 class MainPage(BaseHandler):
@@ -118,6 +126,9 @@ class LocaleViewer(BaseHandler):
 class ModelViewer(BaseHandler):
 	def get(self, locale_id, page_id):
 
+		## Menu / Page dict for current locale
+		map_menu_page_locale = dict()
+
 		## Menus
 		menus = self.get_menus()
 		for menu in menus:
@@ -127,6 +138,10 @@ class ModelViewer(BaseHandler):
 
 			# enhance with submenu id and name, easier to render
 			menu.page = localized_page[0]
+
+			# create a dict for menu to locale page mapping
+			map_menu_page_locale[menu.key.id()] = localized_page[0].key.id()
+
 			if (menu.submenus):
 				menu.submenus_enhanced = []
 				for submenu in menu.submenus:
@@ -167,6 +182,9 @@ class ModelViewer(BaseHandler):
 				localized_page = Page.query(Page.locale==this_locale, Page.menu==this_menu).fetch()
 				locale.page = localized_page[0]
 
+		## Block
+		blocks = self.get_blocks_by_page(page_id)
+
 		template_values = {
 			'page': page,
 			'locale_id': locale_id,
@@ -174,8 +192,22 @@ class ModelViewer(BaseHandler):
 			'pages': pages,
 			'locales': locales,
 			'dictionary' : dictionary,
+			'blocks' : blocks,
+			'map_menu_page_locale' : map_menu_page_locale,
 		}	
 		return self.render_response('page.html', **template_values)
+
+	def get_blocks_by_page(self, page_id):
+		blocks = memcache.get('blocks {0}'.format(page_id))
+		if blocks is None:
+			page = self.get_page_by_id(page_id)
+			# blocks_key_list = list()
+			# for block_key in page.blocks:
+			# 	blocks_key_list.append(block_key)
+
+			blocks = ndb.get_multi(page.blocks)
+			memcache.set(key='blocks {0}'.format(page_id), value=blocks)
+		return blocks
 
 	def get_dict(self, locale_id):
 		localedict = memcache.get('localedict {0}'.format(locale_id))
@@ -191,14 +223,7 @@ class ModelViewer(BaseHandler):
 			memcache.set(key="menus", value=menus)
 		return menus
 
-	def get_pages(self, locale_id):
-		pages = memcache.get("pages {0}".format(locale_id))
-		if pages is None:
-			pages = Page.query(Page.locale==ndb.Key(Locale, locale_id)).fetch()
-			if not pages:
-				return None
-			memcache.set(key="pages {0}".format(locale_id), value=pages)
-		return pages					
+				
 		
 	def get_page_by_id(self, page_id):
 		page = memcache.get("{0}".format(page_id))
@@ -207,7 +232,17 @@ class ModelViewer(BaseHandler):
 			memcache.set(key="{0}".format(page_id), value=page)
 		return page				
 	
+class SiteMap(BaseHandler):
+	def get(self):
+		pages = Page.query().fetch()
 
+		for page in pages:
+			page.fullurl = "http://juganville.com/{0}/{1}".format(page.locale.id(), page.key.id())
+
+		template_values = {
+			'pages': pages,
+		}	
+		return self.render_response('sitemap.xml', **template_values)
 
 class MailSender(BaseHandler):
 	def post(self, locale_id, page_id):
@@ -262,6 +297,7 @@ class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
 
 
 application = webapp2.WSGIApplication([
+	webapp2.Route(r'/sitemap.xml', SiteMap),
 	webapp2.Route(r'/serve/<:([^/]+)?>', ServeHandler, name='ServeHandler'),
     webapp2.Route(r'/admin', AdminMain),
     webapp2.Route(r'/admin/locale/new', AdminNewLocale),
@@ -280,6 +316,10 @@ application = webapp2.WSGIApplication([
     webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/block/<block_id:([^/]+)?>/price/new', AdminBlockPriceNew),
     webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/block/<block_id:([^/]+)?>/price/<price_id:([^/]+)?>/delete', AdminBlockPriceDelete),
     webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/block/<block_id:([^/]+)?>/price/<price_id:([^/]+)?>/moveup', AdminBlockPriceMoveUp),
+    webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/block/<block_id:([^/]+)?>/headsup/new', AdminBlockHeadsUpNew),
+    webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/block/<block_id:([^/]+)?>/headsup/<headsup_id:([^/]+)?>/delete', AdminBlockHeadsUpDelete),
+    webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/block/<block_id:([^/]+)?>/headsup/<headsup_id:([^/]+)?>/moveup', AdminBlockHeadsUpMoveUp),
+    webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/block/<block_id:([^/]+)?>/headsup/<headsup_id:([^/]+)?>/update', AdminBlockHeadsUpUpdate),
     webapp2.Route(r'/admin/picture/<picture_id:([^/]+)?>/delete', AdminPictureDelete),
     webapp2.Route(r'/admin/picture/<picture_id:([^/]+)?>/update', AdminPictureUpdate),
     webapp2.Route(r'/admin/block/<block_id:([^/]+)?>/update', AdminBlockUpdate),
@@ -289,7 +329,7 @@ application = webapp2.WSGIApplication([
     webapp2.Route(r'/', MainPage),
     webapp2.Route(r'/<locale_id:([^/]+)?>/<page_id:([^/]+)?>', ModelViewer),
     webapp2.Route(r'/<locale_id:([^/]+)?>', LocaleViewer),
-	webapp2.Route(r'/<locale_id:([^/]+)?>/<page_id:([^/]+)?>/email', MailSender),
+
 
 	], debug=True)
 
