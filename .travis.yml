@@ -7,15 +7,15 @@ script:
 deploy:
   provider: gae
   skip_cleanup: true
-  keyfile: client-secret.json
-  project: continuous-deployment-python
+  keyfile: juganville-staging-secret.json
+  project: juganville-staging
   default: true
-  on: prod
-before_install:
-- openssl aes-256-cbc -K $encrypted_b28d4b4f6076_key -iv $encrypted_b28d4b4f6076_iv
-  -in client-secret.json.enc -out client-secret.json -d
-# safelist
+  on: staging
 branches:
   only:
   - master
   - staging
+before_install:
+- openssl aes-256-cbc -K $encrypted_b28d4b4f6076_key -iv $encrypted_b28d4b4f6076_iv
+  -in credentials.tar.gz.enc -out credentials.tar.gz -d
+- tar -xzf credentials.tar.gz
