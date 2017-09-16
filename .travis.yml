@@ -10,8 +10,12 @@ deploy:
   keyfile: client-secret.json
   project: continuous-deployment-python
   default: true
-  on:
-    all_branches: true
+  on: prod
 before_install:
 - openssl aes-256-cbc -K $encrypted_b28d4b4f6076_key -iv $encrypted_b28d4b4f6076_iv
   -in client-secret.json.enc -out client-secret.json -d
+# safelist
+branches:
+  only:
+  - master
+  - staging
