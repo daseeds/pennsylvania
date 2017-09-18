@@ -1,5 +1,10 @@
 pennsylvania
 =====
+
+Staging [![Build Status](https://travis-ci.org/daseeds/pennsylvania.svg?branch=staging)](https://travis-ci.org/daseeds/pennsylvania)
+
+Prod [![Build Status](https://travis-ci.org/daseeds/pennsylvania.svg?branch=prod)](https://travis-ci.org/daseeds/pennsylvania)
+
 - juganville.com v3 RC3 project
 - for GAE PaaS
 - using webapp2 and jinja2
