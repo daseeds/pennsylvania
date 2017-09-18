@@ -1,9 +1,9 @@
 pennsylvania
 =====
 
-Staging [![Build Status](https://travis-ci.org/daseeds/pennsylvania.svg?branch=staging)](https://travis-ci.org/daseeds/pennsylvania)
+Staging [![Build Status](https://travis-ci.org/daseeds/pennsylvania.svg?branch=staging)](https://travis-ci.org/daseeds/pennsylvania) http://juganville-staging.appspot.com
 
-Prod [![Build Status](https://travis-ci.org/daseeds/pennsylvania.svg?branch=prod)](https://travis-ci.org/daseeds/pennsylvania)
+Prod [![Build Status](https://travis-ci.org/daseeds/pennsylvania.svg?branch=prod)](https://travis-ci.org/daseeds/pennsylvania) http://juganville.fr
 
 - juganville.com v3 RC3 project
 - for GAE PaaS
