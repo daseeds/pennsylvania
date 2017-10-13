@@ -204,16 +204,6 @@ z-index: 3;*/
   text-align: center;
 }
 
-.slides-arrow:hover span {
-  display: none;
-}
-.slides-arrow:hover:before {
-  display: none;
-}
-
-.slides-arrow i:hover {
-	font-size: 10px;
-}
 
 .main-separator {
   width: 100%;
