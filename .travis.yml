@@ -5,8 +5,8 @@ script:
 deploy:
   provider: gae
   skip_cleanup: true
-  keyfile: juganville-staging-secret.json
-  project: juganville-staging
+  keyfile: juganville1-ab4dddde7516.json
+  project: juganville1
   default: true
   on: staging
 branches:
