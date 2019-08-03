@@ -5,7 +5,7 @@ script:
 deploy:
   provider: gae
   skip_cleanup: true
-  keyfile: juganville1-ab4dddde7516.json
+  keyfile: juganville1-d596c876bf13.json
   project: juganville1
   default: true
   on: prod
@@ -14,4 +14,4 @@ branches:
   - prod
 before_install:
 - openssl aes-256-cbc -K $encrypted_4f69bc391da0_key -iv $encrypted_4f69bc391da0_iv
-  -in juganville1-ab4dddde7516.json.enc -out juganville1-ab4dddde7516.json -d
+  -in juganville1-d596c876bf13.json.enc -out juganville1-d596c876bf13.json -d
