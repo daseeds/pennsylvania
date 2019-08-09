@@ -3,15 +3,25 @@ language: python
 script:
 - echo "No Script to run"
 deploy:
-  provider: gae
-  skip_cleanup: true
-  keyfile: juganville1-d596c876bf13.json
-  project: juganville1
-  default: true
-  on: prod
+  - provider: gae
+    skip_cleanup: true
+    keyfile: juganville-staging-secret.json
+    project: juganville-staging
+    default: true
+    on: staging
+  - provider: gae
+    skip_cleanup: true
+    keyfile: juganville1-d596c876bf13.json
+    project: juganville1
+    default: false
+    on: prod
 branches:
   only:
   - prod
+  - staging
 before_install:
+- openssl aes-256-cbc -K $encrypted_d1a02f5c23a8_key -iv $encrypted_d1a02f5c23a8_iv
+  -in credentials.tar.gz.enc -out credentials.tar.gz -d
+- tar -xzf credentials.tar.gz
 - openssl aes-256-cbc -K $encrypted_4f69bc391da0_key -iv $encrypted_4f69bc391da0_iv
   -in juganville1-d596c876bf13.json.enc -out juganville1-d596c876bf13.json -d
