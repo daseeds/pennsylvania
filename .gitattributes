@@ -22,3 +22,6 @@
 *.RTF	 diff=astextplain
 
 templates/base.html ident
+
+.travis.yml ours
+app.yaml ours
