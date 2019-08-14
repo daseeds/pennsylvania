@@ -70,7 +70,7 @@ class BaseHandler(webapp2.RequestHandler):
 			if not pages:
 				return None
 			memcache.set(key="pages {0}".format(locale_id), value=pages)
-		return pages	
+		return pages
 
 
 class MainPage(BaseHandler):
@@ -134,7 +134,7 @@ class ModelViewer(BaseHandler):
 		for menu in menus:
 			localized_page = Page.query(Page.locale==ndb.Key(Locale, locale_id), Page.menu==ndb.Key(Menu, menu.key.id())).fetch()
 			if len(localized_page) == 0:
-				self.abort(404)
+				self.abort(404, detail="Missing localized page for locale:'" + locale_id + "' menu:'" + menu.key.id() + "'")
 
 			# enhance with submenu id and name, easier to render
 			menu.page = localized_page[0]
@@ -194,7 +194,7 @@ class ModelViewer(BaseHandler):
 			'dictionary' : dictionary,
 			'blocks' : blocks,
 			'map_menu_page_locale' : map_menu_page_locale,
-		}	
+		}
 		return self.render_response('page.html', **template_values)
 
 	def get_blocks_by_page(self, page_id):
@@ -223,15 +223,15 @@ class ModelViewer(BaseHandler):
 			memcache.set(key="menus", value=menus)
 		return menus
 
-				
-		
+
+
 	def get_page_by_id(self, page_id):
 		page = memcache.get("{0}".format(page_id))
 		if page is None:
 			page = Page.get_by_id(page_id)
 			memcache.set(key="{0}".format(page_id), value=page)
-		return page				
-	
+		return page
+
 class SiteMap(BaseHandler):
 	def get(self):
 		pages = Page.query().fetch()
@@ -241,7 +241,7 @@ class SiteMap(BaseHandler):
 
 		template_values = {
 			'pages': pages,
-		}	
+		}
 		return self.render_response('sitemap.xml', **template_values)
 
 class MailSender(BaseHandler):
@@ -332,5 +332,3 @@ application = webapp2.WSGIApplication([
 
 
 	], debug=True)
-
-
