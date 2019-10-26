@@ -107,13 +107,18 @@ class MainPage(BaseHandler):
 
    	def get(self):
 		locale_id = self.resolve_locale()
-		
-		self.redirect('/{0}/{1}'.format(locale_id, "the-manor"))
+		page = Page.query(Page.locale==ndb.Key(Locale, locale_id), Page.menu==ndb.Key(Menu, "the-manor")).fetch()
+		if not page:
+			self.abort(404, detail="Missing page for locale:'" + locale_id + "' menu:'the-manor'")
+		self.redirect('/{0}/{1}'.format(locale_id, page[0].key.id()))		
+
 
 class LocaleViewer(BaseHandler):
 	def get(self, locale_id):
-
-		self.redirect('/{0}/{1}'.format(locale_id, "the-manor"))
+		page = Page.query(Page.locale==ndb.Key(Locale, locale_id), Page.menu==ndb.Key(Menu, "the-manor")).fetch()
+		if not page:
+			self.abort(404, detail="Missing page for locale:'" + locale_id + "' menu:'the-manor'")
+		self.redirect('/{0}/{1}'.format(locale_id, page[0].key.id()))	
 
 class ModelViewer(BaseHandler):
 	def get(self, locale_id, page_id):
@@ -153,7 +158,7 @@ class ModelViewer(BaseHandler):
 		page = self.get_page_by_id(page_id)
 
 		if page is None:
-			self.abort(404)
+			self.abort(404, detail="Missing page '" + page_id + "'")
 
 		## Check if page has a background for og:image
 		if not page.backgrounds:
