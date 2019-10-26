@@ -17,6 +17,7 @@ from google.appengine.ext import ndb
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.api import memcache
+from operator import itemgetter
 
 def jinja2_factory(app):
 	j = jinja2.Jinja2(app)
@@ -86,6 +87,8 @@ class AdminMain(AdminBaseHandler):
 		localedicts = LocaleDict.query().fetch()
 
 		pages = Page.query().fetch()
+		pages = sorted(pages, key=lambda k: "{0}{1}".format(k.menu, k.locale)) 
+
 		for page in pages:
 			logging.info(page.key.id())
 			logging.info(page.key.urlsafe())
@@ -111,6 +114,7 @@ class AdminMain(AdminBaseHandler):
 			'pictures' : pictures,
 		}	
 		return self.render_response('admin_main.html', **template_values)
+
 
 class AdminNewLocaleDict(AdminBaseHandler):
 	def post(self):

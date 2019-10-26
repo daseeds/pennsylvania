@@ -106,22 +106,19 @@ class MainPage(BaseHandler):
 		return 'en'
 
    	def get(self):
-
 		locale_id = self.resolve_locale()
-
 		page = Page.query(Page.locale==ndb.Key(Locale, locale_id), Page.menu==ndb.Key(Menu, "the-manor")).fetch()
-		self.redirect('/{0}/{1}'.format(locale_id, page[0].key.id()))
-
+		if not page:
+			self.abort(404, detail="Missing page for locale:'" + locale_id + "' menu:'the-manor'")
+		self.redirect('/{0}/{1}'.format(locale_id, page[0].key.id()))		
 
 
 class LocaleViewer(BaseHandler):
 	def get(self, locale_id):
 		page = Page.query(Page.locale==ndb.Key(Locale, locale_id), Page.menu==ndb.Key(Menu, "the-manor")).fetch()
-
-		if len(page) == 0:
-			self.abort(404)
-
-		self.redirect('/{0}/{1}'.format(locale_id, page[0].key.id()))
+		if not page:
+			self.abort(404, detail="Missing page for locale:'" + locale_id + "' menu:'the-manor'")
+		self.redirect('/{0}/{1}'.format(locale_id, page[0].key.id()))	
 
 class ModelViewer(BaseHandler):
 	def get(self, locale_id, page_id):
@@ -161,11 +158,15 @@ class ModelViewer(BaseHandler):
 		page = self.get_page_by_id(page_id)
 
 		if page is None:
-			self.abort(404)
+			self.abort(404, detail="Missing page '" + page_id + "'")
+
+		## Check if page has a background for og:image
+		if not page.backgrounds:
+			self.abort(500, "Cannot build page, missing background for og:image")
 
 		pages = self.get_pages(locale_id)
 		if not pages:
-			return self.render_error("Error 500: cannot build pages List")
+			self.abort(500, "cannot build pages List")
 
 		## Locale
 		locales = self.get_locales()
