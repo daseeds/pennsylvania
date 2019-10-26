@@ -86,7 +86,9 @@ class AdminMain(AdminBaseHandler):
 
 		localedicts = LocaleDict.query().fetch()
 
-		pages = Page.query().order(Page.menu, Page.locale).fetch()
+		pages = Page.query().fetch()
+		pages = sorted(pages, key=lambda k: "{0}{1}".format(k.menu, k.locale)) 
+
 		for page in pages:
 			logging.info(page.key.id())
 			logging.info(page.key.urlsafe())
