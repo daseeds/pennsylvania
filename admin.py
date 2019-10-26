@@ -9,7 +9,7 @@ import webapp2
 from webapp2_extras.routes import RedirectRoute
 from webapp2_extras import jinja2
 from functools import wraps
-from models import Locale, Page, Menu, pagination_choice, Picture, block_choice, Block, LocaleDict, Price, HeadsUp, kind_choice
+from models import Locale, Page, Menu, pagination_choice, Picture, block_choice, Block, LocaleDict, Price, HeadsUp, kind_choice, Image
 
 from google.appengine.api import images
 from google.appengine.api import users
@@ -17,6 +17,7 @@ from google.appengine.ext import ndb
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.api import memcache
+
 from operator import itemgetter
 
 def jinja2_factory(app):
@@ -535,12 +536,21 @@ class AdminUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 	@admin_protect
 	def post(self):
 
-
-
+		
 		upload_files = self.get_uploads('picture')
+		
 		blob_info = upload_files[0]
+		logging.info(blob_info.content_type)
+		logging.info(blob_info.creation)
+		logging.info(blob_info.filename)
+		logging.info(blob_info.size)
+		logging.info(blob_info.md5_hash)
+
+		image = Image(full_size=self.request.get('picture'), content_type=blob_info.content_type)
+		image.put()
 
 		pic = Picture(size_max=blob_info.key())
+		pic.image = ndb.Key(Image, image.key.id())
 		pic.put()
 
 		if (self.request.get('action') == "PageBackground"):

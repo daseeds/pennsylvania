@@ -264,6 +264,16 @@ page: {1}
 				""".format(locale_id, page_id, self.request.get('message'), self.request.get('email')))
 		self.redirect('/{0}/{1}'.format(locale_id, page_id))
 
+class Image(BaseHandler):
+	def get(self):
+		image_key = ndb.Key(urlsafe=self.request.get('img_id'))
+		image = image_key.get()
+		if image.full_size:
+			self.response.headers['Content-Type'] = str(image.content_type)
+			self.response.out.write(image.full_size)
+		else:
+			self.abort(404, "image not found")
+
 class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
 	def output(self, resource, serve):
 		try:
@@ -300,6 +310,7 @@ class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
 application = webapp2.WSGIApplication([
 	webapp2.Route(r'/sitemap.xml', SiteMap),
 	webapp2.Route(r'/serve/<:([^/]+)?>', ServeHandler, name='ServeHandler'),
+	webapp2.Route(r'/image', Image, name='Image'),
     webapp2.Route(r'/admin', AdminMain),
     webapp2.Route(r'/admin/locale/new', AdminNewLocale),
 	webapp2.Route(r'/admin/menu/new', AdminNewMenu),

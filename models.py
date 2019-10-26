@@ -23,6 +23,10 @@ class Menu(ndb.Model):
 class Locale(ndb.Model):
 	name = ndb.StringProperty()
 
+class Image(ndb.Model):
+	full_size = ndb.BlobProperty()
+	content_type = ndb.StringProperty()
+
 class Picture(ndb.Model):
 	size_max = ndb.BlobKeyProperty(required=True)
 	size_med = ndb.BlobKeyProperty()
@@ -30,6 +34,7 @@ class Picture(ndb.Model):
 	caption = ndb.StringProperty(default="")
 	etag = ndb.StringProperty(default="")
 	name = ndb.StringProperty()
+	image = ndb.KeyProperty(Image)
 
 class Price(ndb.Model):
 	nb_guests = ndb.IntegerProperty()

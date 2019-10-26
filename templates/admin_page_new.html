@@ -227,7 +227,8 @@
 										<th>#</th>
 										<th>Caption</th>
 										<th>Size</th>
-										<th>Preview</th>
+										<th>BlobStore</th>
+										<th>Image</th>
 										<th>Delete</th>
 									</tr>
 								</thead>
@@ -239,6 +240,11 @@
 											<td><input type="text" class="form-control" value="{{background.get().caption}}" name="caption" ></td>
 											<td></td>
 											<td><img width="150px" src="/serve/{{background.get().size_max}}"  class="img-responsive img-thumbnail"></td>
+											<td>
+												{% if background.get().image %}
+												<img width="150px" src="/image?img_id={{background.get().image.urlsafe()}}"  class="img-responsive img-thumbnail">
+												{% endif %}
+											</td>
 											<td><a href="/admin/picture/{{background.get().key.id()}}/delete?block_id={{block.id()}}&page_id={{page.key.id()}}" class="btn btn-danger" name="delete">Delete</a>
 												<input type="hidden" name="page_id" value="{{page.key.id()}}"/>
 												<button type="submit" class="btn btn-success ">Save</button></td>
