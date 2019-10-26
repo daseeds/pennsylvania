@@ -539,6 +539,11 @@ class AdminUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 
 		upload_files = self.get_uploads('picture')
 		blob_info = upload_files[0]
+		logging.info(blob_info.content_type)
+		logging.info(blob_info.creation)
+		logging.info(blob_info.filename)
+		logging.info(blob_info.size)
+		logging.info(blob_info.md5_hash)
 
 		pic = Picture(size_max=blob_info.key())
 		pic.put()
