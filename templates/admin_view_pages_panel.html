@@ -2,14 +2,31 @@
 	<div class="panel-heading">Pages - <a href="/admin/page/new">New page</a></div>
 	<div class="panel-body">
 		<div class="list-group">
-			{%- for page in pages %}
-			<a href="/admin/page/{{ page.key.id() }}"  class="list-group-item">
-				<span class="label label-primary">{{page.menu.string_id()}}</span>
-				<span class="label label-info">{{page.locale.id()}}</span>
-				{{ page.key.id() }}
-				<span class="label label-warning">Modified {%- if page.modification_date != None %}{{page.modification_date.strftime("%Y-%m-%d %H:%M:%S")}}{%- endif %} by {{page.modification_author}}</span>
-			</a>
-			{%- endfor %}
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Menu</th>
+						<th>Locale</th>
+						<th>Url</th>
+						<th>Name</th>
+						<th>Modifications</th>
+					</tr>
+				</thead>
+				<tbody>
+					{%- for page in pages %}
+					<tr>
+						<td><span class="label label-primary">{{page.menu.string_id()}}</span></td>
+						<td><span class="label label-info">{{page.locale.id()}}</span></td>
+						<td><a href="/admin/page/{{ page.key.id() }}" >{{ page.key.id() }}</a>
+						</td>
+						<td>{{ page.name }}</td>
+						<td><span class="label label-warning">Modified
+								{%- if page.modification_date != None %}{{page.modification_date.strftime("%Y-%m-%d %H:%M:%S")}}{%- endif %}
+								by {{page.modification_author}}</span></td>
+						{%- endfor %}
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
-</div>		
+</div>
