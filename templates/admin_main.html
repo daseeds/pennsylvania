@@ -3,7 +3,7 @@
 {% block breadcrumbs %}
 <ol class="breadcrumb">
 	<li><a href="/admin">admin</a></li>
-</ol>	
+</ol>
 {% endblock breadcrumbs %}
 {% block content %}
 
@@ -20,18 +20,30 @@
 			<div class="panel-heading">Menu items</div>
 			<div class="panel-body">
 				<div class="list-group">
-					{% for menu in menus %}
-					<a href="/admin/{{menu.key.id()}}" class="list-group-item">{{menu.key.id()}}</a>
-					{% if menu.submenus %}
-					<div class="panel-body">
-						<div class="list-group">
-							{% for submenu in menu.submenus %}
-							<a href="/admin/{{ submenu.id() }}"  class="list-group-item">{{ submenu.id() }}</a>
-							{% endfor %}
-						</div>
-					</div>
-					{% endif %}
-					{% endfor %}
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>Menu</th>
+								<th>Parent</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							{%- for menu in menus %}
+							<tr>
+								<td><span class="label label-primary">{{menu.key.id()}}</span></td>
+								<td>
+									{% if menu.parent %}
+									{{ menu.parent.id() }}
+									{% endif %}
+								</td>
+								<td><a href="/admin/menu/{{ menu.key.id() }}/delete" class="btn btn-danger btn-sm"
+										name="delete">Delete</a></td>
+							</tr>
+							{%- endfor %}
+
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
@@ -54,19 +66,23 @@
 						<tbody>
 							{% for localedict in localedicts %}
 							<tr>
-								<form  role="form"  action="/admin/localedict/{{localedict.key.id()}}/update" enctype="multipart/form-data" method="post">
+								<form role="form" action="/admin/localedict/{{localedict.key.id()}}/update"
+									enctype="multipart/form-data" method="post">
 									<td></td>
 									<td>{{localedict.locale.get().key.id()}}</td>
-									<td><input type="text" class="form-control" value="{{localedict.name}}" name="name" ></td>
-									<td><input type="text" class="form-control" value="{{localedict.value}}" name="value" ></td>
-									<td><a href="/admin/localedict/{{localedict.key.id()}}/delete" class="btn btn-danger" name="delete">Delete</a>
-									<button type="submit" class="btn btn-primary ">Save</button></td>
+									<td><input type="text" class="form-control" value="{{localedict.name}}" name="name">
+									</td>
+									<td><input type="text" class="form-control" value="{{localedict.value}}"
+											name="value"></td>
+									<td><a href="/admin/localedict/{{localedict.key.id()}}/delete"
+											class="btn btn-danger" name="delete">Delete</a>
+										<button type="submit" class="btn btn-primary ">Save</button></td>
 								</form>
-								</tr>
+							</tr>
 							{% endfor %}
-							</tbody>
-						</table>
-					</div>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 		<div class="panel panel-default">
@@ -81,7 +97,7 @@
 				</form>
 			</div>
 		</div>
-<!-- 		<div class="panel panel-default">
+		<!-- 		<div class="panel panel-default">
 			<div class="panel-heading">Pictures</div>
 			<div class="panel-body">
 				<div class="table-responsive">
@@ -111,15 +127,15 @@
 						</table>
 					</div>
 			</div>
-		</div>	 -->	
+		</div>	 -->
 	</div>
 	<div class="col-md-4">
-			{% include 'admin_view_locales_panel.html' %}
+		{% include 'admin_view_locales_panel.html' %}
 		<div class="panel panel-default">
 			<div class="panel-heading">Create a new menu item</div>
 			<div class="panel-body">
 
-				<form class="form-horizontal" role="form" action="/admin/menu/new" method="post">
+				<form class="form-horizontal" role="form" action="/admin/menu" method="post">
 					{{ forms.input('menu unique id', 'menu_id') }}
 					{{ forms.select('menu kind', 'kind', kind_choice) }}
 					{{ forms.submit_button('New menu') }}
@@ -130,7 +146,7 @@
 			<div class="panel-heading">Create a new sub menu</div>
 			<div class="panel-body">
 
-				<form class="form-horizontal" role="form" action="/admin/submenu/new" method="post">
+				<form class="form-horizontal" role="form" action="/admin/menu/sub" method="post">
 					{{ forms.input('submenu unique id', 'submenu_id') }}
 					{{ forms.select('Select parent menu', 'menu_id', menu_list) }}
 					{{ forms.submit_button('New submenu') }}

@@ -459,18 +459,15 @@ class LocaleHandler(AdminBaseHandler):
         }
         return self.render_response('admin_view_pages.html', **template_values)
 
-
-class AdminNewMenu(AdminBaseHandler):
-    def post(self):
+class MenuHandler(AdminBaseHandler):
+    def create(self):
         menu = Menu(id=self.request.get('menu_id'))
         menu.kind = self.request.get('kind')
         menu.order = 1
         menu.put()
         return self.redirect('/admin')
 
-
-class AdminNewSubMenu(AdminBaseHandler):
-    def post(self):
+    def createSub(self):
         submenu = Menu(id=self.request.get('submenu_id'))
         submenu.order = 1
         submenu.parent = ndb.Key('Menu', self.request.get('menu_id'))
@@ -480,6 +477,14 @@ class AdminNewSubMenu(AdminBaseHandler):
         menu.put()
         return self.redirect('/admin')
 
+    def delete(self, menu_id):
+        logging.info("MenuHandler.delete({0})".format(menu_id))
+        menu = ndb.Key(Menu, menu_id)
+        for sub in menu.get().submenus:
+            ndb.Key(Menu, sub.id()).delete()
+        ndb.Key(Menu, menu_id).delete()
+        memcache.flush_all()
+        return self.redirect('/admin')
 
 class AdminBlockPriceNew(AdminBaseHandler):
     def post(self, page_id, block_id):
