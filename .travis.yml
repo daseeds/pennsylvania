@@ -1,61 +1,55 @@
 sudo: false
 language: python
 script:
-  - echo "No Script to run"
+- echo "No Script to run"
 deploy:
-  - provider: gae
-    skip_cleanup: true
-    keyfile: juganville-staging-secret.json
-    project: juganville-staging
-    default: true
-    on: staging
-  - provider: gae
-    skip_cleanup: true
-    keyfile: juganville1-d596c876bf13.json
-    project: juganville1
-    default: false
-    on: prod
-  - provider: gae
-    skip_cleanup: true
-    keyfile: juganville-dev-30260b40ffd0.json
-    project: juganville-dev
-    default: true
-    on: staging-chantal
-  - provider: gae
-    skip_cleanup: true
-    keyfile: juganville2-57c7c869ae68.json
-    project: juganville2
-    default: false
-    on: prod-chantal
-  - provider: gae
-    skip_cleanup: true
-    keyfile: pim-mockup-2-5f72a6371215.json
-    project: pim-mockup-2
-    default: true
-    on: staging-pascal
-  - provider: gae
-    skip_cleanup: true
-    keyfile: pim-mockup-maciej-986c39f23282.json
-    project: pim-mockup-maciej
-    default: false
-    on: prod-pascal
-
+- provider: gae
+  skip_cleanup: true
+  keyfile: juganville-staging-secret.json
+  project: juganville-staging
+  default: true
+  on: staging
+- provider: gae
+  skip_cleanup: true
+  keyfile: juganville1-d596c876bf13.json
+  project: juganville1
+  default: false
+  on: prod
+- provider: gae
+  skip_cleanup: true
+  keyfile: juganville-dev-30260b40ffd0.json
+  project: juganville-dev
+  default: true
+  on: staging-chantal
+- provider: gae
+  skip_cleanup: true
+  keyfile: juganville2-57c7c869ae68.json
+  project: juganville2
+  default: false
+  on: prod-chantal
+- provider: gae
+  skip_cleanup: true
+  keyfile: pim-mockup-2-5f72a6371215.json
+  project: pim-mockup-2
+  default: true
+  on: staging-pascal
+- provider: gae
+  skip_cleanup: true
+  keyfile: pim-mockup-maciej-986c39f23282.json
+  project: pim-mockup-maciej
+  default: false
+  on: prod-pascal
 branches:
   only:
-    - prod
-    - staging
+  - prod
+  - staging
 before_install:
-  - openssl aes-256-cbc -K $encrypted_3d4f37c2f299_key -iv $encrypted_3d4f37c2f299_iv
-    -in pim-mockup-maciej-986c39f23282.json.enc -out pim-mockup-maciej-986c39f23282.json
-    -d
-  - openssl aes-256-cbc -K $encrypted_639f8d37791d_key -iv $encrypted_3d4f37c2f299_iv
-    -in pim-mockup-2-5f72a6371215.json.enc -out pim-mockup-2-5f72a6371215.json -d
-  - openssl aes-256-cbc -K $encrypted_b28d4b4f6076_key -iv $encrypted_3d4f37c2f299_iv
-    -in juganville-dev-30260b40ffd0.json.enc -out juganville-dev-30260b40ffd0.json -d
-  - openssl aes-256-cbc -K $encrypted_3d4f37c2f299_key -iv $encrypted_3d4f37c2f299_iv
-    -in juganville2-57c7c869ae68.json.enc -out juganville2-57c7c869ae68.json -d
-  - openssl aes-256-cbc -K $encrypted_d1a02f5c23a8_key -iv $encrypted_d1a02f5c23a8_iv
-    -in credentials.tar.gz.enc -out credentials.tar.gz -d
-  - tar -xzf credentials.tar.gz
-  - openssl aes-256-cbc -K $encrypted_4f69bc391da0_key -iv $encrypted_4f69bc391da0_iv
-    -in juganville1-d596c876bf13.json.enc -out juganville1-d596c876bf13.json -d
+- openssl aes-256-cbc -K $encrypted_c2e4ec3f7584_key -iv $encrypted_c2e4ec3f7584_iv -in pim-mockup-maciej-986c39f23282.json.enc -out pim-mockup-maciej-986c39f23282.json -d
+- openssl aes-256-cbc -K $encrypted_c2e4ec3f7584_key -iv $encrypted_c2e4ec3f7584_iv -in pim-mockup-2-5f72a6371215.json.enc -out pim-mockup-2-5f72a6371215.json -d
+- openssl aes-256-cbc -K $encrypted_c2e4ec3f7584_key -iv $encrypted_c2e4ec3f7584_iv -in juganville-dev-30260b40ffd0.json.enc -out juganville-dev-30260b40ffd0.json -d
+- openssl aes-256-cbc -K $encrypted_c2e4ec3f7584_key -iv $encrypted_c2e4ec3f7584_iv -in juganville2-57c7c869ae68.json.enc -out juganville2-57c7c869ae68.json -d
+- openssl aes-256-cbc -K $encrypted_d1a02f5c23a8_key -iv $encrypted_d1a02f5c23a8_iv
+  -in credentials.tar.gz.enc -out credentials.tar.gz -d
+- tar -xzf credentials.tar.gz
+- openssl aes-256-cbc -K $encrypted_4f69bc391da0_key -iv $encrypted_4f69bc391da0_iv
+  -in juganville1-d596c876bf13.json.enc -out juganville1-d596c876bf13.json -d
