@@ -44,8 +44,10 @@ branches:
   - prod
   - staging
 before_install:
-- openssl aes-256-cbc -K $encrypted_c2e4ec3f7584_key -iv $encrypted_c2e4ec3f7584_iv
-  -in juganville2-57c7c869ae68.json.enc -out juganville2-57c7c869ae68.json -d
+- openssl aes-256-cbc -K $encrypted_c2e4ec3f7584_key -iv $encrypted_c2e4ec3f7584_iv -in pim-mockup-maciej-986c39f23282.json.enc -out pim-mockup-maciej-986c39f23282.json -d
+- openssl aes-256-cbc -K $encrypted_c2e4ec3f7584_key -iv $encrypted_c2e4ec3f7584_iv -in pim-mockup-2-5f72a6371215.json.enc -out pim-mockup-2-5f72a6371215.json -d
+- openssl aes-256-cbc -K $encrypted_c2e4ec3f7584_key -iv $encrypted_c2e4ec3f7584_iv -in juganville-dev-30260b40ffd0.json.enc -out juganville-dev-30260b40ffd0.json -d
+- openssl aes-256-cbc -K $encrypted_c2e4ec3f7584_key -iv $encrypted_c2e4ec3f7584_iv -in juganville2-57c7c869ae68.json.enc -out juganville2-57c7c869ae68.json -d
 - openssl aes-256-cbc -K $encrypted_d1a02f5c23a8_key -iv $encrypted_d1a02f5c23a8_iv
   -in credentials.tar.gz.enc -out credentials.tar.gz -d
 - tar -xzf credentials.tar.gz
