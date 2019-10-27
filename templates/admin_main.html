@@ -97,6 +97,22 @@
 				</form>
 			</div>
 		</div>
+		<div class="panel panel-default">
+				<div class="panel-heading">Application properties</div>
+				<div class="panel-body">
+	
+					<form class="form-horizontal" role="form" action="/admin" method="post">
+						{{ forms.input('name', 'name', application.name) }}
+						{{ forms.input('phone', 'phone', application.phone) }}
+						{{ forms.input('addr1', 'addr1', application.addr1) }}
+						{{ forms.input('addr2', 'addr2', application.addr2) }}
+						{{ forms.input('addr3', 'addr3', application.addr3) }}
+						{{ forms.input('addr4', 'addr4', application.addr4) }}
+						{{ forms.input('email', 'email', application.email) }}
+						{{ forms.submit_button('Save') }}
+					</form>
+				</div>
+			</div>
 		<!-- 		<div class="panel panel-default">
 			<div class="panel-heading">Pictures</div>
 			<div class="panel-body">

@@ -79,14 +79,14 @@
     </aside> -->
       <div class="licensing">
         <div itemscope itemtype="http://schema.org/BedAndBreakfast">
-          <span itemprop="name">Le Manoir de Juganville</span>
+          <span itemprop="name">{{ application.addr1 }}</span>
           <div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-            <span itemprop="streetAddress">39 Les Mézières</span><br>
-            <span itemprop="postalCode">50480</span><br>
-            <span itemprop="addressLocality">Saint Martin de Varreville, France</span><br>
+            <span itemprop="streetAddress">{{ application.addr2 }}</span><br>
+            <span itemprop="postalCode">{{ application.addr3 }}</span><br>
+            <span itemprop="addressLocality">{{ application.addr4 }}</span><br>
           </div>
-          <a href="tel:+33660634622"><span itemprop="telephone">+33 6 60 63 46 22</span></a><br>
-          <a class="email" href="mailto:manoirdejuganville@gmail.com"><span itemprop="email">manoirdejuganville@gmail.com</span></a>
+          <a href="tel:{{ application.phone }}"><span itemprop="telephone">{{ application.phone }}</span></a><br>
+          <a class="email" href="mailto:manoirdejuganville@gmail.com"><span itemprop="email">{{ application.email }}</span></a>
          </div>
 
         <center><a class="gitedefrance" href="http://www.gites-de-france.com/" target="_blank">http://www.gites-de-france.com/</a></center>
