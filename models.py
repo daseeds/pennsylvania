@@ -72,6 +72,19 @@ class LocaleDict(ndb.Model):
 	name = ndb.StringProperty(required=True)
 	value = ndb.StringProperty(required=True)
 
+class Application(ndb.Model):
+	name = ndb.StringProperty()
+	phone = ndb.StringProperty()
+	nav_color = ndb.StringProperty()
+	addr1 = ndb.StringProperty()
+	addr2 = ndb.StringProperty()
+	addr3 = ndb.StringProperty()
+	addr4 = ndb.StringProperty()
+	email = ndb.StringProperty()
+	googleId = ndb.StringProperty()
+	siteBaseUrl = ndb.StringProperty()
+
+
 
 
 

@@ -8,7 +8,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/{{locale_id}}">Le Manoir de Juganville</a>
+          <a class="navbar-brand" href="/{{locale_id}}">{{application.name}}</a>
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
@@ -45,7 +45,7 @@
           	{%-endif %}
           {%- endfor %}
 
-          <a href="tel:+33660634622" id="navbar-tel-button" class="btn btn-primary navbar-btn" >+33 6 60 63 46 22</a>
+          <a href="tel:{{application.phone}}" id="navbar-tel-button" class="btn btn-primary navbar-btn" >{{application.phone}}</a>
           <ul class="nav navbar-nav navbar-right">
 
 

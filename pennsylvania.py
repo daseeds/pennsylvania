@@ -10,7 +10,7 @@ import datetime
 from webapp2_extras.routes import RedirectRoute
 from webapp2_extras import jinja2
 
-from models import Locale, Page, Menu, Picture
+from models import Locale, Page, Menu, Picture, Application
 from admin import *
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
@@ -181,10 +181,15 @@ class ModelViewer(BaseHandler):
 			else: #else default to english
 				this_locale = ndb.Key(Locale, "en")
 				localized_page = Page.query(Page.locale==this_locale, Page.menu==this_menu).fetch()
+				if not localized_page:
+					self.abort(404, "Missing page for {0} {1}".format(this_locale, this_menu))
 				locale.page = localized_page[0]
 
 		## Block
 		blocks = self.get_blocks_by_page(page_id)
+
+		## Application
+		application = Application.get_by_id("main")
 
 		template_values = {
 			'page': page,
@@ -195,6 +200,7 @@ class ModelViewer(BaseHandler):
 			'dictionary' : dictionary,
 			'blocks' : blocks,
 			'map_menu_page_locale' : map_menu_page_locale,
+			'application': application,
 		}
 		return self.render_response('page.html', **template_values)
 
@@ -300,20 +306,24 @@ class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
 application = webapp2.WSGIApplication([
 	webapp2.Route(r'/sitemap.xml', SiteMap),
 	webapp2.Route(r'/serve/<:([^/]+)?>', ServeHandler, name='ServeHandler'),
-    webapp2.Route(r'/admin', AdminMain),
-    webapp2.Route(r'/admin/locale/new', AdminNewLocale),
-	webapp2.Route(r'/admin/menu/new', AdminNewMenu),
-	webapp2.Route(r'/admin/submenu/new', AdminNewSubMenu),
-	webapp2.Route(r'/admin/localedict/new', AdminNewLocaleDict),
-	webapp2.Route(r'/admin/localedict/<localedict_id:([^/]+)?>/update', AdminUpdateLocaleDict),
-	webapp2.Route(r'/admin/localedict/<localedict_id:([^/]+)?>/delete', AdminDeleteLocaleDict),
-	webapp2.Route(r'/admin/page/new', AdminNewPage),
-	webapp2.Route(r'/admin/page/<page_id:([^/]+)?>', AdminViewPage),
-    webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/update', AdminUpdatePage),
-    webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/delete', AdminPageDelete),
-    webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/add_block', AdminPageAddBlock),
-    webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/<block_id:([^/]+)?>/moveup', AdminBlockMoveUp),
-    webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/<block_id:([^/]+)?>/delete', AdminBlockDelete),
+    webapp2.Route(r'/admin', handler='admin.ApplicationHandler'),
+    webapp2.Route(r'/admin/locale', handler='admin.LocaleHandler', handler_method='create'),
+	webapp2.Route(r'/admin/locale/<locale_id:([^/]+)?>', handler='admin.LocaleHandler', handler_method='get'),
+	webapp2.Route(r'/admin/locale/<locale_id:([^/]+)?>/delete', handler='admin.LocaleHandler', handler_method='delete'),
+	webapp2.Route(r'/admin/menu', handler='admin.MenuHandler', handler_method='create'),
+	webapp2.Route(r'/admin/menu/sub', handler='admin.MenuHandler', handler_method='createSub'),
+    webapp2.Route(r'/admin/menu/<menu_id:([^/]+)?>/delete', handler='admin.MenuHandler', handler_method='delete'),
+	webapp2.Route(r'/admin/localedict/new', handler='admin.LocaleDictHandler', handler_method='create'),
+	webapp2.Route(r'/admin/localedict/<localedict_id:([^/]+)?>/update', handler='admin.LocaleDictHandler', handler_method='update'),
+	webapp2.Route(r'/admin/localedict/<localedict_id:([^/]+)?>/delete', handler='admin.LocaleDictHandler', handler_method='delete'),
+	webapp2.Route(r'/admin/page/new', handler='admin.PageHandler', handler_method='getNew'),
+	webapp2.Route(r'/admin/page', handler='admin.PageHandler'),
+	webapp2.Route(r'/admin/page/<page_id:([^/]+)?>', handler='admin.PageHandler', methods=['GET']),
+    webapp2.Route(r'/admin/page/<page_id:([^/]+)?>', handler='admin.PageHandler', methods=['POST'], handler_method='put'),
+    webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/delete', handler='admin.PageHandler', handler_method='delete'),
+    webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/add_block', handler='admin.PageHandler', handler_method='addBlock'),
+    webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/block/<block_id:([^/]+)?>/moveup', handler='admin.PageHandler', handler_method='moveUpBlock'),
+    webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/block/<block_id:([^/]+)?>/delete', handler='admin.PageHandler', handler_method='deleteBlock'),
     webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/block/<block_id:([^/]+)?>/price/new', AdminBlockPriceNew),
     webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/block/<block_id:([^/]+)?>/price/<price_id:([^/]+)?>/delete', AdminBlockPriceDelete),
     webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/block/<block_id:([^/]+)?>/price/<price_id:([^/]+)?>/moveup', AdminBlockPriceMoveUp),
@@ -321,11 +331,11 @@ application = webapp2.WSGIApplication([
     webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/block/<block_id:([^/]+)?>/headsup/<headsup_id:([^/]+)?>/delete', AdminBlockHeadsUpDelete),
     webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/block/<block_id:([^/]+)?>/headsup/<headsup_id:([^/]+)?>/moveup', AdminBlockHeadsUpMoveUp),
     webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/block/<block_id:([^/]+)?>/headsup/<headsup_id:([^/]+)?>/update', AdminBlockHeadsUpUpdate),
-    webapp2.Route(r'/admin/picture/<picture_id:([^/]+)?>/delete', AdminPictureDelete),
-    webapp2.Route(r'/admin/picture/<picture_id:([^/]+)?>/update', AdminPictureUpdate),
-    webapp2.Route(r'/admin/block/<block_id:([^/]+)?>/update', AdminBlockUpdate),
-    webapp2.Route(r'/admin/block/<block_id:([^/]+)?>/picture/<picture_id:([^/]+)?>/delete', AdminBlockPictureDelete),
-    webapp2.Route(r'/admin/<locale_id:([^/]+)?>', AdminViewLocale),
+    webapp2.Route(r'/admin/picture/<picture_id:([^/]+)?>/delete', handler='admin.PictureHandler', handler_method='delete'),
+    webapp2.Route(r'/admin/picture/<picture_id:([^/]+)?>/update', handler='admin.PictureHandler', handler_method='update'),
+    webapp2.Route(r'/admin/block/<block_id:([^/]+)?>/update', handler='admin.BlockHandler'),
+	webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/block/<block_id:([^/]+)?>/background/<picture_id:([^/]+)?>/delete', handler='admin.BlockHandler', handler_method='deleteBackground'),
+    webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/block/<block_id:([^/]+)?>/picture/<picture_id:([^/]+)?>/delete', handler='admin.BlockHandler', handler_method='deletePicture'),
 	webapp2.Route(r'/upload', AdminUploadHandler),
     webapp2.Route(r'/', MainPage),
     webapp2.Route(r'/<locale_id:([^/]+)?>/<page_id:([^/]+)?>', ModelViewer),
