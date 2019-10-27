@@ -100,6 +100,8 @@ class PictureHandler(AdminBaseHandler):
         blob_info = blobstore.BlobInfo.get(picture.key().get().size_max)
         blob_info.delete()
         picture.delete()
+        if self.request.get('page_id'):
+            return self.redirect('/admin/page/{0}'.format(self.request.get('page_id')))
 
     def update(self, picture_id):
         pic = Picture.get_by_id(int(picture_id))
@@ -215,6 +217,17 @@ class PageHandler(AdminBaseHandler):
         page = Page.get_by_id(page_id)
         page.modification_author = users.get_current_user()
         page.put()
+
+    def deleteBackground(self, page_id, picture_id):
+        picture = PictureEntity(picture_id)
+        page = Page.get_by_id(page_id)
+        page.backgrounds.remove(picture.key())
+        page.modification_author = users.get_current_user()
+        page.put()
+
+        picture.delete()
+        memcache.flush_all()
+        return self.redirect('/admin/page/{0}'.format(page_id))
 
     def deleteBlock(self, page_id, block_id):
         page = Page.get_by_id(page_id)
