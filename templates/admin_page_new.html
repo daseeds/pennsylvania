@@ -83,7 +83,7 @@
 											<td><input type="text" class="form-control" value="{{background.get().caption}}" name="caption" ></td>
 											<td></td>
 											<td><img width="150px" src="/serve/{{background.get().size_max}}"  class="img-responsive img-thumbnail"></td>
-											<td><a href="/admin/picture/{{background.get().key.id()}}/delete?page_id={{page.key.id()}}" class="btn btn-danger" name="delete">Delete</a>
+											<td><a href="/admin/page/{{page.key.id()}}/background/{{background.get().key.id()}}/delete" class="btn btn-danger" name="delete">Delete</a>
 												<input type="hidden" name="page_id" value="{{page.key.id()}}"/>
 												<button type="submit" class="btn btn-primary ">Save</button></td>
 											</form>
