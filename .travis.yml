@@ -15,6 +15,30 @@ deploy:
     project: juganville1
     default: false
     on: prod
+  - provider: gae
+    skip_cleanup: true
+    keyfile: juganville-staging-secret.json
+    project: juganville-dev
+    default: true
+    on: staging-chantal
+  - provider: gae
+    skip_cleanup: true
+    keyfile: juganville1-d596c876bf13.json
+    project: juganville2
+    default: false
+    on: prod-chantal
+  - provider: gae
+    skip_cleanup: true
+    keyfile: juganville-staging-secret.json
+    project: pim-mockup-2
+    default: true
+    on: staging-pascal
+  - provider: gae
+    skip_cleanup: true
+    keyfile: juganville1-d596c876bf13.json
+    project: pim-mockup-maciej
+    default: false
+    on: prod-pascal
 branches:
   only:
   - prod
