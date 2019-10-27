@@ -332,6 +332,7 @@ application = webapp2.WSGIApplication([
     webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/block/<block_id:([^/]+)?>/headsup/<headsup_id:([^/]+)?>/moveup', AdminBlockHeadsUpMoveUp),
     webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/block/<block_id:([^/]+)?>/headsup/<headsup_id:([^/]+)?>/update', AdminBlockHeadsUpUpdate),
     webapp2.Route(r'/admin/picture/<picture_id:([^/]+)?>/delete', handler='admin.PictureHandler', handler_method='delete'),
+	webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/background/<picture_id:([^/]+)?>/delete', handler='admin.PageHandler', handler_method='deleteBackground'),
     webapp2.Route(r'/admin/picture/<picture_id:([^/]+)?>/update', handler='admin.PictureHandler', handler_method='update'),
     webapp2.Route(r'/admin/block/<block_id:([^/]+)?>/update', handler='admin.BlockHandler'),
 	webapp2.Route(r'/admin/page/<page_id:([^/]+)?>/block/<block_id:([^/]+)?>/background/<picture_id:([^/]+)?>/delete', handler='admin.BlockHandler', handler_method='deleteBackground'),
