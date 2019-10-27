@@ -46,7 +46,7 @@ branches:
 before_install:
 - openssl aes-256-cbc -K $encrypted_c2e4ec3f7584_key -iv $encrypted_c2e4ec3f7584_iv
   -in secrets-new.tar.enc -out secrets-new.tar -d
-- tar xvzf secrets.tar
+- tar xvzf secrets-new.tar
 - openssl aes-256-cbc -K $encrypted_d1a02f5c23a8_key -iv $encrypted_d1a02f5c23a8_iv
   -in credentials.tar.gz.enc -out credentials.tar.gz -d
 - tar -xzf credentials.tar.gz
