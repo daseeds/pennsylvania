@@ -12,7 +12,7 @@
 			<div class="panel-heading">New page</div>
 			<div class="panel-body">
 
-				<form class="form-horizontal" role="form" action="{{action}}" method="post">
+				<form class="form-horizontal" role="form" action="{{action}}" method="{{method}}">
 					{% if page %}
 					  <div class="form-group">
 					    <label class="col-sm-2 control-label">Creation</label>
@@ -137,8 +137,8 @@
 					    <label class="col-sm-2 control-label">Actions</label>
 					    <div class="col-sm-10">
 					      <p class="form-control-static">
-					      	<a href="/admin/page/{{page.key.id()}}/{{block.id()}}/moveup" class="btn btn-xs btn-primary">Move Up</a>
-					      	<a href="/admin/page/{{page.key.id()}}/{{block.id()}}/delete" class="btn btn-xs btn-danger">Delete</a></p>
+					      	<a href="/admin/page/{{page.key.id()}}/block/{{block.id()}}/moveup" class="btn btn-xs btn-primary">Move Up</a>
+					      	<a href="/admin/page/{{page.key.id()}}/block/{{block.id()}}/delete" class="btn btn-xs btn-danger">Delete</a></p>
 					    </div>
 					  </div>
 					    {{ forms.select('Select type', 'pagination', block_choice, block.get().pagination) }}
@@ -201,7 +201,7 @@
 					{% endif %}
 					{% if block.get().picture %}
 					<img width="150px" src="/serve/{{block.get().picture.get().size_max}}"  class="img-responsive img-thumbnail">
-					<a href="/admin/block/{{block.id()}}/picture/{{block.get().picture.id()}}/delete?return-to=/admin/page/{{ page.key.id() }}" class="btn btn-danger" name="delete">Delete</a>
+					<a href="/admin/page/{{ page.key.id() }}/block/{{block.id()}}/picture/{{block.get().picture.id()}}/delete?return-to=/admin/page/{{ page.key.id() }}" class="btn btn-danger" name="delete">Delete</a>
 					{% endif %}
 					{% if block.get().pagination == "pic-left" or block.get().pagination == "pic-right" or block.get().pagination == "price-pic-left" or block.get().pagination == "price-pic-right" or block.get().pagination == "full-pic" or block.get().pagination == "parallax"%}
 					<form class="form-horizontal" role="form"  action="{{upload_url}}" enctype="multipart/form-data" method="post">
@@ -239,7 +239,7 @@
 											<td><input type="text" class="form-control" value="{{background.get().caption}}" name="caption" ></td>
 											<td></td>
 											<td><img width="150px" src="/serve/{{background.get().size_max}}"  class="img-responsive img-thumbnail"></td>
-											<td><a href="/admin/picture/{{background.get().key.id()}}/delete?block_id={{block.id()}}&page_id={{page.key.id()}}" class="btn btn-danger" name="delete">Delete</a>
+											<td><a href="/admin/page/{{ page.key.id() }}/block/{{block.id()}}/background/{{background.get().key.id()}}/delete" class="btn btn-danger" name="delete">Delete</a>
 												<input type="hidden" name="page_id" value="{{page.key.id()}}"/>
 												<button type="submit" class="btn btn-success ">Save</button></td>
 											</form>
