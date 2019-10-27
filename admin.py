@@ -360,6 +360,8 @@ class ApplicationHandler(AdminBaseHandler):
         app.addr3 = self.request.get('addr3')
         app.addr4 = self.request.get('addr4')
         app.email = self.request.get('email')
+        app.googleId = self.request.get('googleId')
+        app.siteBaseUrl = self.request.get('siteBaseUrl')
         app.put()
         return self.redirect('/admin')
 
