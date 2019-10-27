@@ -81,6 +81,8 @@ class Application(ndb.Model):
 	addr3 = ndb.StringProperty()
 	addr4 = ndb.StringProperty()
 	email = ndb.StringProperty()
+	googleId = ndb.StringProperty()
+	siteBaseUrl = ndb.StringProperty()
 
 
 

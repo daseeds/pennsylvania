@@ -98,7 +98,7 @@
 			</div>
 		</div>
 		<div class="panel panel-default">
-				<div class="panel-heading">Application properties</div>
+				<div class="panel-heading">Website main information</div>
 				<div class="panel-body">
 	
 					<form class="form-horizontal" role="form" action="/admin" method="post">
@@ -109,6 +109,8 @@
 						{{ forms.input('addr3', 'addr3', application.addr3) }}
 						{{ forms.input('addr4', 'addr4', application.addr4) }}
 						{{ forms.input('email', 'email', application.email) }}
+						{{ forms.input('googleId', 'googleId', application.googleId) }}
+						{{ forms.input('siteBaseUrl', 'siteBaseUrl', application.siteBaseUrl) }}
 						{{ forms.submit_button('Save') }}
 					</form>
 				</div>
