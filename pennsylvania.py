@@ -10,7 +10,7 @@ import datetime
 from webapp2_extras.routes import RedirectRoute
 from webapp2_extras import jinja2
 
-from models import Locale, Page, Menu, Picture
+from models import Locale, Page, Menu, Picture, Application
 from admin import *
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
@@ -181,10 +181,15 @@ class ModelViewer(BaseHandler):
 			else: #else default to english
 				this_locale = ndb.Key(Locale, "en")
 				localized_page = Page.query(Page.locale==this_locale, Page.menu==this_menu).fetch()
+				if not localized_page:
+					self.abort(404, "Missing page for {0} {1}".format(this_locale, this_menu))
 				locale.page = localized_page[0]
 
 		## Block
 		blocks = self.get_blocks_by_page(page_id)
+
+		## Application
+		application = Application.get_by_id("main")
 
 		template_values = {
 			'page': page,
@@ -195,6 +200,7 @@ class ModelViewer(BaseHandler):
 			'dictionary' : dictionary,
 			'blocks' : blocks,
 			'map_menu_page_locale' : map_menu_page_locale,
+			'application': application,
 		}
 		return self.render_response('page.html', **template_values)
 
@@ -300,12 +306,13 @@ class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
 application = webapp2.WSGIApplication([
 	webapp2.Route(r'/sitemap.xml', SiteMap),
 	webapp2.Route(r'/serve/<:([^/]+)?>', ServeHandler, name='ServeHandler'),
-    webapp2.Route(r'/admin', AdminMain),
+    webapp2.Route(r'/admin', handler='admin.ApplicationHandler'),
     webapp2.Route(r'/admin/locale', handler='admin.LocaleHandler', handler_method='create'),
 	webapp2.Route(r'/admin/locale/<locale_id:([^/]+)?>', handler='admin.LocaleHandler', handler_method='get'),
 	webapp2.Route(r'/admin/locale/<locale_id:([^/]+)?>/delete', handler='admin.LocaleHandler', handler_method='delete'),
-	webapp2.Route(r'/admin/menu/new', AdminNewMenu),
-	webapp2.Route(r'/admin/submenu/new', AdminNewSubMenu),
+	webapp2.Route(r'/admin/menu', handler='admin.MenuHandler', handler_method='create'),
+	webapp2.Route(r'/admin/menu/sub', handler='admin.MenuHandler', handler_method='createSub'),
+    webapp2.Route(r'/admin/menu/<menu_id:([^/]+)?>/delete', handler='admin.MenuHandler', handler_method='delete'),
 	webapp2.Route(r'/admin/localedict/new', handler='admin.LocaleDictHandler', handler_method='create'),
 	webapp2.Route(r'/admin/localedict/<localedict_id:([^/]+)?>/update', handler='admin.LocaleDictHandler', handler_method='update'),
 	webapp2.Route(r'/admin/localedict/<localedict_id:([^/]+)?>/delete', handler='admin.LocaleDictHandler', handler_method='delete'),

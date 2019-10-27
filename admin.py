@@ -9,7 +9,7 @@ import webapp2
 from webapp2_extras.routes import RedirectRoute
 from webapp2_extras import jinja2
 from functools import wraps
-from models import Locale, Page, Menu, pagination_choice, Picture, block_choice, Block, LocaleDict, Price, HeadsUp, kind_choice
+from models import Locale, Page, Menu, pagination_choice, Picture, block_choice, Block, LocaleDict, Price, HeadsUp, kind_choice, Application
 
 from google.appengine.api import images
 from google.appengine.api import users
@@ -347,8 +347,22 @@ class PageHandler(AdminBaseHandler):
         memcache.flush_all()
         return self.redirect('/admin/page/{0}'.format(unicode(page_id)))
 
+class ApplicationHandler(AdminBaseHandler):
+    def post(self):
+        app = Application.get_by_id("main")
+        if not app:
+            app = Application(id="main")
+        app.name = self.request.get('name')
+        app.phone = self.request.get('phone')
+        app.nav_color = self.request.get('nav_color')
+        app.addr1 = self.request.get('addr1')
+        app.addr2 = self.request.get('addr2')
+        app.addr3 = self.request.get('addr3')
+        app.addr4 = self.request.get('addr4')
+        app.email = self.request.get('email')
+        app.put()
+        return self.redirect('/admin')
 
-class AdminMain(AdminBaseHandler):
     def get(self):
 
         locale_query = Locale.query()
@@ -379,6 +393,7 @@ class AdminMain(AdminBaseHandler):
             logging.info(type(page.name))
 
         pictures = Picture.query().fetch()
+        application = Application.get_by_id("main")
 
         template_values = {
             'url': users.create_logout_url(self.request.uri),
@@ -392,6 +407,7 @@ class AdminMain(AdminBaseHandler):
             'locale_list': locale_list,
             'kind_choice': kind_choice,
             'pictures': pictures,
+            'application': application,
         }
         return self.render_response('admin_main.html', **template_values)
 
@@ -460,17 +476,16 @@ class LocaleHandler(AdminBaseHandler):
         return self.render_response('admin_view_pages.html', **template_values)
 
 
-class AdminNewMenu(AdminBaseHandler):
-    def post(self):
+
+class MenuHandler(AdminBaseHandler):
+    def create(self):
         menu = Menu(id=self.request.get('menu_id'))
         menu.kind = self.request.get('kind')
         menu.order = 1
         menu.put()
         return self.redirect('/admin')
 
-
-class AdminNewSubMenu(AdminBaseHandler):
-    def post(self):
+    def createSub(self):
         submenu = Menu(id=self.request.get('submenu_id'))
         submenu.order = 1
         submenu.parent = ndb.Key('Menu', self.request.get('menu_id'))
@@ -480,6 +495,23 @@ class AdminNewSubMenu(AdminBaseHandler):
         menu.put()
         return self.redirect('/admin')
 
+    def delete(self, menu_id):
+        logging.info("MenuHandler.delete({0})".format(menu_id))
+        menu = ndb.Key(Menu, menu_id)
+
+        ## Delete reference to this menu (submenu case)
+        menus = Menu.query().fetch()
+        for _menu in menus:
+            logging.info(_menu.submenus)
+            if menu in _menu.submenus:
+                _menu.submenus.remove(menu)
+                _menu.put()
+        ## Delete child menu if any
+        for sub in menu.get().submenus:
+            ndb.Key(Menu, sub.id()).delete()
+        ndb.Key(Menu, menu_id).delete()
+        memcache.flush_all()
+        return self.redirect('/admin')
 
 class AdminBlockPriceNew(AdminBaseHandler):
     def post(self, page_id, block_id):
