@@ -10,6 +10,7 @@
 						<th>Url</th>
 						<th>Name</th>
 						<th>Modifications</th>
+						<th>Actions</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -17,14 +18,16 @@
 					<tr>
 						<td><span class="label label-primary">{{page.menu.string_id()}}</span></td>
 						<td><span class="label label-info">{{page.locale.id()}}</span></td>
-						<td><a href="/admin/page/{{ page.key.id() }}" >{{ page.key.id() }}</a>
+						<td><a href="/admin/page/{{ page.key.id() }}">{{ page.key.id() }}</a>
 						</td>
 						<td>{{ page.name }}</td>
 						<td><span class="label label-warning">Modified
 								{%- if page.modification_date != None %}{{page.modification_date.strftime("%Y-%m-%d %H:%M:%S")}}{%- endif %}
 								by {{page.modification_author}}</span></td>
-						{%- endfor %}
+						<td><a href="/admin/page/{{ page.key.id() }}/delete" class="btn btn-danger btn-sm" name="delete">Delete</a></td>
 					</tr>
+					{%- endfor %}
+
 				</tbody>
 			</table>
 		</div>
