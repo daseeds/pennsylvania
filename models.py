@@ -83,6 +83,12 @@ class Application(ndb.Model):
 	email = ndb.StringProperty()
 	googleId = ndb.StringProperty()
 	siteBaseUrl = ndb.StringProperty()
+	navBackground = ndb.StringProperty()
+	navColor = ndb.StringProperty()
+	mainBackground = ndb.StringProperty()
+	mainColor = ndb.StringProperty()
+	secondBackground = ndb.StringProperty()
+	mainLinkColor = ndb.StringProperty()
 
 
 

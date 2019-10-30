@@ -375,6 +375,12 @@ class ApplicationHandler(AdminBaseHandler):
         app.email = self.request.get('email')
         app.googleId = self.request.get('googleId')
         app.siteBaseUrl = self.request.get('siteBaseUrl')
+        app.navBackground = self.request.get('navBackground')
+        app.navColor = self.request.get('navColor')
+        app.mainBackground = self.request.get('mainBackground')
+        app.mainColor = self.request.get('mainColor')
+        app.secondBackground = self.request.get('secondBackground')
+        app.mainLinkColor = self.request.get('mainLinkColor')
         app.put()
         return self.redirect('/admin')
 

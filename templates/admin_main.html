@@ -102,6 +102,7 @@
 				<div class="panel-body">
 	
 					<form class="form-horizontal" role="form" action="/admin" method="post">
+						<section><h3>Info</h3>
 						{{ forms.input('name', 'name', application.name) }}
 						{{ forms.input('phone', 'phone', application.phone) }}
 						{{ forms.input('addr1', 'addr1', application.addr1) }}
@@ -111,6 +112,15 @@
 						{{ forms.input('email', 'email', application.email) }}
 						{{ forms.input('googleId', 'googleId', application.googleId) }}
 						{{ forms.input('siteBaseUrl', 'siteBaseUrl', application.siteBaseUrl) }}
+					</section>
+						<section><h3>Colors</h3>
+						{{ forms.color('Nav background', 'navBackground', application.navBackground, 'color') }}
+						{{ forms.color('Nav color', 'navColor', application.navColor, 'color') }}
+						{{ forms.color('Main background', 'mainBackground', application.mainBackground, 'color') }}
+						{{ forms.color('Main color', 'mainColor', application.mainColor, 'color') }}
+						{{ forms.color('Secondry background', 'secondBackground', application.secondBackground, 'color') }}
+						{{ forms.color('Main link color', 'mainLinkColor', application.mainLinkColor, 'color') }}
+					</section>
 						{{ forms.submit_button('Save') }}
 					</form>
 				</div>
