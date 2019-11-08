@@ -24,24 +24,73 @@
   <link href="/static/js/libs/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
 
   <link href="/static/css/styles.css" rel="stylesheet">
-  <style>
-  body {
-  color: {{application.mainColor}};
-  background-color: {{application.mainBackground}};
-}
-  .navbar-default {
+<style>
+body {
+    color: {{application.mainColor}};
+    background-color: {{application.mainBackground}};
+  }
+.navbar-default {
     background-color: {{application.navBackground}};
-    border-color: #202d3b;
-
+    border-color: {{application.navBorder}};
+  }
     .navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:hover, .navbar-default .navbar-nav>.active>a:focus {
-    color: #fff;
-    background-color: #1a242f;
-  
-} 
-
+      color: {{application.navColor}};
+      background-color: {{application.navActive}}; 
+    } 
+    .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:hover, .navbar-default .navbar-nav>.open>a:focus {
+      color: {{application.navColor}};
+      background-color: {{application.navActive}}; 
 }
-  
-  </style>
+.dropdown-menu>li>a:hover {
+  background-color: {{application.navBackground}}; 
+}
+.pane:nth-of-type(2n+1) {
+    background-color: {{application.secondBackground}};
+} 
+.panel {
+
+    background-color: {{application.mainBackground}};
+}
+a:hover, a:focus {
+    color: {{application.mainLinkColor}};
+}
+a {
+    color: {{application.mainLinkColor}};
+}
+.navbar-default .navbar-nav>li>a:hover {
+  color: {{application.mainLinkColor}};
+}
+.navbar-default .navbar-nav>li>a {
+    color: {{application.navColor}};
+}
+.navbar-default .navbar-brand {
+    color: {{application.navColor}};
+}
+a.navbar-brand:hover {
+  color: {{application.mainLinkColor}};
+}
+
+
+.nav a:hover .caret {
+    border-top-color: {{application.mainLinkColor}};
+    border-bottom-color: {{application.mainLinkColor}};
+}
+.navbar-default .navbar-nav>.dropdown>a:hover .caret, .navbar-default .navbar-nav>.dropdown>a:focus .caret {
+    border-top-color: {{application.mainLinkColor}};
+    border-bottom-color: {{application.mainLinkColor}};
+}
+.navbar-default .navbar-nav>.open>a:hover .caret, .navbar-default .navbar-nav>.open>a:focus .caret {
+  border-top-color: {{application.navColor}};
+    border-bottom-color: {{application.navColor}};
+}
+.nav .open>a .caret, .nav .open>a:hover .caret, .nav .open>a:focus .caret {
+    border-top-color: {{application.navColor}};
+    border-bottom-color: {{application.navColor}};
+}
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+    color: {{application.mainLinkColor}};
+}
+</style>
   {%- endblock head %}
   <script>
     (function (i, s, o, g, r, a, m) {
@@ -69,37 +118,19 @@
   {%- block footer %}
   <footer>
     <div class="container">
-      <aside class="panel share">
+        {%- if application.share %}
+
+     <aside class="panel share">
         <h2>Share</h2>
-        <a href="https://twitter.com/share?url=http://www.juganville.com/{{locale_id}}/{{page.key.id()}}/&text=Le Manoir de Juganville&lang={{locale_id}}"
-          class="twitter" target="_blank">Twitter</a>
-
-        <a href="https://www.facebook.com/sharer/sharer.php?u=http://www.juganville.com/{{locale_id}}/{{page.key.id()}}"
-          class="facebook" target="_blank">Facebook</a>
-
-        <a href="https://plus.google.com/share?url=http://www.juganville.com/{{locale_id}}/{{page.key.id()}}/"
-          class="gplus"
-          onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">Google+</a>
+        {{ application.share|safe }}
       </aside>
+      {%- endif %}
       <aside class="panel reference">
+         {%- if application.references %}
         <h2>References</h2>
-        <p>
-          <div id="TA_cdsratingsonlynarrow190" class="TA_cdsratingsonlynarrow">
-            <ul id="I51C1hA9j" class="TA_links N7E364">
-              <li id="4xJkzJmn81Y" class="5lfxs8">
-                <a target="_blank" href="http://www.tripadvisor.com/"><img
-                    src="http://www.tripadvisor.com/img/cdsi/img2/branding/tripadvisor_logo_transp_340x80-18034-2.png"
-                    alt="TripAdvisor" /></a>
-              </li>
-            </ul>
-          </div>
-          <script
-            src="http://www.jscache.com/wejs?wtype=cdsratingsonlynarrow&amp;uniq=190&amp;locationId=578571&amp;lang={{locale_id}}&amp;border=true"></script>
-
-        </p>
-        <!-- <p><a class="gitedefrance" href="http://www.gites-de-france.com/" target="_blank">http://www.gites-de-france.com/</a><img src="/static/img/logo-bcbnb.jpg" alt="Logo bestcharmingbnb"  height="56" /></p> -->
-        <p></p>
+        {{ application.references|safe }}
       </aside>
+      {%- endif %}
       <div class="licensing">
         <div itemscope itemtype="http://schema.org/BedAndBreakfast">
           <span itemprop="name">{{ application.addr1 }}</span>
@@ -112,9 +143,11 @@
           <a class="email" href="mailto:manoirdejuganville@gmail.com"><span
               itemprop="email">{{ application.email }}</span></a>
         </div>
-
-        <center><a class="gitedefrance" href="http://www.gites-de-france.com/"
-            target="_blank">http://www.gites-de-france.com/</a></center>
+        <div class='signature_logo'>
+            {%- if application.logo %}
+            <img style="width: 150px" src="/serve/{{application.logo.get().size_max}}" \>
+            {%- endif %}
+        </div>
 
       </div>
     </div>

@@ -113,18 +113,40 @@
 						{{ forms.input('googleId', 'googleId', application.googleId) }}
 						{{ forms.input('siteBaseUrl', 'siteBaseUrl', application.siteBaseUrl) }}
 					</section>
-						<section><h3>Colors</h3>
+						<section><h3>Colors <a href="/admin/resetColor" class="btn btn-danger" name="delete">Reset colors to default</a></h3>
+							
 						{{ forms.color('Nav background', 'navBackground', application.navBackground, 'color') }}
 						{{ forms.color('Nav color', 'navColor', application.navColor, 'color') }}
+						{{ forms.color('Nav border', 'navBorder', application.navBorder, 'color') }}
+						{{ forms.color('Nav active', 'navActive', application.navActive, 'color') }}
 						{{ forms.color('Main background', 'mainBackground', application.mainBackground, 'color') }}
 						{{ forms.color('Main color', 'mainColor', application.mainColor, 'color') }}
 						{{ forms.color('Secondry background', 'secondBackground', application.secondBackground, 'color') }}
 						{{ forms.color('Main link color', 'mainLinkColor', application.mainLinkColor, 'color') }}
 					</section>
+					<section><h3>Footer Panels</h3>
+						{{ forms.textarea_code('Share panel', 'share', application.share|safe, 10) }}
+						{{ forms.textarea_code('References Panel', 'references', application.references|safe, 10) }}
+						{{ forms.textarea_code('Signature logo', 'logo', application.logo|safe, 10) }}
+					</section>
 						{{ forms.submit_button('Save') }}
 					</form>
+
+					<section><h3>Signature logo</h3>
+						{%- if application.logo %}
+						<img width="150px" src="/serve/{{application.logo.get().size_max}}"  class="img-responsive img-thumbnail">
+						<a href="/admin/deleteLogo" class="btn btn-danger" name="delete">Delete</a>
+						{%- endif %}
+					<form class="form-horizontal" role="form"  action="{{upload_url}}" enctype="multipart/form-data" method="post">
+						<input type="file" class="btn btn-primary" name="picture"/>
+						<input type="hidden" name="action" value="Logo"/>
+						<input type="hidden" name="return-to" value="/admin"/>						
+						<button type="submit" class="btn btn-primary ">Add new image</button>
+					</form>
+					</section>
 				</div>
-			</div>
+		</div>
+
 		<!-- 		<div class="panel panel-default">
 			<div class="panel-heading">Pictures</div>
 			<div class="panel-body">

@@ -75,7 +75,6 @@ class LocaleDict(ndb.Model):
 class Application(ndb.Model):
 	name = ndb.StringProperty()
 	phone = ndb.StringProperty()
-	nav_color = ndb.StringProperty()
 	addr1 = ndb.StringProperty()
 	addr2 = ndb.StringProperty()
 	addr3 = ndb.StringProperty()
@@ -85,10 +84,15 @@ class Application(ndb.Model):
 	siteBaseUrl = ndb.StringProperty()
 	navBackground = ndb.StringProperty()
 	navColor = ndb.StringProperty()
+	navBorder = ndb.StringProperty()
+	navActive = ndb.StringProperty()
 	mainBackground = ndb.StringProperty()
 	mainColor = ndb.StringProperty()
 	secondBackground = ndb.StringProperty()
 	mainLinkColor = ndb.StringProperty()
+	share = ndb.StringProperty()
+	references = ndb.StringProperty()
+	logo = ndb.KeyProperty(kind='Picture')
 
 
 

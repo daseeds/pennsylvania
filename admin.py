@@ -377,10 +377,14 @@ class ApplicationHandler(AdminBaseHandler):
         app.siteBaseUrl = self.request.get('siteBaseUrl')
         app.navBackground = self.request.get('navBackground')
         app.navColor = self.request.get('navColor')
+        app.navBorder = self.request.get('navBorder')
+        app.navActive = self.request.get('navActive')
         app.mainBackground = self.request.get('mainBackground')
         app.mainColor = self.request.get('mainColor')
         app.secondBackground = self.request.get('secondBackground')
         app.mainLinkColor = self.request.get('mainLinkColor')
+        app.share = self.request.get('share')
+        app.references = self.request.get('references')
         app.put()
         return self.redirect('/admin')
 
@@ -429,8 +433,32 @@ class ApplicationHandler(AdminBaseHandler):
             'kind_choice': kind_choice,
             'pictures': pictures,
             'application': application,
+            'upload_url': blobstore.create_upload_url('/upload'),
         }
         return self.render_response('admin_main.html', **template_values)
+
+    def deleteLogo(self):
+        app = Application.get_by_id("main")
+        if app.logo:
+            old_pic = PictureEntity(app.logo.id())
+            old_pic.delete()
+            app.logo = None
+            app.put()
+        return self.redirect('/admin')
+
+    def resetColors(self):
+        app = Application.get_by_id("main")
+        app.navBackground = "#2c3e50"
+        app.navColor = "#ffffff"
+        app.navBorder = "#202d3b"
+        app.navActive = "#1a242f"
+        app.mainBackground = "#FFFFFF"
+        app.mainColor = "#2C3E50"
+        app.secondBackground = "#F3F3F3"
+        app.mainLinkColor = "#18BCA9"
+        app.put()
+        return self.redirect('/admin')
+         
 
 
 class LocaleDictHandler(AdminBaseHandler):
@@ -689,6 +717,13 @@ class AdminUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
             headsup = HeadsUp.get_by_id(int(self.request.get('headsup_id')))
             headsup.picture = ndb.Key(Picture, pic.key.id())
             headsup.put()
+        if (self.request.get('action') == "Logo"):
+            app = Application.get_by_id("main")
+            if app.logo:
+                old_pic = PictureEntity(app.logo.id())
+                old_pic.delete()
+            app.logo = ndb.Key(Picture, pic.key.id())
+            app.put()            
         memcache.flush_all()
 
         self.redirect(self.request.get('return-to'))
