@@ -371,34 +371,9 @@
  </div>
 {%- endif %}
 {%- if block.pagination == "parallax" %}
-<style>
-/* Slide 1 */
-		.photo {
-			background-attachment: fixed;
-			background-position: 50% 0;
-			background-repeat: no-repeat;
-			height: 450px;
-			position: relative;
-			background-size: cover;
-			width: 100%;
-		}
-#slide-1 {background-image:url('/serve/{{block.picture.get().size_max}}')}
-.mask{ 
-	width: 100%;
-	bottom: 50px;
-	height: 108px;
-	position: absolute;
-	background: url(/static/img/aboutmask.png) no-repeat; 
-	background-position: center;
-}
-</style>
-  <div class="container-fluid">
-    <div class="row-fluid photo" 
-    	id="slide-1" 
-    	data-stellar-background-ratio="0.5">
-    	<!-- <div class="mask">&nbsp;</div> -->
-   </div>
- </div>
+ <div class="parallax-container">
+	<div class="parallax"><img src="/serve/{{block.picture.get().size_max}}"></div>
+  </div>
 {%- endif %}
 {%- if block.pagination == "floating-book" %}
 <section>
