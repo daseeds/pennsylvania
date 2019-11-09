@@ -1787,3 +1787,8 @@ font-size: 13px;
   -o-border-radius: 3px;
   border-radius: 3px;
 }
+
+.parallax-window {
+  min-height: 500px;
+  background: transparent;
+}
