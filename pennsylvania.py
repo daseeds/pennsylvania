@@ -9,6 +9,7 @@ import datetime
 
 from webapp2_extras.routes import RedirectRoute
 from webapp2_extras import jinja2
+from jinja2 import Template
 
 from models import Locale, Page, Menu, Picture, Application
 from admin import *
@@ -191,6 +192,16 @@ class ModelViewer(BaseHandler):
 		## Application
 		application = Application.get_by_id("main")
 
+		#### Render application.share
+		temp_dict = {
+			'page': page,
+			'locale_id': locale_id,
+			'application': application,
+		}
+		template = Template(application.share)
+		application.share = template.render(**temp_dict)
+
+		## values for templates rendering
 		template_values = {
 			'page': page,
 			'locale_id': locale_id,
