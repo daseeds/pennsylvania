@@ -53,13 +53,6 @@ $(document).ready(function () {
   supportTouch = !!('ontouchstart' in window) || !!('msmaxtouchpoints' in window.navigator);
 
 
-  //$('#slides').superslides('start')
-
-  //var s = skrollr.init();
-  $.stellar({
-    horizontalScrolling: false,
-    verticalOffset: 40
-  });
 });
 
 
