@@ -192,7 +192,7 @@ class ModelViewer(BaseHandler):
 		## Application
 		application = Application.get_by_id("main")
 
-		#### Render application.share
+		#### Render application.share and application.references
 		temp_dict = {
 			'page': page,
 			'locale_id': locale_id,
@@ -200,6 +200,8 @@ class ModelViewer(BaseHandler):
 		}
 		template = Template(application.share)
 		application.share = template.render(**temp_dict)
+		template = Template(application.references)
+		application.references = template.render(**temp_dict)
 
 		## values for templates rendering
 		template_values = {
