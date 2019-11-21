@@ -7,6 +7,30 @@
 </div>
 {% endmacro %}
 
+{% macro color(label, name, value='', type='text') %}
+<div class="form-group">
+	<label class="col-sm-2 control-label">{{ label }}</label>
+	<div class="row">
+		<div class="col-sm-4">
+			<input id="{{ name }}" type="text" class="form-control" value="{{ value|e }}" name="{{ name }}" >
+	
+		</div>
+
+		<div class="col-sm-4">
+				<input type="text" id="{{ name }}_check">
+		</div>
+		<script>
+				var picker = new CP(document.getElementById("{{ name }}"));
+				picker.on("change", function(color) {
+					this.source.value = '#' + color;
+					check = document.getElementById("{{ name }}_check");
+					check.style.backgroundColor = '#' + color;
+				});
+			</script>
+	</div>
+</div>
+{% endmacro %}
+
 {% macro select(label, name, items, value='') %}
 <div class="form-group">
 	<label class="col-sm-2 control-label">{{ label }}</label>

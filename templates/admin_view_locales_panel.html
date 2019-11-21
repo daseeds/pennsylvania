@@ -1,27 +1,45 @@
 {% import 'forms.html' as forms %}
-		<div class="panel panel-default">
-			<div class="panel-heading">Locales</div>
-			<div class="panel-body">
-				<div class="list-group">
+<div class="panel panel-default">
+	<div class="panel-heading">Locales</div>
+	<div class="panel-body">
+		<div class="list-group">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Locale</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
 					{% for locale in locales %}
-					<a href="/admin/{{ locale.key.id() }}"  class="list-group-item">{{ locale.key.id() }}</a>
+					<tr>
+						<td>
+							<a href="/admin/locale/{{ locale.key.id() }}">{{ locale.key.id() }}</a>
+						</td>
+						<td><a href="/admin/locale/{{locale.key.id()}}/delete" class="btn btn-danger btn-sm"
+								name="delete">Delete</a>
+								</td>
+					</tr>
 					{% endfor %}
+				</tbody>
+			</table>
+			Warning: Deleting a locale will delete related pages
+		</div>
+	</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">Create a new locale</div>
+	<div class="panel-body">
+
+		<form class="form-horizontal" role="form" action="/admin/locale" method="post">
+			{{ forms.input('Locale unique id', 'locale_id') }}
+			{{ forms.input('Locale name (as visible in langage selection menu)', 'name') }}
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit" class="btn btn-default">New locale</button>
 				</div>
 			</div>
-		</div>
-		<div class="panel panel-default">
-			<div class="panel-heading">Create a new locale</div>
-			<div class="panel-body">
 
-				<form class="form-horizontal" role="form" action="/admin/locale/new" method="post">
-					{{ forms.input('Locale unique id', 'locale_id') }}
-					{{ forms.input('Locale name (as visible in langage selection menu)', 'name') }}
-					<div class="form-group">
-						<div class="col-sm-offset-2 col-sm-10">
-							<button type="submit" class="btn btn-default">New locale</button>
-						</div>
-					</div>
-
-				</form>
-			</div>
-		</div>
+		</form>
+	</div>
+</div>
