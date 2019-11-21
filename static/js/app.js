@@ -4,19 +4,26 @@ var map;
 var body = document.body,
   timer;
 
-document.addEventListener('DOMContentLoaded', function () {
+/* document.addEventListener('DOMContentLoaded', function () {
   var elems = document.querySelectorAll('.parallax');
   var instances = M.Parallax.init(elems);
+}); */
+
+var instance = M.Carousel.init({
+  fullWidth: true,
+  indicators: true,
 });
 
-$(document).ready(function () {
+//M.AutoInit();
+
+/* $(document).ready(function () {
   $(document).on('init.slides', function () {
     $('.loading-container').fadeOut(function () {
       $(this).remove();
     });
-  });
+  }); */
 
-  $("#google-iframe").on('mousewheel', function () {
+/*  $("#google-iframe").on('mousewheel', function () {
 
     //    alert("scroll")
     return false;
@@ -28,18 +35,14 @@ $(document).ready(function () {
     return false;
   }, false);
 
-  $('#slides').superslides({
+   $('#slides').superslides({
     slide_easing: 'easeInOutCubic',
     slide_speed: 800,
     pagination: true,
     hashchange: true,
     scrollable: true,
-    /*play: 6000,*/
   });
 
-  /*  document.ontouchmove = function(e) {
-      e.preventDefault();
-    };*/
   $('#slides').hammer().on('swipeleft', function (e) {
     e.preventDefault();
     $(this).superslides('animate', 'next');
@@ -51,9 +54,9 @@ $(document).ready(function () {
   });
 
   supportTouch = !!('ontouchstart' in window) || !!('msmaxtouchpoints' in window.navigator);
+ 
 
-
-});
+});*/
 
 
 
