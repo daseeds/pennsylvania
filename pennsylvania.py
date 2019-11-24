@@ -9,6 +9,7 @@ import datetime
 
 from webapp2_extras.routes import RedirectRoute
 from webapp2_extras import jinja2
+from jinja2 import Template
 
 from models import Locale, Page, Menu, Picture, Application
 from admin import *
@@ -191,6 +192,18 @@ class ModelViewer(BaseHandler):
 		## Application
 		application = Application.get_by_id("main")
 
+		#### Render application.share and application.references
+		temp_dict = {
+			'page': page,
+			'locale_id': locale_id,
+			'application': application,
+		}
+		template = Template(application.share)
+		application.share = template.render(**temp_dict)
+		template = Template(application.references)
+		application.references = template.render(**temp_dict)
+
+		## values for templates rendering
 		template_values = {
 			'page': page,
 			'locale_id': locale_id,
@@ -306,9 +319,9 @@ class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
 application = webapp2.WSGIApplication([
 	webapp2.Route(r'/sitemap.xml', SiteMap),
 	webapp2.Route(r'/serve/<:([^/]+)?>', ServeHandler, name='ServeHandler'),
-    webapp2.Route(r'/admin', handler='admin.ApplicationHandler'),
+	webapp2.Route(r'/admin', handler='admin.ApplicationHandler'),
+	webapp2.Route(r'/admin/resetColors', handler='admin.ApplicationHandler', handler_method='resetColors', methods=['GET']),
 	webapp2.Route(r'/admin/deleteLogo', handler='admin.ApplicationHandler', handler_method='deleteLogo'),
-	webapp2.Route(r'/admin/resetColor', handler='admin.ApplicationHandler', handler_method='resetColor'),
     webapp2.Route(r'/admin/locale', handler='admin.LocaleHandler', handler_method='create'),
 	webapp2.Route(r'/admin/locale/<locale_id:([^/]+)?>', handler='admin.LocaleHandler', handler_method='get'),
 	webapp2.Route(r'/admin/locale/<locale_id:([^/]+)?>/delete', handler='admin.LocaleHandler', handler_method='delete'),
