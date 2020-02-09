@@ -11,6 +11,8 @@ from webapp2_extras import jinja2
 from functools import wraps
 from models import Locale, Page, Menu, pagination_choice, Picture, block_choice, Block, LocaleDict, Price, HeadsUp, kind_choice, Application
 
+import six; reload(six)
+
 from google.appengine.api import images
 from google.appengine.api import users
 from google.appengine.ext import ndb
@@ -18,6 +20,7 @@ from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.api import memcache
 from operator import itemgetter
+from google.cloud import storage
 
 
 def jinja2_factory(app):

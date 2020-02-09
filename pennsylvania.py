@@ -17,6 +17,8 @@ from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.api import mail
 from google.appengine.api import memcache
+from google.cloud import storage
+
 
 HTTP_DATE_FMT = "%a, %d %b %Y %H:%M:%S GMT"
 
@@ -106,7 +108,7 @@ class MainPage(BaseHandler):
 						return available_locale.lower()
 		return 'en'
 
-   	def get(self):
+	def get(self):
 		locale_id = self.resolve_locale()
 		page = Page.query(Page.locale==ndb.Key(Locale, locale_id), Page.menu==ndb.Key(Menu, "the-manor")).fetch()
 		if not page:
@@ -314,11 +316,36 @@ class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
 			serve = False
 		self.output(resource, serve)
 
+class PictureServer(BaseHandler):
+	def get(self, resource):
+		"""Downloads a blob from the bucket."""
+		# bucket_name = "your-bucket-name"
+		# source_blob_name = "storage-object-name"
+		# destination_file_name = "local/path/to/file"
+
+		storage_client = storage.Client()
+
+		bucketname = "juganville-staging.appspot.com"
+
+		bucket = storage_client.bucket(bucketname)
+		blob = bucket.get_blob(resource)
+		self.response.headers['Cache-Control'] = 'public,max-age=31104000'
+		self.response.headers['Last-Modified'] = 'Thu, 15 Apr 2013 20:00:00 GMT'
+		self.response.headers['Content-Type'] = str(blob.content_type)
+		self.response.headers['Expires'] = 'Thu, 15 Apr 2015 20:00:00 GMT'
+		self.response.headers['Pragma'] = 'Public'
+		picture = blob.download_as_string()
+
+		self.response.write(picture)
+		
+
+
 
 
 application = webapp2.WSGIApplication([
 	webapp2.Route(r'/sitemap.xml', SiteMap),
 	webapp2.Route(r'/serve/<:([^/]+)?>', ServeHandler, name='ServeHandler'),
+	webapp2.Route(r'/migration/serve/<:([^/]+)?>', PictureServer),
 	webapp2.Route(r'/admin', handler='admin.ApplicationHandler'),
 	webapp2.Route(r'/admin/resetColors', handler='admin.ApplicationHandler', handler_method='resetColors', methods=['GET']),
 	webapp2.Route(r'/admin/deleteLogo', handler='admin.ApplicationHandler', handler_method='deleteLogo'),

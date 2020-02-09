@@ -7,6 +7,10 @@ libraries:
   version: latest
 - name: webapp2
   version: latest
+- name: grpcio
+  version: 1.0.0
+- name: ssl
+  version: latest
 
 handlers:
 - url: /favicon.ico

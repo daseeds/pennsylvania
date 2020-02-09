@@ -7,6 +7,11 @@
             "label": "echo",
             "type": "shell",
             "command": "echo Hello"
+        },
+        {
+            "label": "run",
+            "type": "shell",
+            "command": "dev_appserver.py  --appidentity_email_address=juganville-staging@appspot.gserviceaccount.com --appidentity_private_key_path=C:\\Users\\cyril\\app\\secrets\\juganville-staging-b518e20b6983.pem .\\app.yaml"
         }
     ]
 }

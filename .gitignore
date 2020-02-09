@@ -220,3 +220,6 @@ juganville-staging-secret.json
 api_key.py
 client-secret.json
 credentials.tar.gz
+
+#libs
+lib/
