@@ -44,7 +44,8 @@ deploy:
   keyfile: hostbusters-b2a448336449.json
   project: hostbusters
   default: false
-  on: prod-cyril
+  on: 
+    branch: prod-cyril
 branches:
   only:
   - prod
