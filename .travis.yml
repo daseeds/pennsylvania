@@ -39,6 +39,12 @@ deploy:
   project: pim-mockup-maciej
   default: false
   on: prod-pascal
+- provider: gae
+  skip_cleanup: true
+  keyfile: pim-mockup-maciej-986c39f23282.json
+  project: hostbusters
+  default: false
+  on: prod-cyril
 branches:
   only:
   - prod
