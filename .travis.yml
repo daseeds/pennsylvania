@@ -39,6 +39,13 @@ deploy:
   project: pim-mockup-maciej
   default: false
   on: prod-pascal
+- provider: gae
+  skip_cleanup: true
+  keyfile: hostbusters-b2a448336449.json
+  project: hostbusters
+  default: false
+  on: 
+    branch: prod-cyril
 branches:
   only:
   - prod
@@ -47,6 +54,7 @@ branches:
   - prod-chantal
   - staging-pascal
   - prod-pascal
+  - prod-cyril
 before_install:
 - openssl aes-256-cbc -K $encrypted_c2e4ec3f7584_key -iv $encrypted_c2e4ec3f7584_iv
   -in secrets-new.tar.enc -out secrets-new.tar -d
@@ -56,3 +64,4 @@ before_install:
 - tar -xzf credentials.tar.gz
 - openssl aes-256-cbc -K $encrypted_4f69bc391da0_key -iv $encrypted_4f69bc391da0_iv
   -in juganville1-d596c876bf13.json.enc -out juganville1-d596c876bf13.json -d
+- openssl aes-256-cbc -K $encrypted_fbba3e6bc8bb_key -iv $encrypted_fbba3e6bc8bb_iv -in hostbusters-b2a448336449.json.enc -out hostbusters-b2a448336449.json -d
